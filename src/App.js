@@ -8,6 +8,7 @@ import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
 import Core from "./Core";
+import Restore from "./Restore";
 
 const theme = {
     "dark": createMuiTheme({
@@ -64,7 +65,6 @@ class App extends Component {
     }
 
     render() {
-        const {classes} = this.props;
         return (
             <MuiThemeProvider theme={theme[this.state.theme]}>
                 <React.Fragment>
@@ -80,9 +80,6 @@ class App extends Component {
                                         <Link to="/login">Login</Link>
                                     </li>
                                     <li>
-                                        <Link to="/register">Register</Link>
-                                    </li>
-                                    <li>
                                         <Link to="/core">Core</Link>
                                     </li>
                                 </ul>
@@ -90,6 +87,8 @@ class App extends Component {
 
                             <Route path="/core"
                                    component={Core}/>
+                            <Route path="/restore:result"
+                                   component={Restore}/>
                             <Route path="/login"
                                    component={Login}/>
                             <Route path="/register"

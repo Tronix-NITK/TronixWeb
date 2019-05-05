@@ -9,7 +9,6 @@ const styles = theme => ({});
 
 class Core extends Component {
     render() {
-        const {classes} = this.props;
         const path = this.props.match.path;
         return (
             <div>
