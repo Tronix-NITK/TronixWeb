@@ -87,7 +87,7 @@ class App extends Component {
 
                             <Route path="/core"
                                    component={Core}/>
-                            <Route path="/restore:result"
+                            <Route path="/restore/:result"
                                    component={Restore}/>
                             <Route path="/login"
                                    component={Login}/>

@@ -4,7 +4,7 @@ import {withStyles} from "@material-ui/core";
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const styles = theme => ({});
 
@@ -26,11 +26,9 @@ class Restore extends Component {
     render() {
         return (
             <Dialog open={true} onClose={this.onClose.bind(this)}>
-                <DialogTitle>Please wait</DialogTitle>
+                <DialogTitle>Login {this.props.match.params.result === "success" ? "successful" : "failed"}, please wait.</DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        Login {this.props.match.params.result}
-                    </DialogContentText>
+                    <LinearProgress/>
                 </DialogContent>
             </Dialog>
         );
