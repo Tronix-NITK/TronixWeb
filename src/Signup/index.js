@@ -212,8 +212,8 @@ class Signup extends Component {
                 throw Error(res.statusText);
         }).then(colleges => {
             let suggestions = colleges.map(suggestion => ({
-                value: suggestion.label,
-                label: suggestion.label,
+                value: suggestion.name,
+                label: suggestion.name,
             }));
             cb(suggestions);
         }).catch(err => {
