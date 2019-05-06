@@ -162,6 +162,8 @@ class Signup extends Component {
             default: {
                 fetch(`${API_SERVER}/part/info/self`,
                     {
+                        mode: 'cors',
+                        credentials: 'include',
                         method: "GET",
                         headers: {
                             'Accept': 'application/json',
@@ -192,6 +194,8 @@ class Signup extends Component {
 
     loadColleges() {
         fetch(`${API_SERVER}/college/all`, {
+            mode: 'cors',
+            credentials: 'include',
             method: "GET",
             headers: {
                 'Accept': 'application/json',
@@ -214,6 +218,8 @@ class Signup extends Component {
 
     signup() {
         fetch(`${API_SERVER}/part/signup`, {
+            mode: 'cors',
+            credentials: 'include',
             method: "POST",
             body: JSON.stringify({
                 displayName: this.state.displayName,
