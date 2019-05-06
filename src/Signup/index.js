@@ -232,7 +232,7 @@ class Signup extends Component {
 
     static continueWithGoogle() {
         localStorage.setItem('restore.pathname', window.location.pathname);
-        window.location.href = API_SERVER + "/core/auth/login/google";
+        window.location.href = API_SERVER + "/part/auth/login/google";
     }
 
     handleChange = name => value => {
