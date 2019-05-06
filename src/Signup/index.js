@@ -23,7 +23,6 @@ import ErrorSnackIcon from '@material-ui/icons/Error';
 import green from "@material-ui/core/es/colors/green";
 import amber from "@material-ui/core/es/colors/amber";
 import red from "@material-ui/core/es/colors/red";
-import {Link} from "react-router-dom";
 
 const API_SERVER = "https://tronixserver.herokuapp.com";
 
@@ -183,7 +182,7 @@ class Signup extends Component {
             stage: "unknown(0)",
             email: "",
             displayName: "",
-            college: "",
+            college: null,
             collegeSuggestions: [],
             infoSnack: "", successSnack: "", warnSnack: "", errorSnack: "",
         };
@@ -262,7 +261,7 @@ class Signup extends Component {
             method: "POST",
             body: JSON.stringify({
                 displayName: this.state.displayName,
-                college: this.state.college,
+                college: this.state.college !== null ? this.state.college.value : "",
             }),
             headers: {
                 'Content-Type': 'application/json',
@@ -284,7 +283,7 @@ class Signup extends Component {
 
     handleCollegeChange = value => {
         this.setState({
-            college: value.value,
+            college: value,
         });
     };
 
@@ -508,8 +507,9 @@ class Signup extends Component {
                         color="primary"
                         className={classes.button}
                         fullWidth
+                        onClick={() => window.location.pathname = "/"}
                     >
-                        <Link to="/">Continue to Tronix</Link>
+                        Continue to Tronix
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -532,8 +532,9 @@ class Signup extends Component {
                         color="primary"
                         className={classes.button}
                         fullWidth
+                        onClick={() => window.location.pathname = "/"}
                     >
-                        <Link to="/">Continue to Tronix</Link>
+                        Continue to Tronix
                     </Button>
                 </DialogActions>
             </Dialog>

@@ -34,6 +34,21 @@ const styles = theme => ({
     App: {},
 });
 
+const API_SERVER = "https://tronixserver.herokuapp.com";
+
+function logout() {
+    fetch(`${API_SERVER}/part/auth/logout`, {
+        mode: 'cors',
+        credentials: 'include',
+        method: "GET",
+    }).then((res) => {
+        if (!res.ok)
+            throw Error(res.statusText);
+    }).catch(err => {
+        console.error(err);
+    });
+}
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -82,12 +97,15 @@ class App extends Component {
                                     <li>
                                         <Link to="/core">Core</Link>
                                     </li>
+                                    <li>
+                                        <a href="" onClick={logout}>Logout</a>
+                                    </li>
                                 </ul>
                             </nav>
 
                             <Route path="/core"
                                    component={Core}/>
-                            <Route path="/restore/:result"
+                            <Route path="/restore/:source"
                                    component={Restore}/>
                             <Route path="/login"
                                    component={Login}/>

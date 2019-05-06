@@ -19,38 +19,62 @@ class Restore extends Component {
     }
 
     restore() {
-        let result = this.props.match.params.result;
+        let source = this.props.match.params.source;
         let pathName = localStorage.getItem('restore.pathname') || '/';
         localStorage.removeItem('restore.pathname');
-        switch (result) {
-            case "success":
-                window.location.pathname = pathName;
-                break;
-            case "failure":
+        switch (source) {
+            case "loginSuccess":
                 window.location.pathname = "/";
                 break;
-            case "completeRegistration":
+            case "loginFailure":
+                window.location.pathname = "/";
+                break;
+            case "signup":
                 window.location.pathname = "/signup";
                 break;
             default:
+                window.location.pathname = "/";
+        }
+    }
+
+    componentDidMount() {
+        let source = this.props.match.params.source;
+        switch (source) {
+            case "signup":
+                this.restore();
                 break;
+            default:
         }
     }
 
     render() {
         const {classes} = this.props;
-        let result = this.props.match.params.result;
+        let source = this.props.match.params.source, title, contentText;
+        switch (source) {
+            case "loginSuccess":
+                title = "Login successful";
+                contentText = "Hit continue to continue";
+                break;
+            case "loginFailure":
+                title = "Login failed";
+                contentText = "Hit continue to continue";
+                break;
+            case "signup":
+                title = "Login successful";
+                contentText = "Hit continue to continue";
+                break;
+            default:
+                title = "Go home";
+                contentText = "Hit continue to go home";
+        }
         return (
             <Dialog open={true} onClose={this.onClose.bind(this)}>
                 <DialogTitle>
-                    Login {result === "success" || result === "completeRegistration" ? "successful" : "failed"}
+                    {title}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Hit continue to
-                        {result === "success" ? " continue browsing" : null}
-                        {result === "failure" ? " try again" : null}
-                        {result === "completeRegistration" ? " complete signup" : null}
+                        {contentText}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
