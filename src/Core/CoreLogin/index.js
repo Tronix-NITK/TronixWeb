@@ -9,6 +9,8 @@ import DialogContent from "@material-ui/core/DialogContent/index";
 import DialogContentText from "@material-ui/core/DialogContentText/index";
 import DialogActions from "@material-ui/core/DialogActions/index";
 
+const API_SERVER = "https://tronixserver.herokuapp.com";
+
 const styles = theme => ({
     media: {},
     button: {
@@ -30,6 +32,11 @@ class CoreLogin extends Component {
             this.props.history.goBack();
     }
 
+    static onClickLogin() {
+        localStorage.setItem('restore.pathname', window.location.pathname);
+        window.location.href = API_SERVER + "/core/auth/login/google";
+    }
+
     render() {
         const {classes} = this.props;
         return (
@@ -37,7 +44,7 @@ class CoreLogin extends Component {
                 <DialogTitle>Login</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Login in to Tronix Core with your Google account.
+                        Login to Tronix Core with your Google account.
                     </DialogContentText>
                     <CardMedia
                         className={classes.media}
@@ -53,6 +60,7 @@ class CoreLogin extends Component {
                         color="primary"
                         className={classes.button}
                         fullWidth
+                        onClick={CoreLogin.onClickLogin}
                     >
                         Login with Google
                     </Button>

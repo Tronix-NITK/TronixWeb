@@ -6,8 +6,9 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import blue from '@material-ui/core/colors/blue';
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import Login from "./Login";
-import Register from "./Register";
+import Signup from "./Signup";
 import Core from "./Core";
+import Restore from "./Restore";
 
 const theme = {
     "dark": createMuiTheme({
@@ -32,6 +33,21 @@ const theme = {
 const styles = theme => ({
     App: {},
 });
+
+const API_SERVER = "https://tronixserver.herokuapp.com";
+
+function logout() {
+    fetch(`${API_SERVER}/part/auth/logout`, {
+        mode: 'cors',
+        credentials: 'include',
+        method: "GET",
+    }).then((res) => {
+        if (!res.ok)
+            throw Error(res.statusText);
+    }).catch(err => {
+        console.error(err);
+    });
+}
 
 class App extends Component {
     constructor(props) {
@@ -64,7 +80,6 @@ class App extends Component {
     }
 
     render() {
-        const {classes} = this.props;
         return (
             <MuiThemeProvider theme={theme[this.state.theme]}>
                 <React.Fragment>
@@ -80,20 +95,22 @@ class App extends Component {
                                         <Link to="/login">Login</Link>
                                     </li>
                                     <li>
-                                        <Link to="/register">Register</Link>
+                                        <Link to="/core">Core</Link>
                                     </li>
                                     <li>
-                                        <Link to="/core">Core</Link>
+                                        <a href="" onClick={logout}>Logout</a>
                                     </li>
                                 </ul>
                             </nav>
 
                             <Route path="/core"
                                    component={Core}/>
+                            <Route path="/restore/:source"
+                                   component={Restore}/>
                             <Route path="/login"
                                    component={Login}/>
-                            <Route path="/register"
-                                   component={Register}/>
+                            <Route path="/signup"
+                                   component={Signup}/>
                         </div>
                     </Router>
                 </React.Fragment>
