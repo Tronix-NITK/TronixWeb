@@ -273,6 +273,7 @@ class Signup extends Component {
             this.setState({stage: "completed(3)"});
         }).catch(err => {
             this.setState({warnSnack: "Signup failed."});
+            console.error(err);
         });
     }
 
