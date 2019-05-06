@@ -282,9 +282,9 @@ class Signup extends Component {
         window.location.href = API_SERVER + "/part/auth/login/google";
     }
 
-    handleChange = name => value => {
+    handleCollegeChange = value => {
         this.setState({
-            [name]: value,
+            college: value.value,
         });
     };
 
@@ -470,7 +470,7 @@ class Signup extends Component {
                             options={this.state.collegeSuggestions}
                             components={components}
                             value={this.state.college}
-                            onChange={this.handleChange('college')}
+                            onChange={this.handleCollegeChange}
                             placeholder="College"
                             isClearable
                             fullWidth
