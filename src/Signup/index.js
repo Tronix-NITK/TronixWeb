@@ -230,6 +230,11 @@ class Signup extends Component {
         });
     }
 
+    static continueWithGoogle() {
+        localStorage.setItem('restore.pathname', window.location.pathname);
+        window.location.href = API_SERVER + "/core/auth/login/google";
+    }
+
     handleChange = name => value => {
         this.setState({
             [name]: value,
@@ -276,7 +281,7 @@ class Signup extends Component {
                 <DialogTitle>Signup</DialogTitle>
                 <DialogContent className={classes.root}>
                     <DialogContentText>
-                        You need a Google account to signup for Tronix.
+                        Signup for Tronix using your Google Account.
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -285,6 +290,7 @@ class Signup extends Component {
                         color="primary"
                         className={classes.button}
                         fullWidth
+                        onClick={Signup.continueWithGoogle}
                     >
                         Continue with Google
                     </Button>
