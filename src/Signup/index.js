@@ -176,8 +176,13 @@ class Signup extends Component {
                 }).then(user => {
                     switch (user.group) {
                         case UserGroup.URP:
-                            this.loadColleges();
-                            this.setState({stage: "fillDetails(2)"});
+                            this.loadColleges((suggestions) => {
+                                this.setState({
+                                    collegeSuggestions: suggestions,
+                                    email: user.email,
+                                    stage: "fillDetails(2)"
+                                });
+                            });
                             break;
                         default:
                             // Error
@@ -192,7 +197,7 @@ class Signup extends Component {
         }
     }
 
-    loadColleges() {
+    loadColleges(cb) {
         fetch(`${API_SERVER}/college/all`, {
             mode: 'cors',
             credentials: 'include',
@@ -210,7 +215,7 @@ class Signup extends Component {
                 value: suggestion.label,
                 label: suggestion.label,
             }));
-            this.setState({collegeSuggestions: suggestions});
+            cb(suggestions);
         }).catch(err => {
             console.error(err);
         });
