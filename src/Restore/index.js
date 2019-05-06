@@ -30,7 +30,7 @@ class Restore extends Component {
                 window.location.pathname = "/";
                 break;
             case "completeRegistration":
-                window.location.pathname = "/register";
+                window.location.pathname = "/signup";
                 break;
             default:
                 break;
@@ -50,7 +50,7 @@ class Restore extends Component {
                         Hit continue to
                         {result === "success" ? " continue browsing" : null}
                         {result === "failure" ? " try again" : null}
-                        {result === "completeRegistration" ? " complete registration" : null}
+                        {result === "completeRegistration" ? " complete signup" : null}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
