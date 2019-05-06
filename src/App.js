@@ -6,7 +6,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import blue from '@material-ui/core/colors/blue';
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import Login from "./Login";
-import Register from "./Register";
+import Signup from "./Signup";
 import Core from "./Core";
 import Restore from "./Restore";
 
@@ -91,8 +91,8 @@ class App extends Component {
                                    component={Restore}/>
                             <Route path="/login"
                                    component={Login}/>
-                            <Route path="/register"
-                                   component={Register}/>
+                            <Route path="/signup"
+                                   component={Signup}/>
                         </div>
                     </Router>
                 </React.Fragment>
