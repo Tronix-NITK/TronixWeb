@@ -14,6 +14,16 @@ import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
 import UserGroup from "../helpers/userGroup";
+import Snackbar from "@material-ui/core/Snackbar";
+import SnackbarContent from "@material-ui/core/SnackbarContent";
+import InfoSnackIcon from '@material-ui/icons/Info';
+import SuccessSnackIcon from '@material-ui/icons/CheckCircle';
+import WarningSnackIcon from '@material-ui/icons/Warning';
+import ErrorSnackIcon from '@material-ui/icons/Error';
+import green from "@material-ui/core/es/colors/green";
+import amber from "@material-ui/core/es/colors/amber";
+import red from "@material-ui/core/es/colors/red";
+import {Link} from "react-router-dom";
 
 const API_SERVER = "https://tronixserver.herokuapp.com";
 
@@ -49,6 +59,27 @@ const styles = theme => ({
         marginTop: theme.spacing.unit,
         left: 0,
         right: 0,
+    },
+    snackMessage: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+    snackIcon: {
+        fontSize: 20,
+        opacity: 0.9,
+        marginRight: theme.spacing.unit,
+    },
+    infoSnack: {
+        backgroundColor: theme.palette.primary.dark,
+    },
+    successSnack: {
+        backgroundColor: green[600],
+    },
+    warnSnack: {
+        backgroundColor: amber[700],
+    },
+    errorSnack: {
+        backgroundColor: red[700],
     },
     root: {overflow: 'visible'}
 });
@@ -154,47 +185,50 @@ class Signup extends Component {
             displayName: "",
             college: "",
             collegeSuggestions: [],
+            infoSnack: "", successSnack: "", warnSnack: "", errorSnack: "",
         };
     }
 
     componentDidMount() {
-        switch (this.state.stage) {
-            default: {
-                fetch(`${API_SERVER}/part/info/self`,
-                    {
-                        mode: 'cors',
-                        credentials: 'include',
-                        method: "GET",
-                        headers: {
-                            'Accept': 'application/json',
-                        },
-                    }).then((res) => {
-                    if (res.ok)
-                        return res.json();
-                    else
-                        throw Error(res.statusText);
-                }).then(user => {
-                    switch (user.group) {
-                        case UserGroup.URP:
-                            this.loadColleges((suggestions) => {
-                                this.setState({
-                                    collegeSuggestions: suggestions,
-                                    email: user.email,
-                                    stage: "fillDetails(2)"
-                                });
-                            });
-                            break;
-                        default:
-                            // Error
-                            break;
-                    }
-                }).catch(err => {
-                    // Un-auth user
-                    this.setState({stage: "auth(1)"});
-                });
+        fetch(`${API_SERVER}/part/info/self`,
+            {
+                mode: 'cors',
+                credentials: 'include',
+                method: "GET",
+                headers: {
+                    'Accept': 'application/json',
+                },
+            }).then((res) => {
+            if (res.ok)
+                return res.json();
+            else
+                throw Error(res.statusText);
+        }).then(user => {
+            switch (user.group) {
+                case UserGroup.URP:
+                    this.loadColleges((suggestions) => {
+                        this.setState({
+                            collegeSuggestions: suggestions,
+                            email: user.email,
+                            stage: "fillDetails(2)"
+                        });
+                    });
+                    break;
+                case UserGroup.PARTICIPANT:
+                    this.setState({
+                        stage: "completed(3)"
+                    });
+                    break;
+                default:
+                    this.setState({
+                        stage: "error(4)",
+                        warnSnack: "Please login as a participant",
+                    });
             }
-                break;
-        }
+        }).catch(err => {
+            // Un-auth user
+            this.setState({stage: "auth(1)"});
+        });
     }
 
     loadColleges(cb) {
@@ -236,8 +270,9 @@ class Signup extends Component {
         }).then((res) => {
             if (!res.ok)
                 throw Error(res.statusText);
+            this.setState({stage: "completed(3)"});
         }).catch(err => {
-            console.error(err);
+            this.setState({warnSnack: "Signup failed."});
         });
     }
 
@@ -252,6 +287,12 @@ class Signup extends Component {
         });
     };
 
+    handleTextChange = name => event => {
+        this.setState({
+            [name]: event.target.value,
+        });
+    };
+
     onClose() {
         if (this.props.onClose)
             this.props.onClose();
@@ -259,15 +300,90 @@ class Signup extends Component {
             this.props.history.goBack();
     }
 
+    handleCloseSnack() {
+        this.setState({infoSnack: "", successSnack: "", warnSnack: "", errorSnack: "",});
+    }
+
     render() {
+        const {classes} = this.props;
+        let stageView = null;
         switch (this.state.stage) {
+            case "error(4)":
+                stageView = this.getStage4View();
+                break;
+            case "completed(3)":
+                stageView = this.getStage3View();
+                break;
             case "fillDetails(2)":
-                return this.getStage2View();
+                stageView = this.getStage2View();
+                break;
             case "auth(1)":
-                return this.getStage1View();
+                stageView = this.getStage1View();
+                break;
             default:
-                return this.getStage0View();
+                stageView = this.getStage0View();
         }
+        return (
+            <div>
+                {stageView}
+                <Snackbar
+                    anchorOrigin={{vertical: "bottom", horizontal: "center"}}
+                    open={this.state.infoSnack.length !== 0}
+                    autoHideDuration={2000}
+                    onClose={this.handleCloseSnack.bind(this)}
+                >
+                    <SnackbarContent
+                        className={classes.infoSnack}
+                        message={
+                            <span className={classes.snackMessage}>
+                            <InfoSnackIcon className={classes.snackIcon}/>{this.state.infoSnack}
+                        </span>
+                        }
+                    />
+                </Snackbar>
+                <Snackbar
+                    anchorOrigin={{vertical: "bottom", horizontal: "center"}}
+                    open={this.state.successSnack.length !== 0}
+                    onClose={this.handleCloseSnack.bind(this)}
+                >
+                    <SnackbarContent
+                        className={classes.successSnack}
+                        message={
+                            <span className={classes.snackMessage}>
+                            <SuccessSnackIcon className={classes.snackIcon}/>{this.state.successSnack}
+                        </span>
+                        }
+                    />
+                </Snackbar>
+                <Snackbar
+                    anchorOrigin={{vertical: "bottom", horizontal: "center"}}
+                    open={this.state.warnSnack.length !== 0}
+                    onClose={this.handleCloseSnack.bind(this)}>
+                    <SnackbarContent
+                        className={classes.warnSnack}
+                        message={
+                            <span className={classes.snackMessage}>
+                            <WarningSnackIcon className={classes.snackIcon}/>{this.state.warnSnack}
+                        </span>
+                        }
+                    />
+                </Snackbar>
+                <Snackbar
+                    anchorOrigin={{vertical: "bottom", horizontal: "center"}}
+                    open={this.state.errorSnack.length !== 0}
+                    onClose={this.handleCloseSnack.bind(this)}
+                >
+                    <SnackbarContent
+                        className={classes.errorSnack}
+                        message={
+                            <span className={classes.snackMessage}>
+                            <ErrorSnackIcon className={classes.snackIcon}/>{this.state.errorSnack}
+                        </span>
+                        }
+                    />
+                </Snackbar>
+            </div>
+        );
     }
 
     getStage0View() {
@@ -343,7 +459,7 @@ class Signup extends Component {
                         placeholder="Name"
                         type="text"
                         value={this.state.displayName}
-                        onChange={this.handleChange('displayName')}
+                        onChange={this.handleTextChange('displayName')}
                         fullWidth
                     />
                     <NoSsr>
@@ -369,6 +485,54 @@ class Signup extends Component {
                         onClick={this.signup.bind(this)}
                     >
                         Complete signup
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        );
+    }
+
+    getStage3View() {
+        const {classes} = this.props;
+        return (
+            <Dialog open={true}>
+                <DialogTitle>Signup for Tronix</DialogTitle>
+                <DialogContent className={classes.root}>
+                    <DialogContentText>
+                        Signup completed.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        fullWidth
+                    >
+                        <Link to="/">Continue to Tronix</Link>
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        );
+    }
+
+    getStage4View() {
+        const {classes} = this.props;
+        return (
+            <Dialog open={true}>
+                <DialogTitle>Signup for Tronix</DialogTitle>
+                <DialogContent className={classes.root}>
+                    <DialogContentText>
+                        That's a no.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                        fullWidth
+                    >
+                        <Link to="/">Continue to Tronix</Link>
                     </Button>
                 </DialogActions>
             </Dialog>
