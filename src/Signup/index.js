@@ -445,7 +445,6 @@ class Signup extends Component {
                         Complete signup by filling your details
                     </DialogContentText>
                     <TextField
-                        autoFocus
                         margin="dense"
                         placeholder="Email"
                         type="email"
@@ -493,6 +492,7 @@ class Signup extends Component {
 
     getStage3View() {
         const {classes} = this.props;
+        const history = this.props.history;
         return (
             <Dialog open={true}>
                 <DialogTitle>Signup for Tronix</DialogTitle>
@@ -507,7 +507,7 @@ class Signup extends Component {
                         color="primary"
                         className={classes.button}
                         fullWidth
-                        onClick={() => window.location.pathname = "/"}
+                        onClick={() => history.push('/')}
                     >
                         Continue to Tronix
                     </Button>
@@ -518,6 +518,7 @@ class Signup extends Component {
 
     getStage4View() {
         const {classes} = this.props;
+        const history = this.props.history;
         return (
             <Dialog open={true}>
                 <DialogTitle>Signup for Tronix</DialogTitle>
@@ -532,7 +533,7 @@ class Signup extends Component {
                         color="primary"
                         className={classes.button}
                         fullWidth
-                        onClick={() => window.location.pathname = "/"}
+                        onClick={() => history.push('/')}
                     >
                         Continue to Tronix
                     </Button>

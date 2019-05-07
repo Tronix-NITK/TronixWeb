@@ -19,7 +19,7 @@ const styles = theme => ({
 });
 
 
-class CoreLogin extends Component {
+class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {};
@@ -60,7 +60,7 @@ class CoreLogin extends Component {
                         color="primary"
                         className={classes.button}
                         fullWidth
-                        onClick={CoreLogin.onClickLogin}
+                        onClick={Login.onClickLogin}
                     >
                         Login with Google
                     </Button>
@@ -70,8 +70,8 @@ class CoreLogin extends Component {
     }
 }
 
-CoreLogin.propTypes = {
+Login.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles, {withTheme: true})(CoreLogin);
+export default withStyles(styles, {withTheme: true})(Login);

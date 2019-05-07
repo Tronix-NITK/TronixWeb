@@ -95,10 +95,13 @@ class App extends Component {
                                         <Link to="/login">Login</Link>
                                     </li>
                                     <li>
-                                        <Link to="/core">Core</Link>
+                                        <a href="" onClick={logout}>Logout</a>
                                     </li>
                                     <li>
-                                        <a href="" onClick={logout}>Logout</a>
+                                        <Link to="/signup">Signup</Link>
+                                    </li>
+                                    <li>
+                                        <Link to="/core">Core</Link>
                                     </li>
                                 </ul>
                             </nav>
