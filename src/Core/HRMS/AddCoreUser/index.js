@@ -9,6 +9,7 @@ import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import {withStyles} from "@material-ui/core";
+import AppContext from "../../../AppContext";
 
 const API_SERVER = "https://tronixserver.herokuapp.com";
 
@@ -28,6 +29,10 @@ class AddCoreUser extends Component {
         };
     }
 
+    componentDidMount() {
+        this.snack = this.context.snack;
+    }
+
     createUser() {
         fetch(`${API_SERVER}/core/hrms/coreUser`, {
             mode: 'cors',
@@ -44,11 +49,9 @@ class AddCoreUser extends Component {
         }).then((res) => {
             if (!res.ok)
                 throw Error(res.statusText);
-            if (this.props.onResult)
-                this.props.onResult(null);
+            this.snack("success", "Added");
         }).catch(err => {
-            if (this.props.onResult)
-                this.props.onResult(err);
+            this.snack("warn", err.message);
         });
     }
 
@@ -118,5 +121,6 @@ class AddCoreUser extends Component {
 AddCoreUser.propTypes = {
     classes: PropTypes.object.isRequired,
 };
+AddCoreUser.contextType = AppContext;
 
 export default withStyles(styles, {withTheme: true})(AddCoreUser);

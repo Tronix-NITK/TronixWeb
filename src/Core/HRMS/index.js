@@ -6,6 +6,7 @@ import DelCoreUser from "./DelCoreUser";
 import ModCoreUser from "./ModCoreUser";
 import {Link, Route} from "react-router-dom";
 import MaterialTable from 'material-table';
+import AppContext from "../../AppContext";
 
 const styles = theme => ({
     tableContainer: {
@@ -30,7 +31,6 @@ class HRMS extends Component {
         return (
             <div>
                 HRMS
-                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
                 <nav>
                     <ul>
                         <li>
@@ -50,6 +50,7 @@ class HRMS extends Component {
                        component={DelCoreUser}/>
                 <Route path={`${path}/modCoreUser`}
                        component={ModCoreUser}/>
+                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
                 <div className={classes.tableContainer}>
                     <MaterialTable
                         columns={[
@@ -86,6 +87,7 @@ class HRMS extends Component {
     }
 
     componentDidMount() {
+        this.snack = this.context.snack;
         this.fetchUsers();
     }
 
@@ -105,7 +107,10 @@ class HRMS extends Component {
                     throw Error(res.statusText);
             })
             .then(users => this.setState({users: users}))
-            .catch(() => this.setState({users: []}));
+            .catch((err) => {
+                this.setState({users: []});
+                this.snack("error", err.message);
+            });
     }
 
     addUser(newUser) {
@@ -125,8 +130,10 @@ class HRMS extends Component {
                     throw Error(res.statusText);
                 const users = this.state.users;
                 users.push(newUser);
+                this.snack("success", "Added");
                 this.setState({users}, () => resolve());
             }).catch((err) => {
+                this.snack("warn", err.message);
                 reject(err);
             });
         });
@@ -150,8 +157,10 @@ class HRMS extends Component {
                 const users = this.state.users;
                 const index = users.indexOf(oldUser);
                 users[index] = newUser;
+                this.snack("success", "Edited");
                 this.setState({users}, () => resolve());
             }).catch(err => {
+                this.snack("warn", err.message);
                 reject(err);
             });
         });
@@ -176,8 +185,10 @@ class HRMS extends Component {
                 let users = this.state.users;
                 const index = users.indexOf(user);
                 users.splice(index, 1);
+                this.snack("success", "Deleted");
                 this.setState({users}, () => resolve());
             }).catch(err => {
+                this.snack("warn", err.message);
                 reject(err);
             });
         });
@@ -187,5 +198,6 @@ class HRMS extends Component {
 HRMS.propTypes = {
     classes: PropTypes.object.isRequired,
 };
+HRMS.contextType = AppContext;
 
 export default withStyles(styles, {withTheme: true})(HRMS);

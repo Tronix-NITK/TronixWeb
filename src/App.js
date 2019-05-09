@@ -9,6 +9,17 @@ import Login from "./Login";
 import Signup from "./Signup";
 import Core from "./Core";
 import Restore from "./Restore";
+import Snackbar from "@material-ui/core/Snackbar";
+import SnackbarContent from "@material-ui/core/SnackbarContent";
+import InfoSnackIcon from '@material-ui/icons/Info';
+import SuccessSnackIcon from '@material-ui/icons/CheckCircle';
+import WarningSnackIcon from '@material-ui/icons/Warning';
+import ErrorSnackIcon from '@material-ui/icons/Error';
+import grey from "@material-ui/core/es/colors/grey";
+import green from "@material-ui/core/es/colors/green";
+import amber from "@material-ui/core/es/colors/amber";
+import red from "@material-ui/core/es/colors/red";
+import AppContext from "./AppContext";
 
 const theme = {
     "dark": createMuiTheme({
@@ -31,23 +42,30 @@ const theme = {
 };
 
 const styles = theme => ({
-    App: {},
+    snackMessage: {
+        display: 'flex',
+        alignItems: 'center',
+    },
+    snackIcon: {
+        fontSize: 20,
+        opacity: 0.9,
+        marginRight: theme.spacing.unit,
+    },
+    infoSnack: {
+        backgroundColor: grey[600],
+    },
+    successSnack: {
+        backgroundColor: green[600],
+    },
+    warnSnack: {
+        backgroundColor: amber[700],
+    },
+    errorSnack: {
+        backgroundColor: red[700],
+    },
 });
 
 const API_SERVER = "https://tronixserver.herokuapp.com";
-
-function logout() {
-    fetch(`${API_SERVER}/part/auth/logout`, {
-        mode: 'cors',
-        credentials: 'include',
-        method: "GET",
-    }).then((res) => {
-        if (!res.ok)
-            throw Error(res.statusText);
-    }).catch(err => {
-        console.error(err);
-    });
-}
 
 class App extends Component {
     constructor(props) {
@@ -57,6 +75,7 @@ class App extends Component {
             savedTheme = "dark";
         this.state = {
             theme: savedTheme,
+            infoSnack: "", successSnack: "", warnSnack: "", errorSnack: "",
         };
     }
 
@@ -80,46 +99,129 @@ class App extends Component {
     }
 
     render() {
+        const {classes} = this.props;
         return (
             <MuiThemeProvider theme={theme[this.state.theme]}>
                 <React.Fragment>
                     <CssBaseline/>
-                    <Router>
-                        <div>
-                            <nav>
-                                <ul>
-                                    <li>
-                                        <Link to="/">Home</Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/login">Login</Link>
-                                    </li>
-                                    <li>
-                                        <a href="" onClick={logout}>Logout</a>
-                                    </li>
-                                    <li>
-                                        <Link to="/signup">Signup</Link>
-                                    </li>
-                                    <li>
-                                        <Link to="/core">Core</Link>
-                                    </li>
-                                </ul>
-                            </nav>
+                    <AppContext.Provider value={{snack: (t, m) => this.snack(t, m)}}>
+                        <Router>
+                            <div>
+                                <nav>
+                                    <ul>
+                                        <li>
+                                            <Link to="/">Home</Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/login">Login</Link>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0);" onClick={() => this.part_logout()}>Logout</a>
+                                        </li>
+                                        <li>
+                                            <Link to="/signup">Signup</Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/core">Core</Link>
+                                        </li>
+                                    </ul>
+                                </nav>
 
-                            <Route path="/core"
-                                   component={Core}/>
-                            <Route path="/restore/:source"
-                                   component={Restore}/>
-                            <Route path="/login"
-                                   component={Login}/>
-                            <Route path="/signup"
-                                   component={Signup}/>
-                        </div>
-                    </Router>
+                                <Route path="/core"
+                                       component={Core}/>
+                                <Route path="/restore/:state"
+                                       component={Restore}/>
+                                <Route path="/login"
+                                       component={Login}/>
+                                <Route path="/signup"
+                                       component={Signup}/>
+                            </div>
+
+                            <Snackbar
+                                anchorOrigin={{vertical: "bottom", horizontal: "center"}}
+                                open={this.state.infoSnack.length !== 0}
+                                autoHideDuration={2000}
+                                onClose={this.handleCloseSnack.bind(this)}
+                            >
+                                <SnackbarContent
+                                    className={classes.infoSnack}
+                                    message={
+                                        <span className={classes.snackMessage}>
+                            <InfoSnackIcon className={classes.snackIcon}/>{this.state.infoSnack}
+                        </span>
+                                    }
+                                />
+                            </Snackbar>
+                            <Snackbar
+                                anchorOrigin={{vertical: "bottom", horizontal: "center"}}
+                                open={this.state.successSnack.length !== 0}
+                                onClose={this.handleCloseSnack.bind(this)}
+                            >
+                                <SnackbarContent
+                                    className={classes.successSnack}
+                                    message={
+                                        <span className={classes.snackMessage}>
+                            <SuccessSnackIcon className={classes.snackIcon}/>{this.state.successSnack}
+                        </span>
+                                    }
+                                />
+                            </Snackbar>
+                            <Snackbar
+                                anchorOrigin={{vertical: "bottom", horizontal: "center"}}
+                                open={this.state.warnSnack.length !== 0}
+                                onClose={this.handleCloseSnack.bind(this)}>
+                                <SnackbarContent
+                                    className={classes.warnSnack}
+                                    message={
+                                        <span className={classes.snackMessage}>
+                            <WarningSnackIcon className={classes.snackIcon}/>{this.state.warnSnack}
+                        </span>
+                                    }
+                                />
+                            </Snackbar>
+                            <Snackbar
+                                anchorOrigin={{vertical: "bottom", horizontal: "center"}}
+                                open={this.state.errorSnack.length !== 0}
+                                onClose={this.handleCloseSnack.bind(this)}
+                            >
+                                <SnackbarContent
+                                    className={classes.errorSnack}
+                                    message={
+                                        <span className={classes.snackMessage}>
+                            <ErrorSnackIcon className={classes.snackIcon}/>{this.state.errorSnack}
+                        </span>
+                                    }
+                                />
+                            </Snackbar>
+                        </Router>
+                    </AppContext.Provider>
                 </React.Fragment>
             </MuiThemeProvider>
         );
     }
+
+    handleCloseSnack() {
+        this.setState({infoSnack: "", successSnack: "", warnSnack: "", errorSnack: "",});
+    }
+
+    snack(type, msg) {
+        this.setState({[`${type}Snack`]: msg});
+    }
+
+    part_logout() {
+        fetch(`${API_SERVER}/part/auth/logout`, {
+            mode: 'cors',
+            credentials: 'include',
+            method: "GET",
+        }).then((res) => {
+            if (!res.ok)
+                throw Error(res.statusText);
+            this.snack("success", "Logged out");
+        }).catch(err => {
+            this.snack("error", err.message);
+        });
+    }
+
 }
 
 App.propTypes = {

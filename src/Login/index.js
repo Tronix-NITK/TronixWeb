@@ -33,7 +33,7 @@ class Login extends Component {
     }
 
     static onClickLogin() {
-        localStorage.setItem('restore.pathname', window.location.pathname);
+        // localStorage.setItem('restore.pathname', window.location.pathname);
         window.location.href = API_SERVER + "/part/auth/login/google";
     }
 

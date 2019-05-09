@@ -10,6 +10,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
+import AppContext from "../AppContext";
 
 const styles = theme => ({
     button: {
@@ -64,7 +65,7 @@ class Core extends Component {
             }
             case "loggedOut": {
                 history.push("/");
-                return (<div/>);
+                return null;
             }
             default:
         }
@@ -93,6 +94,7 @@ class Core extends Component {
     }
 
     componentDidMount() {
+        this.snack = this.context.snack;
         switch (this.state.stage) {
             case "getUser": {
                 this.getUser((user) => {
@@ -103,6 +105,8 @@ class Core extends Component {
                     }
                 });
             }
+                break;
+            case "foo":
                 break;
             default:
         }
@@ -135,9 +139,10 @@ class Core extends Component {
         }).then((res) => {
             if (!res.ok)
                 throw Error(res.statusText);
+            this.snack("success", "Logged out");
             this.setState({user: null, stage: "loggedOut"});
         }).catch(err => {
-            console.error(err);
+            this.snack("error", err.message);
         });
     }
 }
@@ -145,5 +150,5 @@ class Core extends Component {
 Core.propTypes = {
     classes: PropTypes.object.isRequired,
 };
-
+Core.contextType = AppContext;
 export default withStyles(styles, {withTheme: true})(Core);

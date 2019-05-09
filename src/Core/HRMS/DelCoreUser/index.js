@@ -7,6 +7,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import TextField from "@material-ui/core/TextField";
 import {withStyles} from "@material-ui/core";
+import AppContext from "../../../AppContext";
 
 const API_SERVER = "https://tronixserver.herokuapp.com";
 
@@ -24,6 +25,10 @@ class DelCoreUser extends Component {
         };
     }
 
+    componentDidMount() {
+        this.snack = this.context.snack;
+    }
+
     delUser() {
         fetch(`${API_SERVER}/core/hrms/coreUser`, {
             mode: 'cors',
@@ -38,11 +43,9 @@ class DelCoreUser extends Component {
         }).then((res) => {
             if (!res.ok)
                 throw Error(res.statusText);
-            if (this.props.onResult)
-                this.props.onResult(null);
+            this.snack("success", "Deleted");
         }).catch(err => {
-            if (this.props.onResult)
-                this.props.onResult(err);
+            this.snack("warn", err.message);
         });
     }
 
@@ -94,5 +97,6 @@ class DelCoreUser extends Component {
 DelCoreUser.propTypes = {
     classes: PropTypes.object.isRequired,
 };
+DelCoreUser.contextType = AppContext;
 
 export default withStyles(styles, {withTheme: true})(DelCoreUser);

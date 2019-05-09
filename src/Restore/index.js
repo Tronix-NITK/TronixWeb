@@ -1,11 +1,7 @@
 import React, {Component} from "react";
 import * as PropTypes from "prop-types";
-import {DialogContentText, withStyles} from "@material-ui/core";
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogActions from "@material-ui/core/DialogActions";
-import Button from "@material-ui/core/Button";
-import DialogContent from "@material-ui/core/DialogContent";
+import {withStyles} from "@material-ui/core";
+import AppContext from "../AppContext";
 
 const styles = theme => ({
     button: {
@@ -19,82 +15,48 @@ class Restore extends Component {
     }
 
     restore() {
-        let source = this.props.match.params.source;
-        let pathName = localStorage.getItem('restore.pathname') || '/';
-        localStorage.removeItem('restore.pathname');
-        switch (source) {
-            case "loginSuccess":
-                window.location.pathname = "/";
+        let restore_state = this.props.match.params.state;
+        let history = this.props.history;
+        // let pathName = localStorage.getItem('restore.pathname') || '/';
+        // localStorage.removeItem('restore.pathname');
+        switch (restore_state) {
+            case "PLS":
+                this.snack("success", "Login success");
+                history.push("/");
                 break;
-            case "loginFailure":
-                window.location.pathname = "/";
+            case "PLF":
+                this.snack("warn", "Login failed");
+                history.push("/login");
                 break;
-            case "signup":
-                window.location.pathname = "/signup";
+            case "PPS":
+                this.snack("success", "Continue with signup");
+                history.push("/signup");
+                break;
+            case "CLS":
+                this.snack("success", "Login success");
+                history.push("/core");
+                break;
+            case "CLF":
+                this.snack("warn", "Login failed");
+                history.push("/");
                 break;
             default:
-                window.location.pathname = "/";
+                history.push("/");
         }
     }
 
     componentDidMount() {
-        let source = this.props.match.params.source;
-        switch (source) {
-            case "signup":
-                this.restore();
-                break;
-            default:
-        }
+        this.snack = this.context.snack;
+        this.restore();
     }
 
     render() {
-        const {classes} = this.props;
-        let source = this.props.match.params.source, title, contentText;
-        switch (source) {
-            case "loginSuccess":
-                title = "Login successful";
-                contentText = "Hit continue to continue";
-                break;
-            case "loginFailure":
-                title = "Login failed";
-                contentText = "Hit continue to continue";
-                break;
-            case "signup":
-                title = "Login successful";
-                contentText = "Hit continue to continue";
-                break;
-            default:
-                title = "Go home";
-                contentText = "Hit continue to go home";
-        }
-        return (
-            <Dialog open={true} onClose={this.onClose.bind(this)}>
-                <DialogTitle>
-                    {title}
-                </DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        {contentText}
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        fullWidth
-                        onClick={this.restore.bind(this)}
-                    >
-                        Continue
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        );
+        return null;
     }
 }
 
 Restore.propTypes = {
     classes: PropTypes.object.isRequired,
 };
-
+Restore.contextType = AppContext;
 export default withStyles(styles, {withTheme: true})(Restore);

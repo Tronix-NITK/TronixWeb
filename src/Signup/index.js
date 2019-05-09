@@ -14,15 +14,7 @@ import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
 import UserGroup from "../helpers/userGroup";
-import Snackbar from "@material-ui/core/Snackbar";
-import SnackbarContent from "@material-ui/core/SnackbarContent";
-import InfoSnackIcon from '@material-ui/icons/Info';
-import SuccessSnackIcon from '@material-ui/icons/CheckCircle';
-import WarningSnackIcon from '@material-ui/icons/Warning';
-import ErrorSnackIcon from '@material-ui/icons/Error';
-import green from "@material-ui/core/es/colors/green";
-import amber from "@material-ui/core/es/colors/amber";
-import red from "@material-ui/core/es/colors/red";
+import AppContext from "../AppContext";
 
 const API_SERVER = "https://tronixserver.herokuapp.com";
 
@@ -58,27 +50,6 @@ const styles = theme => ({
         marginTop: theme.spacing.unit,
         left: 0,
         right: 0,
-    },
-    snackMessage: {
-        display: 'flex',
-        alignItems: 'center',
-    },
-    snackIcon: {
-        fontSize: 20,
-        opacity: 0.9,
-        marginRight: theme.spacing.unit,
-    },
-    infoSnack: {
-        backgroundColor: theme.palette.primary.dark,
-    },
-    successSnack: {
-        backgroundColor: green[600],
-    },
-    warnSnack: {
-        backgroundColor: amber[700],
-    },
-    errorSnack: {
-        backgroundColor: red[700],
     },
     root: {overflow: 'visible'}
 });
@@ -184,11 +155,11 @@ class Signup extends Component {
             displayName: "",
             college: null,
             collegeSuggestions: [],
-            infoSnack: "", successSnack: "", warnSnack: "", errorSnack: "",
         };
     }
 
     componentDidMount() {
+        this.snack = this.context.snack;
         fetch(`${API_SERVER}/part/info/self`,
             {
                 mode: 'cors',
@@ -219,9 +190,9 @@ class Signup extends Component {
                     });
                     break;
                 default:
+                    this.snack("warn", "Please login as a participant");
                     this.setState({
                         stage: "error(4)",
-                        warnSnack: "Please login as a participant",
                     });
             }
         }).catch(err => {
@@ -250,7 +221,8 @@ class Signup extends Component {
             }));
             cb(suggestions);
         }).catch(err => {
-            console.error(err);
+            this.snack("error", err.message);
+            cb([]);
         });
     }
 
@@ -271,13 +243,12 @@ class Signup extends Component {
                 throw Error(res.statusText);
             this.setState({stage: "completed(3)"});
         }).catch(err => {
-            this.setState({warnSnack: "Signup failed."});
-            console.error(err);
+            this.snack("warn", err.message);
         });
     }
 
     static continueWithGoogle() {
-        localStorage.setItem('restore.pathname', window.location.pathname);
+        // localStorage.setItem('restore.pathname', window.location.pathname);
         window.location.href = API_SERVER + "/part/auth/login/google";
     }
 
@@ -300,12 +271,7 @@ class Signup extends Component {
             this.props.history.goBack();
     }
 
-    handleCloseSnack() {
-        this.setState({infoSnack: "", successSnack: "", warnSnack: "", errorSnack: "",});
-    }
-
     render() {
-        const {classes} = this.props;
         let stageView = null;
         switch (this.state.stage) {
             case "error(4)":
@@ -326,62 +292,6 @@ class Signup extends Component {
         return (
             <div>
                 {stageView}
-                <Snackbar
-                    anchorOrigin={{vertical: "bottom", horizontal: "center"}}
-                    open={this.state.infoSnack.length !== 0}
-                    autoHideDuration={2000}
-                    onClose={this.handleCloseSnack.bind(this)}
-                >
-                    <SnackbarContent
-                        className={classes.infoSnack}
-                        message={
-                            <span className={classes.snackMessage}>
-                            <InfoSnackIcon className={classes.snackIcon}/>{this.state.infoSnack}
-                        </span>
-                        }
-                    />
-                </Snackbar>
-                <Snackbar
-                    anchorOrigin={{vertical: "bottom", horizontal: "center"}}
-                    open={this.state.successSnack.length !== 0}
-                    onClose={this.handleCloseSnack.bind(this)}
-                >
-                    <SnackbarContent
-                        className={classes.successSnack}
-                        message={
-                            <span className={classes.snackMessage}>
-                            <SuccessSnackIcon className={classes.snackIcon}/>{this.state.successSnack}
-                        </span>
-                        }
-                    />
-                </Snackbar>
-                <Snackbar
-                    anchorOrigin={{vertical: "bottom", horizontal: "center"}}
-                    open={this.state.warnSnack.length !== 0}
-                    onClose={this.handleCloseSnack.bind(this)}>
-                    <SnackbarContent
-                        className={classes.warnSnack}
-                        message={
-                            <span className={classes.snackMessage}>
-                            <WarningSnackIcon className={classes.snackIcon}/>{this.state.warnSnack}
-                        </span>
-                        }
-                    />
-                </Snackbar>
-                <Snackbar
-                    anchorOrigin={{vertical: "bottom", horizontal: "center"}}
-                    open={this.state.errorSnack.length !== 0}
-                    onClose={this.handleCloseSnack.bind(this)}
-                >
-                    <SnackbarContent
-                        className={classes.errorSnack}
-                        message={
-                            <span className={classes.snackMessage}>
-                            <ErrorSnackIcon className={classes.snackIcon}/>{this.state.errorSnack}
-                        </span>
-                        }
-                    />
-                </Snackbar>
             </div>
         );
     }
@@ -546,5 +456,6 @@ class Signup extends Component {
 Signup.propTypes = {
     classes: PropTypes.object.isRequired,
 };
+Signup.contextType = AppContext;
 
 export default withStyles(styles, {withTheme: true})(Signup);
