@@ -7,6 +7,7 @@ import blue from '@material-ui/core/colors/blue';
 import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 import Login from "./Login";
 import Signup from "./Signup";
+import Register from "./Team/Register";
 import Core from "./Core";
 import Restore from "./Restore";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -122,6 +123,9 @@ class App extends Component {
                                             <Link to="/signup">Signup</Link>
                                         </li>
                                         <li>
+                                            <Link to="/register">Register for event</Link>
+                                        </li>
+                                        <li>
                                             <Link to="/core">Core</Link>
                                         </li>
                                     </ul>
@@ -135,6 +139,8 @@ class App extends Component {
                                        component={Login}/>
                                 <Route path="/signup"
                                        component={Signup}/>
+                                <Route path="/register"
+                                       component={Register}/>
                             </div>
 
                             <Snackbar

@@ -26,7 +26,7 @@ class Restore extends Component {
                 break;
             case "PLF":
                 this.snack("warn", "Login failed");
-                history.push("/login");
+                history.push("/");
                 break;
             case "PPS":
                 this.snack("success", "Continue with signup");

@@ -46,13 +46,13 @@ class Login extends Component {
                     <DialogContentText>
                         Login to Tronix with your Google account.
                     </DialogContentText>
-                    <CardMedia
-                        className={classes.media}
-                        component="img"
-                        alt="Tronix Logo"
-                        image="/images/logo_1.png"
-                        title="Tronix"
-                    />
+                    {/*<CardMedia*/}
+                    {/*    className={classes.media}*/}
+                    {/*    component="img"*/}
+                    {/*    alt="Tronix Logo"*/}
+                    {/*    image="/images/logo_1.png"*/}
+                    {/*    title="Tronix"*/}
+                    {/*/>*/}
                 </DialogContent>
                 <DialogActions>
                     <Button
