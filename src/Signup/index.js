@@ -16,8 +16,6 @@ import Paper from "@material-ui/core/Paper";
 import UserGroup from "../helpers/userGroup";
 import AppContext from "../AppContext";
 
-const API_SERVER = "https://tronixserver.herokuapp.com";
-
 const styles = theme => ({
     root: {
         display: "flex",
@@ -170,9 +168,36 @@ class Signup extends Component {
         };
     }
 
+    render() {
+        const {classes} = this.props;
+        let stageView = null;
+        switch (this.state.stage) {
+            case "error(4)":
+                stageView = this.getStage4View();
+                break;
+            case "completed(3)":
+                stageView = this.getStage3View();
+                break;
+            case "fillDetails(2)":
+                stageView = this.getStage2View();
+                break;
+            case "auth(1)":
+                stageView = this.getStage1View();
+                break;
+            default:
+                stageView = this.getStage0View();
+        }
+        return (
+            <div className={classes.root}>
+                {stageView}
+            </div>
+        );
+    }
+
     componentDidMount() {
+        this.server = this.context.server;
         this.snack = this.context.snack;
-        fetch(`${API_SERVER}/part/info/self`,
+        fetch(`${this.server}/part/info/self`,
             {
                 mode: 'cors',
                 credentials: 'include',
@@ -214,7 +239,7 @@ class Signup extends Component {
     }
 
     loadColleges(cb) {
-        fetch(`${API_SERVER}/college/all`, {
+        fetch(`${this.server}/college/all`, {
             mode: 'cors',
             credentials: 'include',
             method: "GET",
@@ -239,7 +264,7 @@ class Signup extends Component {
     }
 
     signup() {
-        fetch(`${API_SERVER}/part/signup`, {
+        fetch(`${this.server}/part/signup`, {
             mode: 'cors',
             credentials: 'include',
             method: "POST",
@@ -259,9 +284,9 @@ class Signup extends Component {
         });
     }
 
-    static continueWithGoogle() {
+    continueWithGoogle() {
         // localStorage.setItem('restore.pathname', window.location.pathname);
-        window.location.href = API_SERVER + "/part/auth/login/google";
+        window.location.href = this.server + "/part/auth/login/google";
     }
 
     handleCollegeChange = value => {
@@ -281,32 +306,6 @@ class Signup extends Component {
             this.props.onClose();
         else if (this.props.history)
             this.props.history.goBack();
-    }
-
-    render() {
-        const {classes} = this.props;
-        let stageView = null;
-        switch (this.state.stage) {
-            case "error(4)":
-                stageView = this.getStage4View();
-                break;
-            case "completed(3)":
-                stageView = this.getStage3View();
-                break;
-            case "fillDetails(2)":
-                stageView = this.getStage2View();
-                break;
-            case "auth(1)":
-                stageView = this.getStage1View();
-                break;
-            default:
-                stageView = this.getStage0View();
-        }
-        return (
-            <div className={classes.root}>
-                {stageView}
-            </div>
-        );
     }
 
     getStage0View() {
@@ -341,7 +340,7 @@ class Signup extends Component {
                         color="primary"
                         className={classes.dialogButton}
                         fullWidth
-                        onClick={Signup.continueWithGoogle}
+                        onClick={this.continueWithGoogle.bind(this)}
                     >
                         Continue with Google
                     </Button>
@@ -412,7 +411,7 @@ class Signup extends Component {
         const history = this.props.history;
         return (
             <Dialog open={true} onClose={this.onClose.bind(this)}>
-            <DialogTitle>Signup</DialogTitle>
+                <DialogTitle>Signup</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         Signup completed.
@@ -438,7 +437,7 @@ class Signup extends Component {
         const history = this.props.history;
         return (
             <Dialog open={true} onClose={this.onClose.bind(this)}>
-            <DialogTitle>Signup</DialogTitle>
+                <DialogTitle>Signup</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         That's a no.

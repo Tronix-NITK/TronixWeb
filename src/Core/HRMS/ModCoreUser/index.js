@@ -11,8 +11,6 @@ import Select from "@material-ui/core/Select";
 import {withStyles} from "@material-ui/core";
 import AppContext from "../../../AppContext";
 
-const API_SERVER = "https://tronixserver.herokuapp.com";
-
 const styles = theme => ({
     button: {
         margin: theme.spacing.unit,
@@ -27,45 +25,6 @@ class ModCoreUser extends Component {
             displayName: "",
             group: "MODERATOR",
         };
-    }
-
-    componentDidMount() {
-        this.snack = this.context.snack;
-    }
-
-    modUser() {
-        fetch(`${API_SERVER}/core/hrms/coreUser`, {
-            mode: 'cors',
-            credentials: 'include',
-            method: "PUT",
-            body: JSON.stringify({
-                email: this.state.email,
-                displayName: this.state.displayName,
-                group: this.state.group,
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        }).then((res) => {
-            if (!res.ok)
-                throw Error(res.statusText);
-            this.snack("success", "Edited");
-        }).catch(err => {
-            this.snack("warn", err.message);
-        });
-    }
-
-    handleTextChange = name => event => {
-        this.setState({
-            [name]: event.target.value,
-        });
-    };
-
-    onClose() {
-        if (this.props.onClose)
-            this.props.onClose();
-        else if (this.props.history)
-            this.props.history.goBack();
     }
 
     render() {
@@ -115,6 +74,46 @@ class ModCoreUser extends Component {
                 </DialogActions>
             </Dialog>
         );
+    }
+
+    componentDidMount() {
+        this.server = this.context.server;
+        this.snack = this.context.snack;
+    }
+
+    modUser() {
+        fetch(`${this.server}/core/hrms/coreUser`, {
+            mode: 'cors',
+            credentials: 'include',
+            method: "PUT",
+            body: JSON.stringify({
+                email: this.state.email,
+                displayName: this.state.displayName,
+                group: this.state.group,
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then((res) => {
+            if (!res.ok)
+                throw Error(res.statusText);
+            this.snack("success", "Edited");
+        }).catch(err => {
+            this.snack("warn", err.message);
+        });
+    }
+
+    handleTextChange = name => event => {
+        this.setState({
+            [name]: event.target.value,
+        });
+    };
+
+    onClose() {
+        if (this.props.onClose)
+            this.props.onClose();
+        else if (this.props.history)
+            this.props.history.goBack();
     }
 }
 

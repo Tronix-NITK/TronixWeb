@@ -9,8 +9,6 @@ import AppContext from "../../AppContext";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 
-const API_SERVER = "https://tronixserver.herokuapp.com";
-
 const styles = theme => ({
     root: {
         display: "flex",
@@ -163,6 +161,7 @@ class Register extends Component {
     }
 
     componentDidMount() {
+        this.server = this.context.server;
         this.snack = this.context.snack;
         this.getEvents((err, events) => {
             if (err)
@@ -177,7 +176,7 @@ class Register extends Component {
     };
 
     getEvents(cb) {
-        fetch(`${API_SERVER}/event/names`, {
+        fetch(`${this.server}/event/names`, {
             mode: 'cors',
             credentials: 'include',
             method: "GET",
@@ -213,7 +212,7 @@ class Register extends Component {
     }
 
     register(data) {
-        fetch(`${API_SERVER}/part/team/register`, {
+        fetch(`${this.server}/part/team/register`, {
             mode: 'cors',
             credentials: 'include',
             method: "POST",

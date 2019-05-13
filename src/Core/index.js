@@ -18,8 +18,6 @@ const styles = theme => ({
     },
 });
 
-const API_SERVER = "https://tronixserver.herokuapp.com";
-
 class Core extends Component {
     constructor(props) {
         super(props);
@@ -94,6 +92,7 @@ class Core extends Component {
     }
 
     componentDidMount() {
+        this.server = this.context.server;
         this.snack = this.context.snack;
         switch (this.state.stage) {
             case "getUser": {
@@ -113,7 +112,7 @@ class Core extends Component {
     }
 
     getUser(cb) {
-        fetch(`${API_SERVER}/core/info/self`,
+        fetch(`${this.server}/core/info/self`,
             {
                 mode: 'cors',
                 credentials: 'include',
@@ -132,7 +131,7 @@ class Core extends Component {
     }
 
     logout() {
-        fetch(`${API_SERVER}/core/auth/logout`, {
+        fetch(`${this.server}/core/auth/logout`, {
             mode: 'cors',
             credentials: 'include',
             method: "GET",

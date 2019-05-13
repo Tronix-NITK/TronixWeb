@@ -9,8 +9,6 @@ import TextField from "@material-ui/core/TextField";
 import {withStyles} from "@material-ui/core";
 import AppContext from "../../../AppContext";
 
-const API_SERVER = "https://tronixserver.herokuapp.com";
-
 const styles = theme => ({
     button: {
         margin: theme.spacing.unit,
@@ -23,43 +21,6 @@ class DelCoreUser extends Component {
         this.state = {
             email: "",
         };
-    }
-
-    componentDidMount() {
-        this.snack = this.context.snack;
-    }
-
-    delUser() {
-        fetch(`${API_SERVER}/core/hrms/coreUser`, {
-            mode: 'cors',
-            credentials: 'include',
-            method: "DELETE",
-            body: JSON.stringify({
-                email: this.state.email,
-            }),
-            headers: {
-                'Content-Type': 'application/json',
-            }
-        }).then((res) => {
-            if (!res.ok)
-                throw Error(res.statusText);
-            this.snack("success", "Deleted");
-        }).catch(err => {
-            this.snack("warn", err.message);
-        });
-    }
-
-    handleTextChange = name => event => {
-        this.setState({
-            [name]: event.target.value,
-        });
-    };
-
-    onClose() {
-        if (this.props.onClose)
-            this.props.onClose();
-        else if (this.props.history)
-            this.props.history.goBack();
     }
 
     render() {
@@ -91,6 +52,44 @@ class DelCoreUser extends Component {
                 </DialogActions>
             </Dialog>
         );
+    }
+
+    componentDidMount() {
+        this.server = this.context.server;
+        this.snack = this.context.snack;
+    }
+
+    delUser() {
+        fetch(`${this.server}/core/hrms/coreUser`, {
+            mode: 'cors',
+            credentials: 'include',
+            method: "DELETE",
+            body: JSON.stringify({
+                email: this.state.email,
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then((res) => {
+            if (!res.ok)
+                throw Error(res.statusText);
+            this.snack("success", "Deleted");
+        }).catch(err => {
+            this.snack("warn", err.message);
+        });
+    }
+
+    handleTextChange = name => event => {
+        this.setState({
+            [name]: event.target.value,
+        });
+    };
+
+    onClose() {
+        if (this.props.onClose)
+            this.props.onClose();
+        else if (this.props.history)
+            this.props.history.goBack();
     }
 }
 

@@ -7,8 +7,7 @@ import DialogTitle from "@material-ui/core/DialogTitle/index";
 import DialogContent from "@material-ui/core/DialogContent/index";
 import DialogContentText from "@material-ui/core/DialogContentText/index";
 import DialogActions from "@material-ui/core/DialogActions/index";
-
-const API_SERVER = "https://tronixserver.herokuapp.com";
+import AppContext from "../../AppContext";
 
 const styles = theme => ({
     button: {
@@ -21,18 +20,6 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {};
-    }
-
-    onClose() {
-        if (this.props.onClose)
-            this.props.onClose();
-        else if (this.props.history)
-            this.props.history.goBack();
-    }
-
-    static onClickLogin() {
-        // localStorage.setItem('restore.pathname', window.location.pathname);
-        window.location.href = API_SERVER + "/core/auth/login/google";
     }
 
     render() {
@@ -51,7 +38,7 @@ class Login extends Component {
                         color="primary"
                         className={classes.button}
                         fullWidth
-                        onClick={Login.onClickLogin}
+                        onClick={this.onClickLogin.bind(this)}
                     >
                         Login with Google
                     </Button>
@@ -59,10 +46,27 @@ class Login extends Component {
             </Dialog>
         );
     }
+
+    componentDidMount() {
+        this.server = this.context.server;
+    }
+
+    onClose() {
+        if (this.props.onClose)
+            this.props.onClose();
+        else if (this.props.history)
+            this.props.history.goBack();
+    }
+
+    onClickLogin() {
+        // localStorage.setItem('restore.pathname', window.location.pathname);
+        window.location.href = this.server + "/core/auth/login/google";
+    }
 }
 
 Login.propTypes = {
     classes: PropTypes.object.isRequired,
 };
+Login.contextType = AppContext;
 
 export default withStyles(styles, {withTheme: true})(Login);

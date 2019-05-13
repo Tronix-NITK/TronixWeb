@@ -81,32 +81,18 @@ class App extends Component {
         };
     }
 
-    componentDidMount() {
-    }
-
-    componentWillUnmount() {
-    }
-
-
-    themeChanger(name) {
-        if (name == null)
-            name = localStorage.getItem("theme") === "dark" ? "light" : "dark";
-        this.setState(prevState => ({theme: theme[name] != null ? name : prevState.theme}));
-        if (theme[name] != null)
-            localStorage.setItem("theme", name);
-    }
-
-    cancelLogin() {
-        this.props.history.goBack();
-    }
-
     render() {
         const {classes} = this.props;
         return (
             <MuiThemeProvider theme={theme[this.state.theme]}>
                 <React.Fragment>
                     <CssBaseline/>
-                    <AppContext.Provider value={{snack: (t, m) => this.snack(t, m)}}>
+                    <AppContext.Provider value={
+                        {
+                            snack: (t, m) => this.snack(t, m),
+                            server: API_SERVER,
+                        }
+                    }>
                         <Router>
                             <div className={classes.app}>
                                 <Switch>
@@ -189,6 +175,22 @@ class App extends Component {
         );
     }
 
+    componentDidMount() {
+        this.server = API_SERVER;
+    }
+
+    themeChanger(name) {
+        if (name == null)
+            name = localStorage.getItem("theme") === "dark" ? "light" : "dark";
+        this.setState(prevState => ({theme: theme[name] != null ? name : prevState.theme}));
+        if (theme[name] != null)
+            localStorage.setItem("theme", name);
+    }
+
+    cancelLogin() {
+        this.props.history.goBack();
+    }
+
     home() {
         return (
             <nav>
@@ -233,7 +235,7 @@ class App extends Component {
     }
 
     part_logout() {
-        fetch(`${API_SERVER}/part/auth/logout`, {
+        fetch(`${this.server}/part/auth/logout`, {
             mode: 'cors',
             credentials: 'include',
             method: "GET",

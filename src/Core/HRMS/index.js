@@ -14,7 +14,6 @@ const styles = theme => ({
     },
 });
 
-const API_SERVER = "https://tronixserver.herokuapp.com";
 const reverseUserGroup = {15: "SU", 10: "ADMIN", 5: "MODERATOR"};
 
 class HRMS extends Component {
@@ -87,12 +86,13 @@ class HRMS extends Component {
     }
 
     componentDidMount() {
+        this.server = this.context.server;
         this.snack = this.context.snack;
         this.fetchUsers();
     }
 
     fetchUsers() {
-        fetch(`${API_SERVER}/core/hrms/coreUsers`, {
+        fetch(`${this.server}/core/hrms/coreUsers`, {
             mode: 'cors',
             credentials: 'include',
             method: "GET",
@@ -117,7 +117,7 @@ class HRMS extends Component {
         let user = Object.assign({}, newUser);
         user.group = reverseUserGroup[user.group];
         return new Promise((resolve, reject) => {
-            fetch(`${API_SERVER}/core/hrms/coreUser`, {
+            fetch(`${this.server}/core/hrms/coreUser`, {
                 mode: 'cors',
                 credentials: 'include',
                 method: "POST",
@@ -143,7 +143,7 @@ class HRMS extends Component {
         let user = Object.assign({}, newUser);
         user.group = reverseUserGroup[user.group];
         return new Promise((resolve, reject) => {
-            fetch(`${API_SERVER}/core/hrms/coreUser`, {
+            fetch(`${this.server}/core/hrms/coreUser`, {
                 mode: 'cors',
                 credentials: 'include',
                 method: "PUT",
@@ -169,7 +169,7 @@ class HRMS extends Component {
 
     delUser(user) {
         return new Promise((resolve, reject) => {
-            fetch(`${API_SERVER}/core/hrms/coreUser`, {
+            fetch(`${this.server}/core/hrms/coreUser`, {
                 mode: 'cors',
                 credentials: 'include',
                 method: "DELETE",

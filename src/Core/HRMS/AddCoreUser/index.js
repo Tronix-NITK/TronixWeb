@@ -11,8 +11,6 @@ import Select from "@material-ui/core/Select";
 import {withStyles} from "@material-ui/core";
 import AppContext from "../../../AppContext";
 
-const API_SERVER = "https://tronixserver.herokuapp.com";
-
 const styles = theme => ({
     button: {
         margin: theme.spacing.unit,
@@ -29,12 +27,8 @@ class AddCoreUser extends Component {
         };
     }
 
-    componentDidMount() {
-        this.snack = this.context.snack;
-    }
-
     createUser() {
-        fetch(`${API_SERVER}/core/hrms/coreUser`, {
+        fetch(`${this.server}/core/hrms/coreUser`, {
             mode: 'cors',
             credentials: 'include',
             method: "POST",
@@ -53,6 +47,11 @@ class AddCoreUser extends Component {
         }).catch(err => {
             this.snack("warn", err.message);
         });
+    }
+
+    componentDidMount() {
+        this.server = this.context.server;
+        this.snack = this.context.snack;
     }
 
     handleTextChange = name => event => {
