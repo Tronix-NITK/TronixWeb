@@ -19,7 +19,20 @@ import AppContext from "../AppContext";
 const API_SERVER = "https://tronixserver.herokuapp.com";
 
 const styles = theme => ({
-    button: {
+    root: {
+        display: "flex",
+        justifyContent: "center",
+    },
+    rootPaper: {
+        margin: 2 * theme.spacing.unit,
+        padding: 4 * theme.spacing.unit,
+        maxWidth: "600px",
+    },
+    paperButton: {
+        marginTop: 4 * theme.spacing.unit,
+        width: "100%",
+    },
+    dialogButton: {
         margin: theme.spacing.unit,
     },
     input: {
@@ -51,7 +64,6 @@ const styles = theme => ({
         left: 0,
         right: 0,
     },
-    root: {overflow: 'visible'}
 });
 
 function NoOptionsMessage(props) {
@@ -272,6 +284,7 @@ class Signup extends Component {
     }
 
     render() {
+        const {classes} = this.props;
         let stageView = null;
         switch (this.state.stage) {
             case "error(4)":
@@ -290,21 +303,22 @@ class Signup extends Component {
                 stageView = this.getStage0View();
         }
         return (
-            <div>
+            <div className={classes.root}>
                 {stageView}
             </div>
         );
     }
 
     getStage0View() {
-        const {classes} = this.props;
         return (
             <Dialog open={true}>
-                <DialogTitle>Signup for Tronix</DialogTitle>
-                <DialogContent className={classes.root}>
+                <DialogTitle>Signup</DialogTitle>
+                <DialogContent>
                     <DialogContentText>
-                        Please wait
+                        Please wait.
                     </DialogContentText>
+                </DialogContent>
+                <DialogContent>
                     <LinearProgress/>
                 </DialogContent>
             </Dialog>
@@ -316,7 +330,7 @@ class Signup extends Component {
         return (
             <Dialog open={true} onClose={this.onClose.bind(this)}>
                 <DialogTitle>Signup</DialogTitle>
-                <DialogContent className={classes.root}>
+                <DialogContent>
                     <DialogContentText>
                         Signup for Tronix using your Google Account.
                     </DialogContentText>
@@ -325,7 +339,7 @@ class Signup extends Component {
                     <Button
                         variant="contained"
                         color="primary"
-                        className={classes.button}
+                        className={classes.dialogButton}
                         fullWidth
                         onClick={Signup.continueWithGoogle}
                     >
@@ -348,55 +362,48 @@ class Signup extends Component {
             }),
         };
         return (
-            <Dialog open={true} onClose={this.onClose.bind(this)} classes={{paperScrollPaper: classes.root}}>
-                <DialogTitle>Signup</DialogTitle>
-                <DialogContent className={classes.root}>
-                    <DialogContentText>
-                        Complete signup by filling your details
-                    </DialogContentText>
-                    <TextField
-                        margin="dense"
-                        placeholder="Email"
-                        type="email"
-                        value={this.state.email}
-                        disabled
+            <Paper className={classes.rootPaper}>
+                <Typography variant="h4" gutterBottom>Signup</Typography>
+                <Typography variant="subtitle1" gutterBottom> Complete signup by filling your details </Typography>
+                <TextField
+                    margin="dense"
+                    placeholder="Email"
+                    type="email"
+                    value={this.state.email}
+                    disabled
+                    fullWidth
+                />
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    placeholder="Name"
+                    type="text"
+                    value={this.state.displayName}
+                    onChange={this.handleTextChange('displayName')}
+                    fullWidth
+                />
+                <NoSsr>
+                    <Select
+                        classes={classes}
+                        styles={selectStyles}
+                        options={this.state.collegeSuggestions}
+                        components={components}
+                        value={this.state.college}
+                        onChange={this.handleCollegeChange}
+                        placeholder="College"
+                        isClearable
                         fullWidth
                     />
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        placeholder="Name"
-                        type="text"
-                        value={this.state.displayName}
-                        onChange={this.handleTextChange('displayName')}
-                        fullWidth
-                    />
-                    <NoSsr>
-                        <Select
-                            classes={classes}
-                            styles={selectStyles}
-                            options={this.state.collegeSuggestions}
-                            components={components}
-                            value={this.state.college}
-                            onChange={this.handleCollegeChange}
-                            placeholder="College"
-                            isClearable
-                            fullWidth
-                        />
-                    </NoSsr>
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        fullWidth
-                        onClick={this.signup.bind(this)}
-                    >
-                        Complete signup
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                </NoSsr>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.paperButton}
+                    onClick={this.signup.bind(this)}
+                >
+                    Complete signup
+                </Button>
+            </Paper>
         );
     }
 
@@ -404,9 +411,9 @@ class Signup extends Component {
         const {classes} = this.props;
         const history = this.props.history;
         return (
-            <Dialog open={true}>
-                <DialogTitle>Signup for Tronix</DialogTitle>
-                <DialogContent className={classes.root}>
+            <Dialog open={true} onClose={this.onClose.bind(this)}>
+            <DialogTitle>Signup</DialogTitle>
+                <DialogContent>
                     <DialogContentText>
                         Signup completed.
                     </DialogContentText>
@@ -415,7 +422,7 @@ class Signup extends Component {
                     <Button
                         variant="contained"
                         color="primary"
-                        className={classes.button}
+                        className={classes.dialogButton}
                         fullWidth
                         onClick={() => history.push('/')}
                     >
@@ -430,9 +437,9 @@ class Signup extends Component {
         const {classes} = this.props;
         const history = this.props.history;
         return (
-            <Dialog open={true}>
-                <DialogTitle>Signup for Tronix</DialogTitle>
-                <DialogContent className={classes.root}>
+            <Dialog open={true} onClose={this.onClose.bind(this)}>
+            <DialogTitle>Signup</DialogTitle>
+                <DialogContent>
                     <DialogContentText>
                         That's a no.
                     </DialogContentText>
@@ -441,7 +448,7 @@ class Signup extends Component {
                     <Button
                         variant="contained"
                         color="primary"
-                        className={classes.button}
+                        className={classes.dialogButton}
                         fullWidth
                         onClick={() => history.push('/')}
                     >

@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import * as PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core";
 import Button from "@material-ui/core/Button/index";
-import CardMedia from "@material-ui/core/CardMedia/index";
 import Dialog from '@material-ui/core/Dialog/index';
 import DialogTitle from "@material-ui/core/DialogTitle/index";
 import DialogContent from "@material-ui/core/DialogContent/index";
@@ -12,7 +11,6 @@ import DialogActions from "@material-ui/core/DialogActions/index";
 const API_SERVER = "https://tronixserver.herokuapp.com";
 
 const styles = theme => ({
-    media: {},
     button: {
         margin: theme.spacing.unit,
     },
@@ -46,13 +44,6 @@ class Login extends Component {
                     <DialogContentText>
                         Login to Tronix Core with your Google account.
                     </DialogContentText>
-                    <CardMedia
-                        className={classes.media}
-                        component="img"
-                        alt="Tronix Logo"
-                        image="/images/logo_1.png"
-                        title="Tronix"
-                    />
                 </DialogContent>
                 <DialogActions>
                     <Button

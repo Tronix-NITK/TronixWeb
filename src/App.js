@@ -4,7 +4,7 @@ import {withStyles} from "@material-ui/core";
 import {MuiThemeProvider, createMuiTheme} from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import blue from '@material-ui/core/colors/blue';
-import {BrowserRouter as Router, Route, Link} from "react-router-dom";
+import {BrowserRouter as Router, Route, Link, Switch} from "react-router-dom";
 import Login from "./Login";
 import Signup from "./Signup";
 import Register from "./Team/Register";
@@ -43,6 +43,7 @@ const theme = {
 };
 
 const styles = theme => ({
+    app: {},
     snackMessage: {
         display: 'flex',
         alignItems: 'center',
@@ -107,42 +108,24 @@ class App extends Component {
                     <CssBaseline/>
                     <AppContext.Provider value={{snack: (t, m) => this.snack(t, m)}}>
                         <Router>
-                            <div>
-                                <nav>
-                                    <ul>
-                                        <li>
-                                            <Link to="/">Home</Link>
-                                        </li>
-                                        <li>
-                                            <Link to="/login">Login</Link>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0);" onClick={() => this.part_logout()}>Logout</a>
-                                        </li>
-                                        <li>
-                                            <Link to="/signup">Signup</Link>
-                                        </li>
-                                        <li>
-                                            <Link to="/register">Register for event</Link>
-                                        </li>
-                                        <li>
-                                            <Link to="/core">Core</Link>
-                                        </li>
-                                    </ul>
-                                </nav>
-
-                                <Route path="/core"
-                                       component={Core}/>
-                                <Route path="/restore/:state"
-                                       component={Restore}/>
-                                <Route path="/login"
-                                       component={Login}/>
-                                <Route path="/signup"
-                                       component={Signup}/>
-                                <Route path="/register"
-                                       component={Register}/>
+                            <div className={classes.app}>
+                                <Switch>
+                                    <Route exact path="/"
+                                           component={this.home.bind(this)}/>
+                                    <Route path="/core"
+                                           component={Core}/>
+                                    <Route path="/restore/:state"
+                                           component={Restore}/>
+                                    <Route path="/login"
+                                           component={Login}/>
+                                    <Route path="/signup"
+                                           component={Signup}/>
+                                    <Route path="/register"
+                                           component={Register}/>
+                                    <Route path="/"
+                                           component={this.notFound.bind(this)}/>
+                                </Switch>
                             </div>
-
                             <Snackbar
                                 anchorOrigin={{vertical: "bottom", horizontal: "center"}}
                                 open={this.state.infoSnack.length !== 0}
@@ -203,6 +186,41 @@ class App extends Component {
                     </AppContext.Provider>
                 </React.Fragment>
             </MuiThemeProvider>
+        );
+    }
+
+    home() {
+        return (
+            <nav>
+                <ul>
+                    <li>
+                        <Link to="/">Home</Link>
+                    </li>
+                    <li>
+                        <Link to="/login">Login</Link>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);" onClick={() => this.part_logout()}>Logout</a>
+                    </li>
+                    <li>
+                        <Link to="/signup">Signup</Link>
+                    </li>
+                    <li>
+                        <Link to="/register">Register for event</Link>
+                    </li>
+                    <li>
+                        <Link to="/core">Core</Link>
+                    </li>
+                </ul>
+            </nav>
+        );
+    }
+
+    notFound() {
+        return (
+            <div>
+                Not Found
+            </div>
         );
     }
 

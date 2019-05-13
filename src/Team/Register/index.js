@@ -2,43 +2,37 @@ import React, {Component} from "react";
 import * as PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core";
 import Button from "@material-ui/core/Button/index";
-import Dialog from '@material-ui/core/Dialog/index';
-import DialogTitle from "@material-ui/core/DialogTitle/index";
-import DialogContent from "@material-ui/core/DialogContent/index";
-import DialogContentText from "@material-ui/core/DialogContentText/index";
-import DialogActions from "@material-ui/core/DialogActions/index";
 import TextField from "@material-ui/core/TextField";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import AppContext from "../../AppContext";
 import Paper from "@material-ui/core/Paper";
-import Divider from "@material-ui/core/Divider";
-import Tooltip from "@material-ui/core/Tooltip";
-import IconButton from "@material-ui/core/IconButton";
-import CopyIcon from "@material-ui/icons/FileCopy";
+import Typography from "@material-ui/core/Typography";
 
 const API_SERVER = "https://tronixserver.herokuapp.com";
 
 const styles = theme => ({
-    button: {
-        margin: theme.spacing.unit,
+    root: {
+        display: "flex",
+        justifyContent: "center",
     },
-    iconButton: {
-        padding: 10,
+    rootPaper: {
+        margin: 2 * theme.spacing.unit,
+        padding: 4 * theme.spacing.unit,
+        maxWidth: "600px",
+    },
+    actionButtonContainer: {
+        display: "flex",
+        flexDirection: "row-reverse",
+        marginTop: 2 * theme.spacing.unit,
+    },
+    button: {
+        marginLeft: 2 * theme.spacing.unit,
     },
     paperWrap: {
-        padding: "2px 4px",
-        display: "flex",
-        alignItems: "center",
-    },
-    inputWrap: {
-        marginLeft: 8,
-        flex: 1,
-    },
-    divider: {
-        width: 1,
-        height: 28,
-        margin: 4,
+        marginTop: 2 * theme.spacing.unit,
+        marginBottom: 2 * theme.spacing.unit,
+        padding: 2 * theme.spacing.unit,
     },
 });
 
@@ -64,66 +58,54 @@ class Register extends Component {
     }
 
     render() {
+        const {classes} = this.props;
         let view;
         if (this.state.linkID.length)
             view = this.getState2View();
         else
             view = this.getState1View();
-        return view;
+        return (
+            <div className={classes.root}>
+                {view}
+            </div>
+        );
     }
 
     getState1View() {
         const {classes} = this.props;
-        const title = "Register for " + (this.state.eventName ? `${this.state.eventName}` : "Tronix events");
+        const title = "Register for " + (this.state.eventName ? `${this.state.eventName}` : "events");
         const menu = this.state.events.map(e => <MenuItem key={`e_${e}`} value={e}>{e}</MenuItem>);
         return (
-            <Dialog
-                open={true}
-                onClose={this.onClose.bind(this)}
-            >
-                <DialogTitle>{title}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Create a team to participate
-                    </DialogContentText>
-                </DialogContent>
-                <DialogContent>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        placeholder="Team name"
-                        type="text"
-                        onChange={this.handleChange("teamName")}
-                        fullWidth
-                    />
-                    <TextField
-                        margin="dense"
-                        placeholder="Phone number"
-                        type="text"
-                        onChange={this.handleChange("teamContact")}
-                        fullWidth
-                    />
-                    <Select
-                        value={this.state.eventName}
-                        onChange={this.handleChange("eventName")}
-                        displayEmpty
-                        fullWidth
-                    >
-                        <MenuItem value="" disabled>
-                            Select an event
-                        </MenuItem>
-                        {menu}
-                    </Select>
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        className={classes.button}
-                        onClick={this.onClose.bind(this)}
-                    >
-                        Cancel
-                    </Button>
+            <Paper className={classes.rootPaper}>
+                <Typography variant="h4" gutterBottom>{title}</Typography>
+                <Typography variant="subtitle1" gutterBottom>Create a team to participate.</Typography>
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    placeholder="Team name"
+                    type="text"
+                    onChange={this.handleChange("teamName")}
+                    fullWidth
+                />
+                <TextField
+                    margin="dense"
+                    placeholder="Phone number"
+                    type="text"
+                    onChange={this.handleChange("teamContact")}
+                    fullWidth
+                />
+                <Select
+                    value={this.state.eventName}
+                    onChange={this.handleChange("eventName")}
+                    displayEmpty
+                    fullWidth
+                >
+                    <MenuItem value="" disabled>
+                        Select an event
+                    </MenuItem>
+                    {menu}
+                </Select>
+                <div className={classes.actionButtonContainer}>
                     <Button
                         variant="contained"
                         color="primary"
@@ -132,8 +114,16 @@ class Register extends Component {
                     >
                         Register
                     </Button>
-                </DialogActions>
-            </Dialog>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        className={classes.button}
+                        onClick={this.onClose.bind(this)}
+                    >
+                        Cancel
+                    </Button>
+                </div>
+            </Paper>
         );
     }
 
@@ -142,41 +132,15 @@ class Register extends Component {
         const title = `Registered for ${this.state.eventName}!`;
         const linkID = this.state.linkID;
         return (
-            <Dialog
-                open={true}
-                onClose={this.onClose.bind(this)}
-            >
-                <DialogTitle>{title}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Share the team invite link
-                    </DialogContentText>
-                </DialogContent>
-                <DialogContent>
-                    <Paper className={classes.paperWrap} elevation={1}>
-                        <div className={classes.inputWrap}>
-                            {`https://tronixweb.herokuapp.com/j/${linkID}`}
-                        </div>
-                        <Divider className={classes.divider}/>
-                        <Tooltip title="Copy Link">
-                            <IconButton
-                                className={classes.iconButton}
-                                onClick={copyToClipboard.bind(null, linkID)}
-                            >
-                                <CopyIcon fontSize="small"/>
-                            </IconButton>
-                        </Tooltip>
-                    </Paper>
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        className={classes.button}
-                        onClick={this.resetFields.bind(this)}
-                    >
-                        Back
-                    </Button>
+            <Paper className={classes.rootPaper}>
+                <Typography variant="h4" gutterBottom>{title}</Typography>
+                <Typography variant="subtitle1" gutterBottom>Share the team invite link.</Typography>
+                <Paper className={classes.paperWrap}>
+                    <Typography>
+                        {`https://tronixweb.herokuapp.com/j/${linkID}`}
+                    </Typography>
+                </Paper>
+                <div className={classes.actionButtonContainer}>
                     <Button
                         variant="contained"
                         color="primary"
@@ -185,8 +149,16 @@ class Register extends Component {
                     >
                         Copy Link
                     </Button>
-                </DialogActions>
-            </Dialog>
+                    <Button
+                        variant="contained"
+                        color="secondary"
+                        className={classes.button}
+                        onClick={this.resetFields.bind(this)}
+                    >
+                        Back
+                    </Button>
+                </div>
+            </Paper>
         );
     }
 
