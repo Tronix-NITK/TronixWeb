@@ -80,6 +80,7 @@ class App extends Component {
         this.state = {
             theme: savedTheme,
             infoSnack: "", successSnack: "", warnSnack: "", errorSnack: "",
+            partUser: null,
         };
     }
 
@@ -93,6 +94,7 @@ class App extends Component {
                         {
                             snack: (t, m) => this.snack(t, m),
                             server: API_SERVER,
+                            partUser: this.state.partUser,
                         }
                     }>
                         <Router>
@@ -181,6 +183,7 @@ class App extends Component {
 
     componentDidMount() {
         this.server = API_SERVER;
+        this.loadPartUser();
     }
 
     themeChanger(name) {
@@ -189,10 +192,6 @@ class App extends Component {
         this.setState(prevState => ({theme: theme[name] != null ? name : prevState.theme}));
         if (theme[name] != null)
             localStorage.setItem("theme", name);
-    }
-
-    cancelLogin() {
-        this.props.history.goBack();
     }
 
     home() {
@@ -206,7 +205,7 @@ class App extends Component {
                         <Link to="/login">Login</Link>
                     </li>
                     <li>
-                        <a href="javascript:void(0);" onClick={() => this.part_logout()}>Logout</a>
+                        <a href="javascript:void(0);" onClick={() => this.partLogout()}>Logout</a>
                     </li>
                     <li>
                         <Link to="/signup">Signup</Link>
@@ -238,7 +237,7 @@ class App extends Component {
         this.setState({[`${type}Snack`]: msg});
     }
 
-    part_logout() {
+    partLogout() {
         fetch(`${this.server}/part/auth/logout`, {
             mode: 'cors',
             credentials: 'include',
@@ -246,12 +245,33 @@ class App extends Component {
         }).then((res) => {
             if (!res.ok)
                 throw Error(res.statusText);
+            this.setState({partUser: null});
             this.snack("success", "Logged out");
         }).catch(err => {
             this.snack("error", err.message);
         });
     }
 
+    loadPartUser() {
+        fetch(`${this.server}/part/info/self`,
+            {
+                mode: 'cors',
+                credentials: 'include',
+                method: "GET",
+                headers: {
+                    'Accept': 'application/json',
+                },
+            }).then((res) => {
+            if (res.ok)
+                return res.json();
+            else
+                throw Error(res.statusText);
+        }).then(partUser => {
+            this.setState({partUser});
+        }).catch(() => {
+            this.setState({partUser: null});
+        });
+    }
 }
 
 App.propTypes = {

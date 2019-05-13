@@ -177,8 +177,12 @@ class Join extends Component {
             else
                 return res.json();
         }).then((team) => {
-            this.setState({team, stage: "confirm(1)"});
-            // Todo: Auto detect if user already in team.
+            let user = this.context.partUser;
+            let emails = team.members.map((m) => m.email);
+            if (user != null && emails.indexOf(user.email) !== -1) 
+                this.setState({team, stage: "joined(2)"});
+            else
+                this.setState({team, stage: "confirm(1)"});
         }).catch(err => {
             this.snack("error", err.message);
             this.setState({stage: "failed(-1)"});
