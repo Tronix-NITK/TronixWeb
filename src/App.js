@@ -7,7 +7,8 @@ import blue from '@material-ui/core/colors/blue';
 import {BrowserRouter as Router, Route, Link, Switch} from "react-router-dom";
 import Login from "./Login";
 import Signup from "./Signup";
-import Register from "./Team/Register";
+import TeamRegister from "./Team/Register";
+import TeamJoin from "./Team/Join";
 import Core from "./Core";
 import Restore from "./Restore";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -27,6 +28,7 @@ const theme = {
         palette: {
             type: "dark",
             primary: blue,
+            secondary: red,
         },
         typography: {
             useNextVariants: true,
@@ -107,7 +109,9 @@ class App extends Component {
                                     <Route path="/signup"
                                            component={Signup}/>
                                     <Route path="/register"
-                                           component={Register}/>
+                                           component={TeamRegister}/>
+                                    <Route path="/j/:linkID"
+                                           component={TeamJoin}/>
                                     <Route path="/"
                                            component={this.notFound.bind(this)}/>
                                 </Switch>
