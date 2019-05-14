@@ -122,10 +122,10 @@ class App extends Component {
                                 </Switch>
                             </div>
                             <Snackbar
-                                anchorOrigin={{vertical: "bottom", horizontal: "center"}}
+                                anchorOrigin={{vertical: "top", horizontal: "center"}}
                                 open={this.state.infoSnack.length !== 0}
-                                autoHideDuration={2000}
                                 onClose={this.handleCloseSnack.bind(this)}
+                                autoHideDuration={3000}
                             >
                                 <SnackbarContent
                                     className={classes.infoSnack}
@@ -137,9 +137,10 @@ class App extends Component {
                                 />
                             </Snackbar>
                             <Snackbar
-                                anchorOrigin={{vertical: "bottom", horizontal: "center"}}
+                                anchorOrigin={{vertical: "top", horizontal: "center"}}
                                 open={this.state.successSnack.length !== 0}
                                 onClose={this.handleCloseSnack.bind(this)}
+                                autoHideDuration={3000}
                             >
                                 <SnackbarContent
                                     className={classes.successSnack}
@@ -151,9 +152,11 @@ class App extends Component {
                                 />
                             </Snackbar>
                             <Snackbar
-                                anchorOrigin={{vertical: "bottom", horizontal: "center"}}
+                                anchorOrigin={{vertical: "top", horizontal: "center"}}
                                 open={this.state.warnSnack.length !== 0}
-                                onClose={this.handleCloseSnack.bind(this)}>
+                                onClose={this.handleCloseSnack.bind(this)}
+                                autoHideDuration={3000}
+                            >
                                 <SnackbarContent
                                     className={classes.warnSnack}
                                     message={
@@ -164,9 +167,10 @@ class App extends Component {
                                 />
                             </Snackbar>
                             <Snackbar
-                                anchorOrigin={{vertical: "bottom", horizontal: "center"}}
+                                anchorOrigin={{vertical: "top", horizontal: "center"}}
                                 open={this.state.errorSnack.length !== 0}
                                 onClose={this.handleCloseSnack.bind(this)}
+                                autoHideDuration={3000}
                             >
                                 <SnackbarContent
                                     className={classes.errorSnack}
