@@ -7,8 +7,9 @@ import blue from '@material-ui/core/colors/blue';
 import {BrowserRouter as Router, Route, Link, Switch} from "react-router-dom";
 import Login from "./Login";
 import Signup from "./Signup";
-import TeamRegister from "./Team/Register";
-import TeamJoin from "./Team/Join";
+import Teams from "./Teams";
+import TeamRegister from "./Teams/Register";
+import TeamJoin from "./Teams/Join";
 import Core from "./Core";
 import Restore from "./Restore";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -114,6 +115,8 @@ class App extends Component {
                                            component={TeamRegister}/>
                                     <Route path="/j/:linkID"
                                            component={TeamJoin}/>
+                                    <Route path="/teams"
+                                           component={Teams}/>
                                     <Route path="/"
                                            component={this.notFound.bind(this)}/>
                                 </Switch>
@@ -212,6 +215,9 @@ class App extends Component {
                     </li>
                     <li>
                         <Link to="/register">Register for event</Link>
+                    </li>
+                    <li>
+                        <Link to="/teams">Your teams</Link>
                     </li>
                     <li>
                         <Link to="/core">Core</Link>
