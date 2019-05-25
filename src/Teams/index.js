@@ -8,10 +8,10 @@ import Typography from "@material-ui/core/Typography";
 const styles = theme => ({
     root: {},
     tableContainer: {
-        margin: 2 * theme.spacing.unit,
+        margin: theme.spacing(2),
     },
     teamDetails: {
-        padding: 2 * theme.spacing.unit,
+        padding: theme.spacing(2),
     }
 });
 

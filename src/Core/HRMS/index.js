@@ -10,7 +10,7 @@ import AppContext from "../../AppContext";
 
 const styles = theme => ({
     tableContainer: {
-        padding: 2 * theme.spacing.unit,
+        padding: theme.spacing(2),
     },
 });
 
@@ -29,7 +29,6 @@ class HRMS extends Component {
         const path = this.props.match.path;
         return (
             <div>
-                HRMS
                 <nav>
                     <ul>
                         <li>

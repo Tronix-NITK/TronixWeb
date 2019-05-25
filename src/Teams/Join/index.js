@@ -12,7 +12,7 @@ import LinearProgress from "@material-ui/core/es/LinearProgress/LinearProgress";
 
 const styles = theme => ({
     dialogButton: {
-        margin: theme.spacing.unit,
+        margin: theme.spacing(1),
     },
 });
 

@@ -22,16 +22,16 @@ const styles = theme => ({
         justifyContent: "center",
     },
     rootPaper: {
-        margin: 2 * theme.spacing.unit,
-        padding: 4 * theme.spacing.unit,
+        margin: theme.spacing(2),
+        padding: theme.spacing(4),
         maxWidth: "600px",
     },
     paperButton: {
-        marginTop: 4 * theme.spacing.unit,
+        marginTop: theme.spacing(4),
         width: "100%",
     },
     dialogButton: {
-        margin: theme.spacing.unit,
+        margin: theme.spacing(1),
     },
     input: {
         display: 'flex',
@@ -45,7 +45,7 @@ const styles = theme => ({
         overflow: 'hidden',
     },
     noOptionsMessage: {
-        padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
+        padding: theme.spacing(1, 2),
     },
     singleValue: {
         fontSize: 16,
@@ -58,7 +58,7 @@ const styles = theme => ({
     paper: {
         position: 'absolute',
         zIndex: 1,
-        marginTop: theme.spacing.unit,
+        marginTop: theme.spacing(1),
         left: 0,
         right: 0,
     },
