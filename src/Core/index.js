@@ -4,6 +4,7 @@ import {LinearProgress, withStyles} from "@material-ui/core";
 import {Link, Route} from "react-router-dom";
 import Login from "./Login";
 import HRMS from "./HRMS";
+import EMS from "./EMS";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
@@ -14,7 +15,7 @@ import AppContext from "../AppContext";
 
 const styles = theme => ({
     button: {
-        margin: theme.spacing.unit,
+        margin: theme.spacing(1),
     },
 });
 
@@ -69,17 +70,23 @@ class Core extends Component {
         }
         return (
             <div>
-                Core
                 <nav>
                     <ul>
+                        <li>
+                            <Link to="/">Home</Link>
+                        </li>
                         <li>
                             <Link to="/core/login">Login</Link>
                         </li>
                         <li>
+                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid,no-script-url */}
                             <a href="javascript:void(0);" onClick={this.logout.bind(this)}>Logout</a>
                         </li>
                         <li>
                             <Link to="/core/hrms">HRMS</Link>
+                        </li>
+                        <li>
+                            <Link to="/core/ems">EMS</Link>
                         </li>
                     </ul>
                 </nav>
@@ -87,6 +94,8 @@ class Core extends Component {
                        component={Login}/>
                 <Route path={`${path}/hrms`}
                        component={HRMS}/>
+                <Route path={`${path}/ems`}
+                       component={EMS}/>
             </div>
         );
     }
@@ -95,7 +104,7 @@ class Core extends Component {
         this.server = this.context.server;
         this.snack = this.context.snack;
         switch (this.state.stage) {
-            case "getUser": {
+            case "getUser":
                 this.getUser((user) => {
                     if (user != null)
                         this.setState({user: user, stage: "home"});
@@ -103,7 +112,6 @@ class Core extends Component {
                         this.setState({user: null, stage: "authTheUser"});
                     }
                 });
-            }
                 break;
             case "foo":
                 break;

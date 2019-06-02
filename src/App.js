@@ -12,6 +12,7 @@ import TeamRegister from "./Teams/Register";
 import TeamJoin from "./Teams/Join";
 import Core from "./Core";
 import Restore from "./Restore";
+import Event from "./Event";
 import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import InfoSnackIcon from '@material-ui/icons/Info';
@@ -54,7 +55,7 @@ const styles = theme => ({
     snackIcon: {
         fontSize: 20,
         opacity: 0.9,
-        marginRight: theme.spacing.unit,
+        marginRight: theme.spacing(1),
     },
     infoSnack: {
         backgroundColor: grey[600],
@@ -117,12 +118,16 @@ class App extends Component {
                                            component={TeamJoin}/>
                                     <Route path="/teams"
                                            component={Teams}/>
+                                    <Route path="/e/:code"
+                                           component={Event}/>
+                                    <Route path="/event/:code"
+                                           component={Event}/>
                                     <Route path="/"
                                            component={this.notFound.bind(this)}/>
                                 </Switch>
                             </div>
                             <Snackbar
-                                anchorOrigin={{vertical: "top", horizontal: "center"}}
+                                anchorOrigin={{vertical: "top", horizontal: "right"}}
                                 open={this.state.infoSnack.length !== 0}
                                 onClose={this.handleCloseSnack.bind(this)}
                                 autoHideDuration={3000}
@@ -137,7 +142,7 @@ class App extends Component {
                                 />
                             </Snackbar>
                             <Snackbar
-                                anchorOrigin={{vertical: "top", horizontal: "center"}}
+                                anchorOrigin={{vertical: "top", horizontal: "right"}}
                                 open={this.state.successSnack.length !== 0}
                                 onClose={this.handleCloseSnack.bind(this)}
                                 autoHideDuration={3000}
@@ -152,7 +157,7 @@ class App extends Component {
                                 />
                             </Snackbar>
                             <Snackbar
-                                anchorOrigin={{vertical: "top", horizontal: "center"}}
+                                anchorOrigin={{vertical: "top", horizontal: "right"}}
                                 open={this.state.warnSnack.length !== 0}
                                 onClose={this.handleCloseSnack.bind(this)}
                                 autoHideDuration={3000}
@@ -167,7 +172,7 @@ class App extends Component {
                                 />
                             </Snackbar>
                             <Snackbar
-                                anchorOrigin={{vertical: "top", horizontal: "center"}}
+                                anchorOrigin={{vertical: "top", horizontal: "right"}}
                                 open={this.state.errorSnack.length !== 0}
                                 onClose={this.handleCloseSnack.bind(this)}
                                 autoHideDuration={3000}
@@ -212,6 +217,7 @@ class App extends Component {
                         <Link to="/login">Login</Link>
                     </li>
                     <li>
+                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid,no-script-url */}
                         <a href="javascript:void(0);" onClick={() => this.partLogout()}>Logout</a>
                     </li>
                     <li>
