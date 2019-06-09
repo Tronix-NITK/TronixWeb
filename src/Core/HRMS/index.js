@@ -7,10 +7,18 @@ import ModCoreUser from "./ModCoreUser";
 import {Link, Route} from "react-router-dom";
 import MaterialTable from 'material-table';
 import AppContext from "../../AppContext";
+import Divider from "@material-ui/core/Divider";
+import List from "@material-ui/core/List";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItem from "@material-ui/core/ListItem";
 
 const styles = theme => ({
     tableContainer: {
         padding: theme.spacing(2),
+    },
+    nav_container: {
+        width: '100%',
+        maxWidth: 360,
     },
 });
 
@@ -29,19 +37,20 @@ class HRMS extends Component {
         const path = this.props.match.path;
         return (
             <div>
-                <nav>
-                    <ul>
-                        <li>
-                            <Link to="/core/hrms/addCoreUser">Add core user</Link>
-                        </li>
-                        <li>
-                            <Link to="/core/hrms/delCoreUser">Delete core user</Link>
-                        </li>
-                        <li>
-                            <Link to="/core/hrms/modCoreUser">Edit core user</Link>
-                        </li>
-                    </ul>
-                </nav>
+                <div className={classes.nav_container}>
+                    <Divider/>
+                    <List component="nav">
+                        <ListItemLink to="/core/hrms/addCoreUser">
+                            <ListItemText primary="Add core user"/>
+                        </ListItemLink>
+                        <ListItemLink to="/core/hrms/delCoreUser">
+                            <ListItemText primary="Delete core user"/>
+                        </ListItemLink>
+                        <ListItemLink to="/core/hrms/modCoreUser">
+                            <ListItemText primary="Edit core user"/>
+                        </ListItemLink>
+                    </List>
+                </div>
                 <Route path={`${path}/addCoreUser`}
                        component={AddCoreUser}/>
                 <Route path={`${path}/delCoreUser`}
@@ -193,6 +202,11 @@ class HRMS extends Component {
         });
     }
 }
+
+function ListItemLink(props) {
+    return <ListItem button component={Link} {...props} />;
+}
+
 
 HRMS.propTypes = {
     classes: PropTypes.object.isRequired,

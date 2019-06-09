@@ -190,7 +190,7 @@ class ModEvent extends Component {
 
     onEdit() {
         this.setState({showLoading: true, showErrorIcon: false});
-        fetch(`${this.server}/core/event`, {
+        fetch(`${this.server}/core/ems`, {
             mode: 'cors',
             credentials: 'include',
             method: "PUT",

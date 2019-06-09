@@ -5,6 +5,7 @@ import {Link, Route} from "react-router-dom";
 import Login from "./Login";
 import HRMS from "./HRMS";
 import EMS from "./EMS";
+import TMS from "./TMS";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
@@ -12,10 +13,17 @@ import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import AppContext from "../AppContext";
+import ListItem from "@material-ui/core/ListItem";
+import List from "@material-ui/core/List";
+import ListItemText from "@material-ui/core/ListItemText";
 
 const styles = theme => ({
     button: {
         margin: theme.spacing(1),
+    },
+    nav_container: {
+        width: '100%',
+        maxWidth: 360,
     },
 });
 
@@ -68,34 +76,43 @@ class Core extends Component {
             }
             default:
         }
+        // eslint-disable-next-line no-script-url
+        const dudUrl = "javascript:;";
         return (
             <div>
-                <nav>
-                    <ul>
-                        <li>
-                            <Link to="/">Home</Link>
-                        </li>
-                        <li>
-                            <Link to="/core/login">Login</Link>
-                        </li>
-                        <li>
-                            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid,no-script-url */}
-                            <a href="javascript:void(0);" onClick={this.logout.bind(this)}>Logout</a>
-                        </li>
-                        <li>
-                            <Link to="/core/hrms">HRMS</Link>
-                        </li>
-                        <li>
-                            <Link to="/core/ems">EMS</Link>
-                        </li>
-                    </ul>
-                </nav>
+                <div className={classes.nav_container}>
+                    <List component="nav">
+                        <ListItemLink to="/">
+                            <ListItemText primary="Home"/>
+                        </ListItemLink>
+                        <ListItemLink to="/core/login">
+                            <ListItemText primary="Login"/>
+                        </ListItemLink>
+                        <ListItemLink href={dudUrl} onClick={() => this.logout()}>
+                            <ListItemText primary="Logout"/>
+                        </ListItemLink>
+                        <ListItemLink to="/core/hrms">
+                            <ListItemText primary="HR management system"/>
+                        </ListItemLink>
+                        <ListItemLink to="/core/ems">
+                            <ListItemText primary="Event management system"/>
+                        </ListItemLink>
+                        <ListItemLink to="/core/tms">
+                            <ListItemText primary="Team management system"/>
+                        </ListItemLink>
+                        <ListItemLink to="/core">
+                            <ListItemText primary="Core"/>
+                        </ListItemLink>
+                    </List>
+                </div>
                 <Route path={`${path}/login`}
                        component={Login}/>
                 <Route path={`${path}/hrms`}
                        component={HRMS}/>
                 <Route path={`${path}/ems`}
                        component={EMS}/>
+                <Route path={`${path}/tms`}
+                       component={TMS}/>
             </div>
         );
     }
@@ -152,6 +169,10 @@ class Core extends Component {
             this.snack("error", err.message);
         });
     }
+}
+
+function ListItemLink(props) {
+    return <ListItem button component={Link} {...props} />;
 }
 
 Core.propTypes = {

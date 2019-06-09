@@ -6,6 +6,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import WarningIcon from '@material-ui/icons/Warning';
+import Button from "@material-ui/core/Button";
 
 const styles = theme => ({
     root: {
@@ -54,6 +55,7 @@ class EventDisplay extends Component {
                         <Typography variant="body1">
                             {event.description}
                         </Typography>
+                        <Button variant={"contained"} onClick={() => this.props.history.push("/register")}>Register</Button>
                     </Paper>
                 </div>
             );

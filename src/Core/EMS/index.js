@@ -5,8 +5,17 @@ import AddEvent from "./AddEvent";
 import ModEvent from "./ModEvent";
 import {Link, Route} from "react-router-dom";
 import AppContext from "../../AppContext";
+import List from "@material-ui/core/List";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItem from "@material-ui/core/ListItem";
+import Divider from "@material-ui/core/Divider";
 
-const styles = theme => ({});
+const styles = theme => ({
+    nav_container: {
+        width: '100%',
+        maxWidth: 360,
+    },
+});
 
 class EMS extends Component {
     constructor(props) {
@@ -18,18 +27,20 @@ class EMS extends Component {
 
     render() {
         const path = this.props.match.path;
+        const {classes} = this.props;
         return (
             <div>
-                <nav>
-                    <ul>
-                        <li>
-                            <Link to="/core/EMS/addEvent">Add event</Link>
-                        </li>
-                        <li>
-                            <Link to="/core/EMS/modEvent">Edit event</Link>
-                        </li>
-                    </ul>
-                </nav>
+                <div className={classes.nav_container}>
+                    <Divider/>
+                    <List component="nav">
+                        <ListItemLink to="/core/ems/addEvent">
+                            <ListItemText primary="Add event"/>
+                        </ListItemLink>
+                        <ListItemLink to="/core/ems/modEvent">
+                            <ListItemText primary="Edit event"/>
+                        </ListItemLink>
+                    </List>
+                </div>
                 <Route path={`${path}/addEvent`}
                        component={AddEvent}/>
                 <Route path={`${path}/modEvent`}
@@ -44,6 +55,10 @@ class EMS extends Component {
         this.server = this.context.server;
         this.snack = this.context.snack;
     }
+}
+
+function ListItemLink(props) {
+    return <ListItem button component={Link} {...props} />;
 }
 
 EMS.propTypes = {

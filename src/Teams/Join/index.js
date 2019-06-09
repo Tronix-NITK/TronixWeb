@@ -50,6 +50,7 @@ class Join extends Component {
                 <DialogContent>
                     <LinearProgress/>
                 </DialogContent>
+                <DialogActions/>
             </Dialog>
         );
     }
@@ -179,7 +180,7 @@ class Join extends Component {
         }).then((team) => {
             let user = this.context.partUser;
             let emails = team.members.map((m) => m.email);
-            if (user != null && emails.indexOf(user.email) !== -1) 
+            if (user != null && emails.indexOf(user.email) !== -1)
                 this.setState({team, stage: "joined(2)"});
             else
                 this.setState({team, stage: "confirm(1)"});

@@ -135,7 +135,7 @@ class AddEvent extends Component {
     }
 
     onAdd() {
-        fetch(`${this.server}/core/event`, {
+        fetch(`${this.server}/core/ems`, {
             mode: 'cors',
             credentials: 'include',
             method: "POST",

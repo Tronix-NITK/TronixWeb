@@ -24,6 +24,10 @@ import green from "@material-ui/core/es/colors/green";
 import amber from "@material-ui/core/es/colors/amber";
 import red from "@material-ui/core/es/colors/red";
 import AppContext from "./AppContext";
+import List from "@material-ui/core/List";
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItem from "@material-ui/core/ListItem";
+import EventsComponent from "./Events";
 
 const theme = {
     "dark": createMuiTheme({
@@ -68,6 +72,10 @@ const styles = theme => ({
     },
     errorSnack: {
         backgroundColor: red[700],
+    },
+    nav_container: {
+        width: '100%',
+        maxWidth: 360,
     },
 });
 
@@ -114,14 +122,16 @@ class App extends Component {
                                            component={Signup}/>
                                     <Route path="/register"
                                            component={TeamRegister}/>
+                                    <Route path="/register/:code"
+                                           component={TeamRegister}/>
                                     <Route path="/j/:linkID"
                                            component={TeamJoin}/>
                                     <Route path="/teams"
                                            component={Teams}/>
                                     <Route path="/e/:code"
                                            component={Event}/>
-                                    <Route path="/event/:code"
-                                           component={Event}/>
+                                    <Route path="/e"
+                                           component={EventsComponent}/>
                                     <Route path="/"
                                            component={this.notFound.bind(this)}/>
                                 </Switch>
@@ -207,33 +217,38 @@ class App extends Component {
     }
 
     home() {
+        const {classes} = this.props;
+        // eslint-disable-next-line no-script-url
+        const dudUrl = "javascript:;";
         return (
-            <nav>
-                <ul>
-                    <li>
-                        <Link to="/">Home</Link>
-                    </li>
-                    <li>
-                        <Link to="/login">Login</Link>
-                    </li>
-                    <li>
-                        {/* eslint-disable-next-line jsx-a11y/anchor-is-valid,no-script-url */}
-                        <a href="javascript:void(0);" onClick={() => this.partLogout()}>Logout</a>
-                    </li>
-                    <li>
-                        <Link to="/signup">Signup</Link>
-                    </li>
-                    <li>
-                        <Link to="/register">Register for event</Link>
-                    </li>
-                    <li>
-                        <Link to="/teams">Your teams</Link>
-                    </li>
-                    <li>
-                        <Link to="/core">Core</Link>
-                    </li>
-                </ul>
-            </nav>
+            <div className={classes.nav_container}>
+                <List component="nav">
+                    <ListItemLink to="/">
+                        <ListItemText primary="Home"/>
+                    </ListItemLink>
+                    <ListItemLink to="/login">
+                        <ListItemText primary="Login"/>
+                    </ListItemLink>
+                    <ListItemLink href={dudUrl} onClick={() => this.partLogout()}>
+                        <ListItemText primary="Logout"/>
+                    </ListItemLink>
+                    <ListItemLink to="/signup">
+                        <ListItemText primary="Signup"/>
+                    </ListItemLink>
+                    <ListItemLink to="/e">
+                        <ListItemText primary="Tronix Events"/>
+                    </ListItemLink>
+                    <ListItemLink to="/register">
+                        <ListItemText primary="Register for an event"/>
+                    </ListItemLink>
+                    <ListItemLink to="/teams">
+                        <ListItemText primary="Your teams"/>
+                    </ListItemLink>
+                    <ListItemLink to="/core">
+                        <ListItemText primary="Core"/>
+                    </ListItemLink>
+                </List>
+            </div>
         );
     }
 
@@ -288,6 +303,10 @@ class App extends Component {
             this.setState({partUser: null});
         });
     }
+}
+
+function ListItemLink(props) {
+    return <ListItem button component={Link} {...props} />;
 }
 
 App.propTypes = {
