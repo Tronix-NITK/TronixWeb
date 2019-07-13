@@ -10,7 +10,6 @@ import Signup from "./Signup";
 import Teams from "./Teams";
 import TeamRegister from "./Teams/Register";
 import TeamJoin from "./Teams/Join";
-import Core from "./Core";
 import Restore from "./Restore";
 import Event from "./Event";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -28,6 +27,8 @@ import List from "@material-ui/core/List";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItem from "@material-ui/core/ListItem";
 import EventsComponent from "./Events";
+import ExhibitsComponent from "./Exhibits";
+import Exhibit from "./Exhibit";
 
 const theme = {
     "dark": createMuiTheme({
@@ -112,8 +113,6 @@ class App extends Component {
                                 <Switch>
                                     <Route exact path="/"
                                            component={this.home.bind(this)}/>
-                                    <Route path="/core"
-                                           component={Core}/>
                                     <Route path="/restore/:state"
                                            component={Restore}/>
                                     <Route path="/login"
@@ -132,8 +131,11 @@ class App extends Component {
                                            component={Event}/>
                                     <Route path="/e"
                                            component={EventsComponent}/>
-                                    <Route path="/"
-                                           component={this.notFound.bind(this)}/>
+                                    <Route path="/x/:code"
+                                           component={Exhibit}/>
+                                    <Route path="/x"
+                                           component={ExhibitsComponent}/><Route path="/"
+                                                                                 component={this.notFound.bind(this)}/>
                                 </Switch>
                             </div>
                             <Snackbar
@@ -238,14 +240,14 @@ class App extends Component {
                     <ListItemLink to="/e">
                         <ListItemText primary="Tronix Events"/>
                     </ListItemLink>
+                    <ListItemLink to="/x">
+                        <ListItemText primary="Tronix Exhibits"/>
+                    </ListItemLink>
                     <ListItemLink to="/register">
                         <ListItemText primary="Register for an event"/>
                     </ListItemLink>
                     <ListItemLink to="/teams">
                         <ListItemText primary="Your teams"/>
-                    </ListItemLink>
-                    <ListItemLink to="/core">
-                        <ListItemText primary="Core"/>
                     </ListItemLink>
                 </List>
             </div>

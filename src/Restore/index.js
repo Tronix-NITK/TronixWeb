@@ -32,14 +32,6 @@ class Restore extends Component {
                 this.snack("success", "Continue with signup");
                 history.push("/signup");
                 break;
-            case "CLS":
-                this.snack("success", "Login success");
-                history.push("/core");
-                break;
-            case "CLF":
-                this.snack("warn", "Login failed");
-                history.push("/");
-                break;
             default:
                 history.push("/");
         }
