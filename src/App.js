@@ -76,7 +76,7 @@ const styles = theme => ({
     },
 });
 
-const API_SERVER = "https://tronixserver.herokuapp.com";
+const API_SERVER = "https://tronixserver.herokuapp.com/api/v1";
 
 class App extends Component {
     constructor(props) {
