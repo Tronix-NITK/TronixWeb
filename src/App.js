@@ -73,10 +73,6 @@ const styles = theme => ({
     errorSnack: {
         backgroundColor: red[700],
     },
-    nav_container: {
-        width: '100%',
-        maxWidth: 360,
-    },
 });
 
 const API_SERVER = "https://tronixserver.herokuapp.com";
@@ -136,8 +132,9 @@ class App extends Component {
                                     <Route path="/x/:code"
                                            component={Exhibit}/>
                                     <Route path="/x"
-                                           component={ExhibitsComponent}/><Route path="/"
-                                                                                 component={this.notFound.bind(this)}/>
+                                           component={ExhibitsComponent}/>
+                                    <Route path="/"
+                                           component={this.notFound.bind(this)}/>
                                 </Switch>
                             </div>
                             <Snackbar

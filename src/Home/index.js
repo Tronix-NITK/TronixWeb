@@ -2,34 +2,76 @@ import React, {Component} from "react";
 import * as PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core";
 import AppContext from "../AppContext";
-import List from "@material-ui/core/List";
-import ListItemText from "@material-ui/core/ListItemText";
 import ListItem from "@material-ui/core/ListItem";
 import {Link} from "react-router-dom";
+import Typography from "@material-ui/core/Typography";
+import Grid from "@material-ui/core/Grid";
 
 const styles = theme => ({
-    root: {
+    title: {
+        padding: theme.spacing(5, 0),
         display: "flex",
         justifyContent: "center",
     },
     paper: {
-        margin: theme.spacing(2, 2),
-        padding: theme.spacing(4, 3),
-        maxWidth: "700px",
-        width: "100%",
+        padding: theme.spacing(2),
+        textAlign: 'center',
+        color: theme.palette.text.secondary,
     },
 });
 
 class HomeComponent extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const {classes} = this.props;
         return (
-            <div className={classes.nav_container}>
-                <List component="nav">
+            <Grid container item xs={12}>
+                <Grid item xs={12}>
+                    <div className={classes.title}>
+                        <Typography variant={"h1"}>
+                            TroniX
+                        </Typography>
+                    </div>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <div>Events</div>
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <div>Exe</div>
+                </Grid>
+                <Grid item xs={12}>
+                    <div>
+                        signup -> register for event -> invite to team
+                    </div>
+                </Grid>
+                <Grid item xs={12}>
+                    <div>
+                        contact us
+                    </div>
+                </Grid>
+            </Grid>
+        );
+    }
+
+    componentDidMount() {
+        this.server = this.context.server;
+        this.snack = this.context.snack;
+    }
+}
+
+HomeComponent.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+HomeComponent.contextType = AppContext;
+
+function ListItemLink(props) {
+    return <ListItem button component={Link} {...props} />;
+}
+
+export default withStyles(styles, {withTheme: true})(HomeComponent);
+
+
+/*
+<List component="nav">
                     <ListItemLink to="/">
                         <ListItemText primary="Home"/>
                     </ListItemLink>
@@ -55,23 +97,4 @@ class HomeComponent extends Component {
                         <ListItemText primary="Your teams"/>
                     </ListItemLink>
                 </List>
-            </div>
-        );
-    }
-
-    componentDidMount() {
-        this.server = this.context.server;
-        this.snack = this.context.snack;
-    }
-}
-
-HomeComponent.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
-HomeComponent.contextType = AppContext;
-
-function ListItemLink(props) {
-    return <ListItem button component={Link} {...props} />;
-}
-
-export default withStyles(styles, {withTheme: true})(HomeComponent);
+*/
