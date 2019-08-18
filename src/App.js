@@ -4,8 +4,9 @@ import {withStyles} from "@material-ui/core";
 import {MuiThemeProvider, createMuiTheme} from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import blue from '@material-ui/core/colors/blue';
-import {BrowserRouter as Router, Route, Link, Switch} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Login from "./Login";
+import Logout from "./Logout";
 import Signup from "./Signup";
 import Teams from "./Teams";
 import TeamRegister from "./Teams/Register";
@@ -23,12 +24,10 @@ import green from "@material-ui/core/es/colors/green";
 import amber from "@material-ui/core/es/colors/amber";
 import red from "@material-ui/core/es/colors/red";
 import AppContext from "./AppContext";
-import List from "@material-ui/core/List";
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItem from "@material-ui/core/ListItem";
 import EventsComponent from "./Events";
 import ExhibitsComponent from "./Exhibits";
 import Exhibit from "./Exhibit";
+import Home from "./Home";
 
 const theme = {
     "dark": createMuiTheme({
@@ -112,11 +111,14 @@ class App extends Component {
                             <div className={classes.app}>
                                 <Switch>
                                     <Route exact path="/"
-                                           component={this.home.bind(this)}/>
+                                           component={Home}/>
                                     <Route path="/restore/:state"
                                            component={Restore}/>
                                     <Route path="/login"
                                            component={Login}/>
+                                    <Route path="/logout"
+                                           render={(props) => <Logout {...props}
+                                                                      onLogout={this.onLogout.bind(this)}/>}/>
                                     <Route path="/signup"
                                            component={Signup}/>
                                     <Route path="/register"
@@ -218,42 +220,6 @@ class App extends Component {
             localStorage.setItem("theme", name);
     }
 
-    home() {
-        const {classes} = this.props;
-        // eslint-disable-next-line no-script-url
-        const dudUrl = "javascript:;";
-        return (
-            <div className={classes.nav_container}>
-                <List component="nav">
-                    <ListItemLink to="/">
-                        <ListItemText primary="Home"/>
-                    </ListItemLink>
-                    <ListItemLink to="/login">
-                        <ListItemText primary="Login"/>
-                    </ListItemLink>
-                    <ListItemLink href={dudUrl} onClick={() => this.partLogout()}>
-                        <ListItemText primary="Logout"/>
-                    </ListItemLink>
-                    <ListItemLink to="/signup">
-                        <ListItemText primary="Signup"/>
-                    </ListItemLink>
-                    <ListItemLink to="/e">
-                        <ListItemText primary="Tronix Events"/>
-                    </ListItemLink>
-                    <ListItemLink to="/x">
-                        <ListItemText primary="Tronix Exhibits"/>
-                    </ListItemLink>
-                    <ListItemLink to="/register">
-                        <ListItemText primary="Register for an event"/>
-                    </ListItemLink>
-                    <ListItemLink to="/teams">
-                        <ListItemText primary="Your teams"/>
-                    </ListItemLink>
-                </List>
-            </div>
-        );
-    }
-
     notFound() {
         return (
             <div>
@@ -266,23 +232,13 @@ class App extends Component {
         this.setState({infoSnack: "", successSnack: "", warnSnack: "", errorSnack: "",});
     }
 
-    snack(type, msg) {
-        this.setState({[`${type}Snack`]: msg});
+    onLogout() {
+        this.setState({partUser: null});
+        this.snack("success", "Logged out");
     }
 
-    partLogout() {
-        fetch(`${this.server}/part/auth/logout`, {
-            mode: 'cors',
-            credentials: 'include',
-            method: "GET",
-        }).then((res) => {
-            if (!res.ok)
-                throw Error(res.statusText);
-            this.setState({partUser: null});
-            this.snack("success", "Logged out");
-        }).catch(err => {
-            this.snack("error", err.message);
-        });
+    snack(type, msg) {
+        this.setState({[`${type}Snack`]: msg});
     }
 
     loadPartUser() {
@@ -305,10 +261,6 @@ class App extends Component {
             this.setState({partUser: null});
         });
     }
-}
-
-function ListItemLink(props) {
-    return <ListItem button component={Link} {...props} />;
 }
 
 App.propTypes = {
