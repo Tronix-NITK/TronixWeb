@@ -83,7 +83,7 @@ class EventDisplay extends Component {
     }
 
     getEvent(code) {
-        fetch(`${this.server}/event/byCode/${code}`, {
+        fetch(`${this.server}/pub/event/ofCode/${code}`, {
             mode: 'cors',
             credentials: 'include',
             method: "GET",

@@ -78,7 +78,7 @@ class ExhibitsComponent extends Component {
 
     getExhibits() {
         this.setState({showLoading: true});
-        fetch(`${this.server}/event/namesWithCodes`, {
+        fetch(`${this.server}/pub/event/namesAndCodes`, {
             mode: 'cors',
             credentials: 'include',
             method: "GET",

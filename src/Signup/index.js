@@ -239,7 +239,7 @@ class Signup extends Component {
     }
 
     loadColleges(cb) {
-        fetch(`${this.server}/college/all`, {
+        fetch(`${this.server}/pub/college`, {
             mode: 'cors',
             credentials: 'include',
             method: "GET",

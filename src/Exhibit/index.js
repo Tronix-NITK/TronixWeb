@@ -78,7 +78,7 @@ class ExhibitDisplay extends Component {
     }
 
     getExhibit(code) {
-        fetch(`${this.server}/exhibit/byCode/${code}`, {
+        fetch(`${this.server}/exhibit/ofCode/${code}`, {
             mode: 'cors',
             credentials: 'include',
             method: "GET",

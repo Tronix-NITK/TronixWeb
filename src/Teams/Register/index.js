@@ -176,7 +176,7 @@ class Register extends Component {
     };
 
     getEvents(cb) {
-        fetch(`${this.server}/event/names`, {
+        fetch(`${this.server}/pub/event/namesAndCodes`, {
             mode: 'cors',
             credentials: 'include',
             method: "GET",
@@ -189,7 +189,7 @@ class Register extends Component {
             else
                 return res.json();
         }).then((events) => {
-            cb(null, events);
+            cb(null, events.map(e => e.name));
         }).catch(err => {
             cb(err, null);
         });
