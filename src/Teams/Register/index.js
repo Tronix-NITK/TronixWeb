@@ -114,7 +114,6 @@ class Register extends Component {
                     </Button>
                     <Button
                         variant="contained"
-                        color="secondary"
                         className={classes.button}
                         onClick={this.onClose.bind(this)}
                     >
@@ -149,7 +148,6 @@ class Register extends Component {
                     </Button>
                     <Button
                         variant="contained"
-                        color="secondary"
                         className={classes.button}
                         onClick={this.resetFields.bind(this)}
                     >

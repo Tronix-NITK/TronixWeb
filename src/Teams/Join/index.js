@@ -73,7 +73,6 @@ class Join extends Component {
                 <DialogActions>
                     <Button
                         variant="contained"
-                        color="secondary"
                         className={classes.dialogButton}
                         onClick={() => history.push("/")}
                     >
