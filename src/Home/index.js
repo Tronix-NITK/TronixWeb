@@ -13,8 +13,8 @@ import SignupIcon from '@material-ui/icons/VerifiedUser';
 import DetailsIcon from '@material-ui/icons/Create';
 import RegisterIcon from '@material-ui/icons/Event';
 import InviteIcon from '@material-ui/icons/GroupAdd';
-import StepContent from "@material-ui/core/StepContent";
 import StepLabel from "@material-ui/core/StepLabel";
+import UserGroup from "../helpers/userGroup";
 
 const styles = theme => ({
     title: {
@@ -50,7 +50,6 @@ class HomeComponent extends Component {
         let eventsComponent = null;
         if (events != null)
             eventsComponent = this.eventsComponent();
-        let makeTeamSteps = this.getMakeTeamSteps();
         return (
             <Grid container item xs={12}>
                 <Grid item xs={12}>
@@ -71,21 +70,28 @@ class HomeComponent extends Component {
                 </Grid>
                 <Grid item xs={12}>
                     <div className={classes.registerStepperContainer}>
-                        <Stepper nonLinear activeStep={null} alternativeLabel orientation={"Horizontal"}>
-                            {makeTeamSteps.map(stepData => (
-                                <Step key={stepData.label}>
-                                    <StepButton
-                                        icon={stepData.icon}
-                                        onClick={this.handleMakeTeamStepClick.bind(this, stepData.label)}
-                                    >
-                                        <StepLabel>
-                                            <Typography variant={"h6"} gutterBottom>{stepData.label}</Typography>
-                                            <Typography variant={"body2"}>{stepData.content}</Typography>
-                                        </StepLabel>
-                                    </StepButton>
-                                </Step>
-                            ))}
-                        </Stepper>
+                        <AppContext.Consumer>
+                            {(context) => (
+                                <Stepper nonLinear activeStep={null} alternativeLabel orientation={"horizontal"}>
+                                    {
+                                        HomeComponent.getMakeTeamSteps(context).map(stepData => (
+                                            <Step key={stepData.label}>
+                                                <StepButton
+                                                    icon={stepData.icon}
+                                                    onClick={this.handleMakeTeamStepClick.bind(this, stepData.label)}
+                                                >
+                                                    <StepLabel>
+                                                        <Typography variant={"h6"}
+                                                                    gutterBottom>{stepData.label}</Typography>
+                                                        <Typography variant={"body2"}>{stepData.content}</Typography>
+                                                    </StepLabel>
+                                                </StepButton>
+                                            </Step>
+                                        ))
+                                    }
+                                </Stepper>
+                            )}
+                        </AppContext.Consumer>
                     </div>
                 </Grid>
                 <Grid item xs={12}>
@@ -112,26 +118,41 @@ class HomeComponent extends Component {
         this.props.history.push(directs[label]);
     }
 
-    getMakeTeamSteps() {
+    static hasSignedUp({partUser}) {
+        if (partUser == null)
+            return false;
+        return partUser.group <= UserGroup.PARTICIPANT;
+
+    }
+
+    static hasCompletedProfile({partUser}) {
+        if (partUser == null)
+            return false;
+        if (partUser.group > UserGroup.PARTICIPANT)
+            return false;
+        return partUser.group >= UserGroup.PARTICIPANT;
+    }
+
+    static getMakeTeamSteps(context) {
         return [
             {
                 label: "Signup",
-                content: "Signup to tronix with your Google account",
-                icon: <SignupIcon/>,
+                content: "Signup with Google",
+                icon: <SignupIcon color={HomeComponent.hasSignedUp(context) ? "secondary" : undefined}/>,
             },
             {
                 label: "Profile",
-                content: "Complete your profile with additional details",
-                icon: <DetailsIcon/>,
+                content: "Complete your profile",
+                icon: <DetailsIcon color={HomeComponent.hasCompletedProfile(context) ? "secondary" : undefined}/>,
             },
             {
                 label: "Register",
-                content: "Create a team by registering for any event",
+                content: "Register for events",
                 icon: <RegisterIcon/>,
             },
             {
                 label: "Invite",
-                content: "Invite friends to join your team using team link",
+                content: "Share invite link",
                 icon: <InviteIcon/>,
             },
         ];
@@ -140,6 +161,8 @@ class HomeComponent extends Component {
     componentDidMount() {
         this.server = this.context.server;
         this.snack = this.context.snack;
+        this.partUser = this.context.partUser;
+        console.log(this.partUser);
         this.getEvents();
         this.getExhibits();
     }
@@ -150,7 +173,7 @@ class HomeComponent extends Component {
                 {
                     this.state.events.map((e) => {
                         return (
-                            <div>
+                            <div key={e.code}>
                                 <a href={`/e/${e.code}`}>{e.name}</a>
                                 <br/>
                             </div>

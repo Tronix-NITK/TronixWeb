@@ -34,7 +34,8 @@ const theme = {
         palette: {
             type: "dark",
             primary: blue,
-            secondary: red,
+            secondary: green,
+            error: red,
         },
         typography: {
             useNextVariants: true,
