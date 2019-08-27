@@ -7,6 +7,7 @@ import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import WarningIcon from '@material-ui/icons/Warning';
 import Button from "@material-ui/core/Button";
+import Divider from "@material-ui/core/Divider";
 
 const styles = theme => ({
     root: {
@@ -23,6 +24,10 @@ const styles = theme => ({
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+    },
+    pdfIFrame: {
+        width: "100%",
+        height: "70vh",
     }
 });
 
@@ -50,12 +55,17 @@ class EventDisplay extends Component {
                             Max team size: {event.teamSize}
                         </Typography>
                         <Typography variant="body1">
-                            {event.summary}
-                        </Typography>
-                        <Typography variant="body1">
                             {event.description}
                         </Typography>
-                        <Button variant={"contained"} onClick={() => this.props.history.push("/register")}>Register</Button>
+                        <Button variant={"contained"}
+                                onClick={() => this.props.history.push("/register")}>Register</Button>
+                        {
+                            event.problemStatement ?
+                                <PSComponent
+                                    link={event.problemStatement}
+                                    classes={classes}
+                                /> : null
+                        }
                     </Paper>
                 </div>
             );
@@ -82,6 +92,7 @@ class EventDisplay extends Component {
         this.getEvent(eventCode);
     }
 
+
     getEvent(code) {
         fetch(`${this.server}/pub/event/ofCode/${code}`, {
             mode: 'cors',
@@ -97,6 +108,7 @@ class EventDisplay extends Component {
                 return res.json();
         }).then((event) => {
             this.setState({event});
+            console.log(event)
         }).catch(err => {
             this.snack("error", err.message);
             this.setState({showErrorIcon: true});
@@ -108,5 +120,21 @@ EventDisplay.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 EventDisplay.contextType = AppContext;
+
+function PSComponent(props) {
+    const {classes, link} = props;
+    return (
+        <div>
+            <Typography variant="h4">
+                Problem Statement
+            </Typography>
+            <iframe
+                className={classes.pdfIFrame}
+                title="Problem Statement"
+                src={link}
+            />
+        </div>
+    );
+}
 
 export default withStyles(styles, {withTheme: true})(EventDisplay);
