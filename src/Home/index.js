@@ -17,6 +17,13 @@ import UserGroup from "../helpers/userGroup";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import NavMenuIcon from '@material-ui/icons/Menu';
+import ReactPlayer from 'react-player';
+import IconButton from "@material-ui/core/IconButton";
+import PlayIcon from "@material-ui/icons/PlayArrow";
+import PauseIcon from "@material-ui/icons/Pause";
+import EventButtonIcon from "@material-ui/icons/EventNote";
+import ExhibitButtonIcon from "@material-ui/icons/Star";
+import Button from "@material-ui/core/Button";
 import {Link} from "react-router-dom";
 
 const styles = theme => ({
@@ -44,47 +51,81 @@ const styles = theme => ({
     eventsListContainer: {
         padding: theme.spacing(1, 0),
     },
+    margin: {
+        margin: theme.spacing(1),
+    },
+    centerFlex: {
+        display: "flex",
+        justifyContent: "center",
+    }
 });
 
 class HomeComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            events: null,
-            exhibits: null,
             showNavMenu: false,
+            showTrailer: false,
         };
         this.fabContainerRef = React.createRef();
     }
 
     render() {
         const {classes} = this.props;
-        const {events} = this.state;
-        let eventsComponent = null;
-        if (events != null)
-            eventsComponent = this.eventsComponent();
+        const {showTrailer} = this.state;
+        const trailerIcon = showTrailer ? <PauseIcon fontSize="large"/> : <PlayIcon fontSize="large"/>;
         return (
             <div>
                 <Grid container item xs={12}>
-                    <Grid item xs={12}>
-                        <div className={classes.title}>
-                            <Typography variant={"h1"}>
-                                TroniX
-                            </Typography>
-                        </div>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <div className={classes.eventsContainer}>
-                            <Typography variant={"h4"}>
-                                Events
-                            </Typography>
-                            <div className={classes.eventsListContainer}>
-                                {eventsComponent}
+                    {showTrailer ? null :
+                        <Grid item xs={12}>
+                            <div className={classes.title}>
+                                <Typography variant={"h1"}>
+                                    TroniX
+                                </Typography>
                             </div>
+                        </Grid>
+                    }
+                    {!showTrailer ? null :
+                        <Grid item sm={12}>
+                            <div className={classes.centerFlex}>
+                                <ReactPlayer
+                                    url="https://www.youtube.com/watch?v=XmMHKcGBnsQ"
+                                    controls={false}
+                                    playing={true}
+                                />
+                            </div>
+                        </Grid>
+                    }
+                    <Grid item xs={4}>
+                        <div className={classes.centerFlex}>
+                            <Button component={Link} to={"/e"}>
+                                <EventButtonIcon fontSize="large"/>
+                                <Typography>
+                                    Events
+                                </Typography>
+                            </Button>
                         </div>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <div>Exe</div>
+                    <Grid item xs={4}>
+                        <div className={classes.centerFlex}>
+                            <Button onClick={this.toggleTrailer}>
+                                {trailerIcon}
+                                <Typography>
+                                    Trailer
+                                </Typography>
+                            </Button>
+                        </div>
+                    </Grid>
+                    <Grid item xs={4}>
+                        <div className={classes.centerFlex}>
+                            <Button>
+                                <ExhibitButtonIcon fontSize="large"/>
+                                <Typography>
+                                    Exhibits
+                                </Typography>
+                            </Button>
+                        </div>
                     </Grid>
                     <Grid item xs={12}>
                         <div className={classes.registerStepperContainer}>
@@ -149,6 +190,12 @@ class HomeComponent extends Component {
             </div>
         );
     }
+
+    toggleTrailer = () => {
+        this.setState(prevState => ({
+            showTrailer: !prevState.showTrailer
+        }));
+    };
 
     getMenuOptions(context) {
         const loggedInOptions = ["My teams", "Register team", "Logout"];
@@ -234,60 +281,6 @@ class HomeComponent extends Component {
         this.server = this.context.server;
         this.snack = this.context.snack;
         this.partUser = this.context.partUser;
-        console.log(this.partUser);
-        this.getEvents();
-        this.getExhibits();
-    }
-
-    eventsComponent(props) {
-        return this.state.events.map((e) => {
-            return (
-                <div key={e.code}>
-                    <Link to={`/e/${e.code}`}>{e.name}</Link>
-                    <br/>
-                </div>
-            );
-        });
-    }
-
-    getEvents() {
-        fetch(`${this.server}/pub/event/namesAndCodes`, {
-            mode: 'cors',
-            credentials: 'include',
-            method: "GET",
-            headers: {
-                'Accept': 'application/json',
-            }
-        }).then((res) => {
-            if (!res.ok)
-                throw Error(res.statusText);
-            else
-                return res.json();
-        }).then((events) => {
-            this.setState({events});
-        }).catch(err => {
-            this.snack("error", err.message);
-        });
-    }
-
-    getExhibits() {
-        fetch(`${this.server}/pub/event/namesAndCodes`, {
-            mode: 'cors',
-            credentials: 'include',
-            method: "GET",
-            headers: {
-                'Accept': 'application/json',
-            }
-        }).then((res) => {
-            if (!res.ok)
-                throw Error(res.statusText);
-            else
-                return res.json();
-        }).then((exhibits) => {
-            this.setState({exhibits});
-        }).catch(err => {
-            this.snack("error", err.message);
-        });
     }
 }
 
