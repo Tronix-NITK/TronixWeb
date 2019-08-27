@@ -18,13 +18,17 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import NavMenuIcon from '@material-ui/icons/Menu';
 import ReactPlayer from 'react-player';
-import IconButton from "@material-ui/core/IconButton";
 import PlayIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 import EventButtonIcon from "@material-ui/icons/EventNote";
 import ExhibitButtonIcon from "@material-ui/icons/Star";
 import Button from "@material-ui/core/Button";
 import {Link} from "react-router-dom";
+import BottomNavigation from "@material-ui/core/BottomNavigation";
+import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
+import SocialIcon from '@material-ui/icons/ThumbUp';
+import CollegeIcon from '@material-ui/icons/LocationCity';
+import MailIcon from '@material-ui/icons/Mail';
 
 const styles = theme => ({
     title: {
@@ -57,7 +61,11 @@ const styles = theme => ({
     centerFlex: {
         display: "flex",
         justifyContent: "center",
-    }
+    },
+    footerContainer: {
+        display: "block",
+        margin: theme.spacing(1),
+    },
 });
 
 class HomeComponent extends Component {
@@ -155,8 +163,27 @@ class HomeComponent extends Component {
                         </div>
                     </Grid>
                     <Grid item xs={12}>
-                        <div>
-                            contact us
+                        <div className={classes.footerContainer}>
+                            <BottomNavigation
+                                showLabels
+                                onChange={(_, val) => window.open(val, "_blank")}
+                            >
+                                <BottomNavigationAction
+                                    label="Facebook"
+                                    icon={<SocialIcon/>}
+                                    value="https://www.facebook.com/tronixcommittee/"
+                                />
+                                <BottomNavigationAction
+                                    label="NITK"
+                                    icon={<CollegeIcon/>}
+                                    value="https://www.nitk.ac.in/"
+                                />
+                                <BottomNavigationAction
+                                    label="Mail"
+                                    icon={<MailIcon/>}
+                                    value="mailto:tronix@gmail.com"
+                                />
+                            </BottomNavigation>
                         </div>
                     </Grid>
                 </Grid>
