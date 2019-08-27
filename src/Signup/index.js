@@ -197,7 +197,7 @@ class Signup extends Component {
     componentDidMount() {
         this.server = this.context.server;
         this.snack = this.context.snack;
-        fetch(`${this.server}/part/info/self`,
+        fetch(`${this.server}/part/auth/user`,
             {
                 mode: 'cors',
                 credentials: 'include',

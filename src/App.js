@@ -28,6 +28,7 @@ import EventsComponent from "./Events";
 import ExhibitsComponent from "./Exhibits";
 import Exhibit from "./Exhibit";
 import Home from "./Home";
+import doThisOne from "./egg/find-me-as";
 
 const theme = {
     "dark": createMuiTheme({
@@ -208,6 +209,7 @@ class App extends Component {
     componentDidMount() {
         this.server = API_SERVER;
         this.loadPartUser();
+        doThisOne();
     }
 
     themeChanger(name) {
@@ -240,7 +242,7 @@ class App extends Component {
     }
 
     loadPartUser() {
-        fetch(`${this.server}/part/info/self`,
+        fetch(`${this.server}/part/auth/user`,
             {
                 mode: 'cors',
                 credentials: 'include',
