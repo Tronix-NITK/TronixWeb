@@ -5,10 +5,15 @@ import AppContext from "../AppContext";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Button from "@material-ui/core/Button";
+import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
 import {Link} from "react-router-dom";
+import Divider from "@material-ui/core/Divider";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const styles = theme => ({
     root: {
@@ -29,45 +34,44 @@ class EventsComponent extends Component {
         this.state = {
             showLoading: true,
             events: null,
+            expandedEvent: null,
         }
     }
 
     render() {
         const {classes} = this.props;
         let {showLoading, events} = this.state;
+        let view;
         if (!showLoading) {
             if (events) {
-                return (
-                    <div className={classes.root}>
-                        <List>
-                            {
-                                events.map(event => (
-                                    <ListItem button component={Link} key={`li_${event.code}`} to={`/e/${event.code}`}>
-                                        <ListItemText primary={event.name}/>
-                                    </ListItem>
-                                ))
-                            }
-                        </List>
+                view = (
+                    <div className={classes.paper}>
+                        {
+                            events.map(e => this.getExpansionPanel(e))
+                        }
                     </div>
                 );
             } else {
-                return (
-                    <div className={classes.root}>
-                        <Paper>
-                            <Typography variant={"h1"}>
-                                Could not find events
-                            </Typography>
-                        </Paper>
-                    </div>
+                view = (
+                    <Paper className={classes.paper}>
+                        <Typography variant={"h3"}>
+                            Could not load events
+                        </Typography>
+                    </Paper>
                 );
             }
         } else {
-            return (
-                <div className={classes.root}>
-                    <CircularProgress/>
-                </div>
+            view = (
+                <Paper className={classes.paper}>
+                    <LinearProgress/>
+                </Paper>
             );
         }
+        return (
+            <div className={classes.root}>
+                {view}
+            </div>
+        );
     }
 
     componentDidMount() {
@@ -76,9 +80,47 @@ class EventsComponent extends Component {
         this.getEvents();
     }
 
+    handleExpansion = (expandedEvent) => (_, isExpanded) => {
+        this.setState({expandedEvent: isExpanded ? expandedEvent : null});
+    };
+
+    getExpansionPanel = (event) => {
+        const {classes} = this.props;
+        const {expandedEvent} = this.state;
+        return (
+            <ExpansionPanel
+                key={event.code}
+                expanded={expandedEvent === event.code}
+                onChange={this.handleExpansion(event.code)}
+            >
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
+                    <Typography>
+                        {event.name}
+                    </Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                    {event.description}
+                </ExpansionPanelDetails>
+                <Divider/>
+                <ExpansionPanelActions>
+                    <Button component={Link} to={`/e/${event.code}`} variant={"contained"}>
+                        Learn More
+                    </Button>
+                    <Button
+                        component={Link} to={`/register/${event.code}`} variant={"contained"}
+                        color={"primary"}
+                    >
+                        Register
+                    </Button>
+
+                </ExpansionPanelActions>
+            </ExpansionPanel>
+        );
+    };
+
     getEvents() {
         this.setState({showLoading: true});
-        fetch(`${this.server}/pub/event/namesAndCodes`, {
+        fetch(`${this.server}/pub/event/briefs`, {
             mode: 'cors',
             credentials: 'include',
             method: "GET",
