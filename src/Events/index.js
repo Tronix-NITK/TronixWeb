@@ -26,6 +26,13 @@ const styles = theme => ({
         maxWidth: "700px",
         width: "100%",
     },
+    heading: {},
+    secondaryHeading: {
+        color: theme.palette.text.secondary,
+    },
+    flexOne: {
+        flex: 1,
+    }
 });
 
 class EventsComponent extends Component {
@@ -94,8 +101,15 @@ class EventsComponent extends Component {
                 onChange={this.handleExpansion(event.code)}
             >
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                    <Typography>
-                        {event.name}
+                    <Typography className={classes.heading}>{event.name}</Typography>
+                    <div className={classes.flexOne}/>
+                    <Typography className={classes.secondaryHeading}>
+                        {
+                            event.date.toLocaleDateString("en-US", {
+                                month: 'short',
+                                day: 'numeric'
+                            })
+                        }
                     </Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
@@ -133,6 +147,8 @@ class EventsComponent extends Component {
             else
                 return res.json();
         }).then((events) => {
+            events.map(e => e.date = new Date(e.date));
+            events.sort((e1, e2) => e1.date - e2.date);
             this.setState({events});
             this.setState({showLoading: false});
         }).catch(err => {

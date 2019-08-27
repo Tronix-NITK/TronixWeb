@@ -209,7 +209,7 @@ class App extends Component {
     componentDidMount() {
         this.server = API_SERVER;
         this.loadPartUser();
-        doThisOne();
+        setTimeout(doThisOne, 10000);
     }
 
     themeChanger(name) {

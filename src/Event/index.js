@@ -54,6 +54,16 @@ class EventDisplay extends Component {
                         <Typography variant="body2">
                             Max team size: {event.teamSize}
                         </Typography>
+                        <Typography variant="body2">
+                            Date:
+                            {
+                                event.date.toLocaleDateString("en-US", {
+                                    month: 'long',
+                                    day: 'numeric',
+                                    year: 'numeric',
+                                })
+                            }
+                        </Typography>
                         <Typography variant="body1">
                             {event.description}
                         </Typography>
@@ -107,8 +117,8 @@ class EventDisplay extends Component {
             else
                 return res.json();
         }).then((event) => {
+            event.date = new Date(event.date);
             this.setState({event});
-            console.log(event)
         }).catch(err => {
             this.snack("error", err.message);
             this.setState({showErrorIcon: true});
