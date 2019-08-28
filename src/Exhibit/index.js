@@ -6,6 +6,8 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import WarningIcon from '@material-ui/icons/Warning';
+import Button from "@material-ui/core/Button";
+import Divider from "@material-ui/core/Divider";
 
 const styles = theme => ({
     root: {
@@ -22,34 +24,35 @@ const styles = theme => ({
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+    },
+    pdfIFrame: {
+        width: "100%",
+        height: "70vh",
     }
 });
 
-class ExhibitDisplay extends Component {
+class EventDisplay extends Component {
     constructor(props) {
         super(props);
         this.state = {
             showErrorIcon: false,
-            exhibit: null,
+            event: null,
         }
     }
 
     render() {
         const {classes} = this.props;
-        let exhibitName = this.props.match.params["name"];
-        let {showErrorIcon, exhibit} = this.state;
-        if (exhibit != null) {
+        let eventName = this.props.match.params["name"];
+        let {showErrorIcon, event} = this.state;
+        if (event != null) {
             return (
                 <div className={classes.root}>
                     <Paper className={classes.paper}>
                         <Typography variant="h3" gutterBottom>
-                            {exhibit.name}
+                            {event.name}
                         </Typography>
                         <Typography variant="body1">
-                            {exhibit.summary}
-                        </Typography>
-                        <Typography variant="body1">
-                            {exhibit.description}
+                            {event.description}
                         </Typography>
                     </Paper>
                 </div>
@@ -60,7 +63,7 @@ class ExhibitDisplay extends Component {
                     <Paper className={classes.paper}>
                         <div className={classes.spaceBetween}>
                             <Typography variant="h2">
-                                {exhibitName}
+                                {eventName}
                             </Typography>
                             {showErrorIcon ? <WarningIcon fontSize="large"/> : <CircularProgress/>}
                         </div>
@@ -73,12 +76,13 @@ class ExhibitDisplay extends Component {
     componentDidMount() {
         this.server = this.context.server;
         this.snack = this.context.snack;
-        let exhibitCode = this.props.match.params["code"];
-        this.getExhibit(exhibitCode);
+        let eventCode = this.props.match.params["code"];
+        this.getEvent(eventCode);
     }
 
-    getExhibit(code) {
-        fetch(`${this.server}/exhibit/ofCode/${code}`, {
+
+    getEvent(code) {
+        fetch(`${this.server}/pub/exhibit/ofCode/${code}`, {
             mode: 'cors',
             credentials: 'include',
             method: "GET",
@@ -90,8 +94,9 @@ class ExhibitDisplay extends Component {
                 throw Error(res.statusText);
             else
                 return res.json();
-        }).then((exhibit) => {
-            this.setState({exhibit});
+        }).then((event) => {
+            event.date = new Date(event.date);
+            this.setState({event});
         }).catch(err => {
             this.snack("error", err.message);
             this.setState({showErrorIcon: true});
@@ -99,9 +104,9 @@ class ExhibitDisplay extends Component {
     }
 }
 
-ExhibitDisplay.propTypes = {
+EventDisplay.propTypes = {
     classes: PropTypes.object.isRequired,
 };
-ExhibitDisplay.contextType = AppContext;
+EventDisplay.contextType = AppContext;
 
-export default withStyles(styles, {withTheme: true})(ExhibitDisplay);
+export default withStyles(styles, {withTheme: true})(EventDisplay);

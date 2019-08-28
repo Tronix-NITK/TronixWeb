@@ -4,11 +4,15 @@ import {withStyles} from "@material-ui/core";
 import AppContext from "../AppContext";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
+import ExpansionPanel from "@material-ui/core/ExpansionPanel";
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Button from "@material-ui/core/Button";
+import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
 import {Link} from "react-router-dom";
+import Divider from "@material-ui/core/Divider";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const styles = theme => ({
     root: {
@@ -21,64 +25,99 @@ const styles = theme => ({
         maxWidth: "700px",
         width: "100%",
     },
+    heading: {},
+    secondaryHeading: {
+        color: theme.palette.text.secondary,
+    },
+    flexOne: {
+        flex: 1,
+    }
 });
 
-class ExhibitsComponent extends Component {
+class EventsComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
             showLoading: true,
-            exhibits: null,
+            events: null,
+            expandedEvent: null,
         }
     }
 
     render() {
         const {classes} = this.props;
-        let {showLoading, exhibits} = this.state;
+        let {showLoading, events} = this.state;
+        let view;
         if (!showLoading) {
-            if (exhibits) {
-                return (
-                    <div className={classes.root}>
-                        <List>
-                            {
-                                exhibits.map(event => (
-                                    <ListItem button component={Link} key={`li_${event.code}`} to={`/e/${event.code}`}>
-                                        <ListItemText primary={event.name}/>
-                                    </ListItem>
-                                ))
-                            }
-                        </List>
+            if (events) {
+                view = (
+                    <div className={classes.paper}>
+                        {
+                            events.map(e => this.getExpansionPanel(e))
+                        }
                     </div>
                 );
             } else {
-                return (
-                    <div className={classes.root}>
-                        <Paper>
-                            <Typography variant={"h1"}>
-                                Could not find exhibits
-                            </Typography>
-                        </Paper>
-                    </div>
+                view = (
+                    <Paper className={classes.paper}>
+                        <Typography variant={"h3"}>
+                            Could not load events
+                        </Typography>
+                    </Paper>
                 );
             }
         } else {
-            return (
-                <div className={classes.root}>
-                    <CircularProgress/>
-                </div>
+            view = (
+                <Paper className={classes.paper}>
+                    <LinearProgress/>
+                </Paper>
             );
         }
+        return (
+            <div className={classes.root}>
+                {view}
+            </div>
+        );
     }
 
     componentDidMount() {
         this.server = this.context.server;
         this.snack = this.context.snack;
-        this.getExhibits();
+        this.getEvents();
     }
 
-    getExhibits() {
+    handleExpansion = (expandedEvent) => (_, isExpanded) => {
+        this.setState({expandedEvent: isExpanded ? expandedEvent : null});
+    };
+
+    getExpansionPanel = (event) => {
+        const {classes} = this.props;
+        const {expandedEvent} = this.state;
+        return (
+            <ExpansionPanel
+                key={event.code}
+                expanded={expandedEvent === event.code}
+                onChange={this.handleExpansion(event.code)}
+            >
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
+                    <Typography className={classes.heading}>{event.name}</Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                    {event.description}
+                </ExpansionPanelDetails>
+                <Divider/>
+                <ExpansionPanelActions>
+                    <Button component={Link} to={`/x/${event.code}`} variant={"contained"}>
+                        Learn More
+                    </Button>
+                </ExpansionPanelActions>
+            </ExpansionPanel>
+        );
+    };
+
+    getEvents() {
         this.setState({showLoading: true});
-        fetch(`${this.server}/pub/event/namesAndCodes`, {
+        fetch(`${this.server}/pub/exhibit/briefs`, {
             mode: 'cors',
             credentials: 'include',
             method: "GET",
@@ -90,8 +129,9 @@ class ExhibitsComponent extends Component {
                 throw Error(res.statusText);
             else
                 return res.json();
-        }).then((exhibits) => {
-            this.setState({exhibits});
+        }).then((events) => {
+            events.sort((e1, e2) => e1.rank - e2.rank);
+            this.setState({events});
             this.setState({showLoading: false});
         }).catch(err => {
             this.snack("error", err.message);
@@ -100,9 +140,9 @@ class ExhibitsComponent extends Component {
     }
 }
 
-ExhibitsComponent.propTypes = {
+EventsComponent.propTypes = {
     classes: PropTypes.object.isRequired,
 };
-ExhibitsComponent.contextType = AppContext;
+EventsComponent.contextType = AppContext;
 
-export default withStyles(styles, {withTheme: true})(ExhibitsComponent);
+export default withStyles(styles, {withTheme: true})(EventsComponent);

@@ -127,7 +127,7 @@ class HomeComponent extends Component {
                     </Grid>
                     <Grid item xs={4}>
                         <div className={classes.centerFlex}>
-                            <Button>
+                            <Button component={Link} to={"/x"}>
                                 <ExhibitButtonIcon fontSize="large"/>
                                 <Typography>
                                     Exhibits
