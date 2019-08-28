@@ -72,7 +72,9 @@ class Register extends Component {
     getState1View() {
         const {classes} = this.props;
         const title = "Register for " + (this.state.eventName ? `${this.state.eventName}` : "events");
-        const menu = this.state.events.map(e => <MenuItem key={`e_${e}`} value={e}>{e}</MenuItem>);
+        const menu = this.state.events.map(e =>
+            <MenuItem key={`e_${e.code}`} value={e.name}>{e.name}</MenuItem>
+        );
         return (
             <Paper className={classes.rootPaper}>
                 <Typography variant="h4" gutterBottom>{title}</Typography>
@@ -164,8 +166,14 @@ class Register extends Component {
         this.getEvents((err, events) => {
             if (err)
                 this.snack("error", err.message);
-            else
+            else {
                 this.setState({events});
+                const eventCode = this.props.match.params["code"];
+                if (!eventCode) return;
+                const selectedEvent = events.find(e => e.code === eventCode);
+                if (!selectedEvent) return;
+                this.setState({eventName: selectedEvent.name});
+            }
         });
     }
 
@@ -187,7 +195,7 @@ class Register extends Component {
             else
                 return res.json();
         }).then((events) => {
-            cb(null, events.map(e => e.name));
+            cb(null, events);
         }).catch(err => {
             cb(err, null);
         });
