@@ -28,7 +28,6 @@ import EventsComponent from "./Events";
 import ExhibitsComponent from "./Exhibits";
 import Exhibit from "./Exhibit";
 import Home from "./Home";
-import doThisOne from "./egg/find-me-as";
 
 const theme = {
     "dark": createMuiTheme({
@@ -119,9 +118,9 @@ class App extends Component {
                                                                       onLogout={this.onLogout.bind(this)}/>}/>
                                     <Route path="/signup"
                                            component={Signup}/>
-                                    <Route path="/register"
-                                           component={TeamRegister}/>
                                     <Route path="/register/:code"
+                                           component={TeamRegister}/>
+                                    <Route path="/register"
                                            component={TeamRegister}/>
                                     <Route path="/j/:linkID"
                                            component={TeamJoin}/>
@@ -209,7 +208,6 @@ class App extends Component {
     componentDidMount() {
         this.server = API_SERVER;
         this.loadPartUser();
-        setTimeout(doThisOne, 10000);
     }
 
     themeChanger(name) {

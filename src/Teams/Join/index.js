@@ -9,6 +9,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/es/LinearProgress/LinearProgress";
+import {Link} from "react-router-dom";
 
 const styles = theme => ({
     dialogButton: {
@@ -58,7 +59,6 @@ class Join extends Component {
     stage1() {
         const {classes} = this.props;
         const team = this.state.team;
-        let history = this.props.history;
         return (
             <Dialog open={true}>
                 <DialogTitle>Join team</DialogTitle>
@@ -74,7 +74,7 @@ class Join extends Component {
                     <Button
                         variant="contained"
                         className={classes.dialogButton}
-                        onClick={() => history.push("/")}
+                        component={Link} to={'/'}
                     >
                         Cancel
                     </Button>
@@ -94,7 +94,6 @@ class Join extends Component {
     stage2() {
         const {classes} = this.props;
         const team = this.state.team;
-        let history = this.props.history;
         return (
             <Dialog open={true}>
                 <DialogTitle>Join team</DialogTitle>
@@ -111,7 +110,7 @@ class Join extends Component {
                         variant="contained"
                         color="primary"
                         className={classes.dialogButton}
-                        onClick={() => history.push("/")}
+                        component={Link} to={'/'}
                     >
                         Go Home
                     </Button>
@@ -122,7 +121,6 @@ class Join extends Component {
 
     stageErr() {
         const {classes} = this.props;
-        let history = this.props.history;
         return (
             <Dialog open={true}>
                 <DialogTitle>Join team</DialogTitle>
@@ -136,7 +134,7 @@ class Join extends Component {
                         variant="contained"
                         color="primary"
                         className={classes.dialogButton}
-                        onClick={() => history.push("/")}
+                        component={Link} to={'/'}
                     >
                         Go Home
                     </Button>

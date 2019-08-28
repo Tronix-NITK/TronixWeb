@@ -8,6 +8,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import WarningIcon from '@material-ui/icons/Warning';
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
+import {Link} from "react-router-dom";
 
 const styles = theme => ({
     root: {
@@ -67,8 +68,14 @@ class EventDisplay extends Component {
                         <Typography variant="body1">
                             {event.description}
                         </Typography>
-                        <Button variant={"contained"}
-                                onClick={() => this.props.history.push("/register")}>Register</Button>
+                        <Button
+                            variant={"contained"}
+                            component={Link}
+                            to={'register'}
+                        >
+                            Register
+                        </Button>
+                        {event.problemStatement ? <Divider/> : null}
                         {
                             event.problemStatement ?
                                 <PSComponent

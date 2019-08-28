@@ -15,6 +15,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
 import UserGroup from "../helpers/userGroup";
 import AppContext from "../AppContext";
+import {Link} from "react-router-dom";
 
 const styles = theme => ({
     root: {
@@ -408,7 +409,6 @@ class Signup extends Component {
 
     getStage3View() {
         const {classes} = this.props;
-        const history = this.props.history;
         return (
             <Dialog open={true} onClose={this.onClose.bind(this)}>
                 <DialogTitle>Signup</DialogTitle>
@@ -423,7 +423,7 @@ class Signup extends Component {
                         color="primary"
                         className={classes.dialogButton}
                         fullWidth
-                        onClick={() => history.push('/')}
+                        component={Link} to={'/'}
                     >
                         Continue to Tronix
                     </Button>
@@ -434,7 +434,6 @@ class Signup extends Component {
 
     getStage4View() {
         const {classes} = this.props;
-        const history = this.props.history;
         return (
             <Dialog open={true} onClose={this.onClose.bind(this)}>
                 <DialogTitle>Signup</DialogTitle>
@@ -449,7 +448,7 @@ class Signup extends Component {
                         color="primary"
                         className={classes.dialogButton}
                         fullWidth
-                        onClick={() => history.push('/')}
+                        component={Link} to={'/'}
                     >
                         Continue to Tronix
                     </Button>
