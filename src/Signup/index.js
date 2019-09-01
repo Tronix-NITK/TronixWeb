@@ -321,6 +321,7 @@ class Signup extends Component {
                 <DialogContent>
                     <LinearProgress/>
                 </DialogContent>
+                <DialogActions/>
             </Dialog>
         );
     }

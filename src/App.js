@@ -33,22 +33,30 @@ const theme = {
     "dark": createMuiTheme({
         palette: {
             type: "dark",
-            primary: blue,
-            secondary: green,
-            error: red,
+            primary: {
+                main: blue[500]
+            },
+            secondary: {
+                main: grey[500]
+            },
+            error: {
+                main: red[500]
+            },
         },
         typography: {
             useNextVariants: true,
         },
+        styles: {
+            successColor: {
+                color: green[500],
+            },
+            hover: {
+                '&:hover': {
+                    color: blue[500],
+                },
+            }
+        }
     }),
-    "light": createMuiTheme({
-        palette: {
-            type: "light",
-        },
-        typography: {
-            useNextVariants: true,
-        },
-    })
 };
 
 const styles = theme => ({
@@ -81,11 +89,7 @@ const API_SERVER = "https://tronixserver.herokuapp.com/api/v1";
 class App extends Component {
     constructor(props) {
         super(props);
-        let savedTheme = localStorage.getItem("theme");
-        if (theme[savedTheme] == null)
-            savedTheme = "dark";
         this.state = {
-            theme: savedTheme,
             infoSnack: "", successSnack: "", warnSnack: "", errorSnack: "",
             partUser: null,
         };
@@ -94,7 +98,7 @@ class App extends Component {
     render() {
         const {classes} = this.props;
         return (
-            <MuiThemeProvider theme={theme[this.state.theme]}>
+            <MuiThemeProvider theme={theme["dark"]}>
                 <React.Fragment>
                     <CssBaseline/>
                     <AppContext.Provider value={
@@ -208,14 +212,6 @@ class App extends Component {
     componentDidMount() {
         this.server = API_SERVER;
         this.loadPartUser();
-    }
-
-    themeChanger(name) {
-        if (name == null)
-            name = localStorage.getItem("theme") === "dark" ? "light" : "dark";
-        this.setState(prevState => ({theme: theme[name] != null ? name : prevState.theme}));
-        if (theme[name] != null)
-            localStorage.setItem("theme", name);
     }
 
     notFound() {

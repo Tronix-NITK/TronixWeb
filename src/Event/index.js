@@ -4,11 +4,16 @@ import {withStyles} from "@material-ui/core";
 import AppContext from "../AppContext";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import WarningIcon from '@material-ui/icons/Warning';
+import TeamIcon from '@material-ui/icons/People';
 import Button from "@material-ui/core/Button";
-import Divider from "@material-ui/core/Divider";
 import {Link} from "react-router-dom";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import {Carousel} from 'react-responsive-carousel';
+import Grid from "@material-ui/core/Grid";
+import Hidden from "@material-ui/core/Hidden";
+import Tooltip from "@material-ui/core/Tooltip";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const styles = theme => ({
     root: {
@@ -16,15 +21,10 @@ const styles = theme => ({
         justifyContent: "center",
     },
     paper: {
-        margin: theme.spacing(2, 2),
-        padding: theme.spacing(4, 3),
+        margin: theme.spacing(2),
+        padding: theme.spacing(3),
         maxWidth: "700px",
         width: "100%",
-    },
-    spaceBetween: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
     },
     pdfIFrame: {
         width: "100%",
@@ -43,46 +43,102 @@ class EventDisplay extends Component {
 
     render() {
         const {classes} = this.props;
-        let eventName = this.props.match.params["name"];
+        let eventCode = this.props.match.params["code"];
         let {showErrorIcon, event} = this.state;
         if (event != null) {
             return (
                 <div className={classes.root}>
                     <Paper className={classes.paper}>
-                        <Typography variant="h3" gutterBottom>
-                            {event.name}
-                        </Typography>
-                        <Typography variant="body2">
-                            Max team size: {event.teamSize}
-                        </Typography>
-                        <Typography variant="body2">
-                            Date:
+                        <Grid container spacing={3}>
+                            <Grid item xs={12} sm={8}>
+                                <Typography variant="h3">
+                                    {event.name}
+                                </Typography>
+                            </Grid>
+                            <Hidden xsDown>
+                                <Grid item xs={4}>
+                                    <Button
+                                        variant={"contained"}
+                                        component={Link}
+                                        to={`/register/${event.code}`}
+                                        fullWidth
+                                    >
+                                        Register
+                                    </Button>
+                                </Grid>
+                            </Hidden>
+                            <Grid item xs={7}>
+                                <Typography variant="body1">
+                                    {
+                                        event.date.toLocaleDateString("en-US", {
+                                            month: 'short',
+                                            day: 'numeric',
+                                            year: 'numeric',
+                                        })
+                                    }
+                                </Typography>
+                            </Grid>
+                            <Grid
+                                justify="flex-end"
+                                item xs={5} container spacing={1}>
+                                <Grid item>
+                                    <Tooltip title={"Max team size"}>
+                                        <TeamIcon/>
+                                    </Tooltip>
+                                </Grid>
+                                <Grid item>
+                                    <Typography variant="body1">
+                                        {event.teamSize}
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Typography variant="body1">
+                                    {event.description}
+                                </Typography>
+                            </Grid>
+                            <Hidden smUp>
+                                <Grid item xs={12}>
+                                    <Button
+                                        variant={"contained"}
+                                        component={Link}
+                                        to={`/register/${event.code}`}
+                                        fullWidth
+                                    >
+                                        Register
+                                    </Button>
+                                </Grid>
+                            </Hidden>
                             {
-                                event.date.toLocaleDateString("en-US", {
-                                    month: 'long',
-                                    day: 'numeric',
-                                    year: 'numeric',
-                                })
+                                event.gallery.length ?
+                                    <Grid item xs={12}>
+                                        <Carousel
+                                            autoPlay={true}
+                                            showThumbs={false}
+                                            interval={2000}
+                                            infiniteLoop={true}
+                                            dynamicHeight={true}
+                                            showStatus={false}
+                                            useKeyboardArrows={true}
+                                        >
+                                            {
+                                                event.gallery.map(url => (
+                                                    <img key={url} src={url} alt={":("}/>
+                                                ))
+                                            }
+                                        </Carousel>
+                                    </Grid> : null
                             }
-                        </Typography>
-                        <Typography variant="body1">
-                            {event.description}
-                        </Typography>
-                        <Button
-                            variant={"contained"}
-                            component={Link}
-                            to={'register'}
-                        >
-                            Register
-                        </Button>
-                        {event.problemStatement ? <Divider/> : null}
-                        {
-                            event.problemStatement ?
-                                <PSComponent
-                                    link={event.problemStatement}
-                                    classes={classes}
-                                /> : null
-                        }
+                            {
+                                event.problemStatement ?
+                                    <Grid item xs={12}>
+                                        <PSComponent
+                                            link={event.problemStatement}
+                                            classes={classes}
+                                        />
+                                    </Grid> : null
+                            }
+                        </Grid>
                     </Paper>
                 </div>
             );
@@ -90,12 +146,28 @@ class EventDisplay extends Component {
             return (
                 <div className={classes.root}>
                     <Paper className={classes.paper}>
-                        <div className={classes.spaceBetween}>
-                            <Typography variant="h2">
-                                {eventName}
-                            </Typography>
-                            {showErrorIcon ? <WarningIcon fontSize="large"/> : <CircularProgress/>}
-                        </div>
+                        <Grid justify="space-between" container>
+                            {
+                                showErrorIcon ?
+                                    <Grid item>
+                                        <Typography variant="h2">
+                                            {eventCode}
+                                        </Typography>
+                                    </Grid> : null
+                            }
+                            {
+                                showErrorIcon ?
+                                    <Grid item>
+                                        <WarningIcon fontSize="large"/>
+                                    </Grid> : null
+                            }
+                            {
+                                !showErrorIcon ?
+                                    <Grid item xs={12}>
+                                        <LinearProgress/>
+                                    </Grid> : null
+                            }
+                        </Grid>
                     </Paper>
                 </div>
             );

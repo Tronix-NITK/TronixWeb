@@ -29,6 +29,8 @@ import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import SocialIcon from '@material-ui/icons/ThumbUp';
 import CollegeIcon from '@material-ui/icons/LocationCity';
 import MailIcon from '@material-ui/icons/Mail';
+import Hidden from "@material-ui/core/Hidden";
+import classNames from 'classnames';
 
 const styles = theme => ({
     title: {
@@ -63,9 +65,9 @@ const styles = theme => ({
         justifyContent: "center",
     },
     footerContainer: {
-        display: "block",
         margin: theme.spacing(1),
     },
+    ...theme.styles
 });
 
 class HomeComponent extends Component {
@@ -136,31 +138,39 @@ class HomeComponent extends Component {
                         </div>
                     </Grid>
                     <Grid item xs={12}>
-                        <div className={classes.registerStepperContainer}>
-                            <AppContext.Consumer>
-                                {(context) => (
-                                    <Stepper nonLinear activeStep={null} alternativeLabel orientation={"horizontal"}>
-                                        {
-                                            HomeComponent.getMakeTeamSteps(context).map(stepData => (
-                                                <Step key={stepData.label}>
-                                                    <StepButton
-                                                        icon={stepData.icon}
-                                                        onClick={this.handleNav.bind(this, stepData.label)}
-                                                    >
-                                                        <StepLabel>
-                                                            <Typography variant={"h6"}
-                                                                        gutterBottom>{stepData.label}</Typography>
+                        <AppContext.Consumer>
+                            {(context) => (
+                                <Stepper nonLinear activeStep={null} alternativeLabel orientation={"horizontal"}>
+                                    {
+                                        HomeComponent.getMakeTeamSteps(context).map(stepData => (
+                                            <Step key={stepData.label}>
+                                                <StepButton
+                                                    component={Link}
+                                                    className={`${classes.hover} ${stepData.disabled ? classes.successColor : {}}`}
+                                                    {...stepData}
+                                                >
+                                                    <StepLabel>
+                                                        <Typography
+                                                            variant={"body1"}
+                                                            gutterBottom
+                                                        >
+                                                            {stepData.label}
+                                                        </Typography>
+                                                        <Hidden smDown>
                                                             <Typography
-                                                                variant={"body2"}>{stepData.content}</Typography>
-                                                        </StepLabel>
-                                                    </StepButton>
-                                                </Step>
-                                            ))
-                                        }
-                                    </Stepper>
-                                )}
-                            </AppContext.Consumer>
-                        </div>
+                                                                variant={"body2"}
+                                                            >
+                                                                {stepData.content}
+                                                            </Typography>
+                                                        </Hidden>
+                                                    </StepLabel>
+                                                </StepButton>
+                                            </Step>
+                                        ))
+                                    }
+                                </Stepper>
+                            )}
+                        </AppContext.Consumer>
                     </Grid>
                     <Grid item xs={12}>
                         <div className={classes.footerContainer}>
@@ -168,21 +178,16 @@ class HomeComponent extends Component {
                                 showLabels
                                 onChange={(_, val) => window.open(val, "_blank")}
                             >
-                                <BottomNavigationAction
-                                    label="Facebook"
-                                    icon={<SocialIcon/>}
-                                    value="https://www.facebook.com/tronixcommittee/"
-                                />
-                                <BottomNavigationAction
-                                    label="NITK"
-                                    icon={<CollegeIcon/>}
-                                    value="https://www.nitk.ac.in/"
-                                />
-                                <BottomNavigationAction
-                                    label="Mail"
-                                    icon={<MailIcon/>}
-                                    value="mailto:tronix@gmail.com"
-                                />
+                                {
+                                    HomeComponent.getFooterData().map(d =>
+                                        <BottomNavigationAction
+                                            {...d}
+                                            key={d.label}
+                                            className={classes.hover}
+                                        >
+                                        </BottomNavigationAction>
+                                    )
+                                }
                             </BottomNavigation>
                         </div>
                     </Grid>
@@ -225,15 +230,22 @@ class HomeComponent extends Component {
     };
 
     getMenuOptions(context) {
-        const loggedInOptions = ["My teams", "Register team", "Logout"];
-        const loggedOutOptions = ["Signup", "Login"];
+        const loggedInOptions = [
+            {key: "My teams", to: "/teams",},
+            {key: "Register team", to: "/register"},
+            {key: "Logout", to: "/logout"},
+        ];
+        const loggedOutOptions = [
+            {key: "Signup", to: "/signup",},
+            {key: "Login", to: "/login"},
+        ];
         let options = HomeComponent.hasSignedUp(context) ? loggedInOptions : loggedOutOptions;
         return options.map(option => (
             <MenuItem
-                key={option}
-                onClick={this.handleNav.bind(this, option)}
+                component={Link}
+                {...option}
             >
-                {option}
+                {option.key}
             </MenuItem>
         ))
     }
@@ -244,20 +256,6 @@ class HomeComponent extends Component {
 
     showNavMenu() {
         this.setState({showNavMenu: true});
-    }
-
-    handleNav(title) {
-        const directs = {
-            "Signup": "/signup",
-            "Profile": "/signup",
-            "Register": "/register",
-            "Register team": "/register",
-            "Invite": "/teams",
-            "My teams": "/teams",
-            "Logout": "/logout",
-            "Login": "/login",
-        };
-        this.props.history.push(directs[title]);
     }
 
     static hasSignedUp({partUser}) {
@@ -280,28 +278,52 @@ class HomeComponent extends Component {
             {
                 label: "Signup",
                 content: "Signup with Google",
-                icon: <SignupIcon color={HomeComponent.hasSignedUp(context) ? "secondary" : undefined}/>,
-                completed: HomeComponent.hasSignedUp(context),
+                icon: <SignupIcon/>,
+                to: "/signup",
+                disabled: HomeComponent.hasSignedUp(context),
             },
             {
                 label: "Profile",
                 content: "Complete your profile",
-                icon: <DetailsIcon color={HomeComponent.hasCompletedProfile(context) ? "secondary" : undefined}/>,
-                completed: HomeComponent.hasCompletedProfile(context),
+                icon: <DetailsIcon/>,
+                to: "/signup",
+                disabled: HomeComponent.hasCompletedProfile(context),
             },
             {
                 label: "Register",
                 content: "Register for events",
                 icon: <RegisterIcon/>,
-                completed: false,
+                to: "/register",
+                disabled: false,
             },
             {
                 label: "Invite",
                 content: "Share invite link",
                 icon: <InviteIcon/>,
-                completed: false,
+                to: "/teams",
+                disabled: false,
             },
         ];
+    }
+
+    static getFooterData() {
+        return [
+            {
+                label: "Facebook",
+                icon: <SocialIcon/>,
+                value: "https://www.facebook.com/tronixcommittee/",
+            },
+            {
+                label: "NITK",
+                icon: <CollegeIcon/>,
+                value: "https://www.nitk.ac.in/",
+            },
+            {
+                label: "Mail",
+                icon: <MailIcon/>,
+                value: "mailto:tronix@gmail.com",
+            },
+        ]
     }
 
     componentDidMount() {
