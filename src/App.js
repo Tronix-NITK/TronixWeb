@@ -28,6 +28,8 @@ import EventsComponent from "./Events";
 import ExhibitsComponent from "./Exhibits";
 import Exhibit from "./Exhibit";
 import Home from "./Home";
+import Particles from "react-particles-js";
+import Hidden from "@material-ui/core/Hidden";
 
 const theme = {
     "dark": createMuiTheme({
@@ -61,6 +63,16 @@ const theme = {
 
 const styles = theme => ({
     app: {},
+    backgroundWrapper: {
+        position: "fixed",
+        zIndex: "-1",
+        width: "100vw",
+        height: "100vh",
+    },
+    background: {
+        width: "100%",
+        height: "100%",
+    },
     snackMessage: {
         display: 'flex',
         alignItems: 'center',
@@ -110,6 +122,18 @@ class App extends Component {
                     }>
                         <Router>
                             <div className={classes.app}>
+                                <Hidden xsDown>
+                                    <Particles
+                                        className={classes.backgroundWrapper}
+                                        canvasClassName={classes.background}
+                                        params={particleParams}/>
+                                </Hidden>
+                                <Hidden smUp>
+                                    <Particles
+                                        className={classes.backgroundWrapper}
+                                        canvasClassName={classes.background}
+                                        params={particleParams1}/>
+                                </Hidden>
                                 <Switch>
                                     <Route exact path="/"
                                            component={Home}/>
@@ -259,6 +283,59 @@ class App extends Component {
 
 App.propTypes = {
     classes: PropTypes.object.isRequired,
+};
+
+const particleParams = {
+    "particles": {
+        "number": {
+            "value": 60
+        },
+        "color": {
+            "value": "#69ff00",
+        },
+        "size": {
+            "value": 3
+        },
+        "line_linked": {
+            "color": "#78ff00",
+            "width": 2,
+        }
+    },
+    "interactivity": {
+        "detect_on": "window",
+        "events": {
+            "onhover": {
+                "enable": true,
+                "mode": "repulse"
+            }
+        }
+    }
+};
+const particleParams1 = {
+    "particles": {
+        "number": {
+            "value": 30,
+        },
+        "color": {
+            "value": "#69ff00",
+        },
+        "size": {
+            "value": 3
+        },
+        "line_linked": {
+            "color": "#78ff00",
+            "width": 2,
+        }
+    },
+    "interactivity": {
+        "detect_on": "window",
+        "events": {
+            "onhover": {
+                "enable": true,
+                "mode": "repulse"
+            }
+        }
+    }
 };
 
 export default withStyles(styles, {withTheme: true})(App);

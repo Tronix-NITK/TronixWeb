@@ -17,7 +17,7 @@ import UserGroup from "../helpers/userGroup";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import NavMenuIcon from '@material-ui/icons/Menu';
-import ReactPlayer from 'react-player';
+import ReactPlayer from 'react-player/lib/players/YouTube';
 import PlayIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 import EventButtonIcon from "@material-ui/icons/EventNote";
@@ -30,11 +30,10 @@ import SocialIcon from '@material-ui/icons/ThumbUp';
 import CollegeIcon from '@material-ui/icons/LocationCity';
 import MailIcon from '@material-ui/icons/Mail';
 import Hidden from "@material-ui/core/Hidden";
-import classNames from 'classnames';
 
 const styles = theme => ({
     title: {
-        padding: theme.spacing(5, 0),
+        padding: theme.spacing(4, 0, 2, 0),
         display: "flex",
         justifyContent: "center",
     },
@@ -50,7 +49,6 @@ const styles = theme => ({
         padding: theme.spacing(3),
     },
     fab: {},
-    registerStepperContainer: {},
     eventsContainer: {
         padding: theme.spacing(2),
     },
@@ -66,6 +64,18 @@ const styles = theme => ({
     },
     footerContainer: {
         margin: theme.spacing(1),
+    },
+    stepper: {
+        margin: theme.spacing(1),
+    },
+    trailerWrapper: {
+        position: "relative",
+        paddingTop: "56.25%",
+    },
+    trailer: {
+        position: "absolute",
+        top: 0,
+        left: 0,
     },
     ...theme.styles
 });
@@ -97,9 +107,12 @@ class HomeComponent extends Component {
                         </Grid>
                     }
                     {!showTrailer ? null :
-                        <Grid item sm={12}>
-                            <div className={classes.centerFlex}>
+                        <Grid item xs={12}>
+                            <div className={classes.trailerWrapper}>
                                 <ReactPlayer
+                                    className={classes.trailer}
+                                    width='100%'
+                                    height='100%'
                                     url="https://www.youtube.com/watch?v=XmMHKcGBnsQ"
                                     controls={false}
                                     playing={true}
@@ -107,7 +120,19 @@ class HomeComponent extends Component {
                             </div>
                         </Grid>
                     }
-                    <Grid item xs={4}>
+                    <Hidden smUp>
+                        <Grid item xs={12} sm={4}>
+                            <div className={classes.centerFlex}>
+                                <Button onClick={this.toggleTrailer}>
+                                    {trailerIcon}
+                                    <Typography>
+                                        Trailer
+                                    </Typography>
+                                </Button>
+                            </div>
+                        </Grid>
+                    </Hidden>
+                    <Grid item xs={12} sm={4}>
                         <div className={classes.centerFlex}>
                             <Button component={Link} to={"/e"}>
                                 <EventButtonIcon fontSize="large"/>
@@ -117,17 +142,19 @@ class HomeComponent extends Component {
                             </Button>
                         </div>
                     </Grid>
-                    <Grid item xs={4}>
-                        <div className={classes.centerFlex}>
-                            <Button onClick={this.toggleTrailer}>
-                                {trailerIcon}
-                                <Typography>
-                                    Trailer
-                                </Typography>
-                            </Button>
-                        </div>
-                    </Grid>
-                    <Grid item xs={4}>
+                    <Hidden xsDown>
+                        <Grid item xs={12} sm={4}>
+                            <div className={classes.centerFlex}>
+                                <Button onClick={this.toggleTrailer}>
+                                    {trailerIcon}
+                                    <Typography>
+                                        Trailer
+                                    </Typography>
+                                </Button>
+                            </div>
+                        </Grid>
+                    </Hidden>
+                    <Grid item xs={12} sm={4}>
                         <div className={classes.centerFlex}>
                             <Button component={Link} to={"/x"}>
                                 <ExhibitButtonIcon fontSize="large"/>
@@ -140,7 +167,13 @@ class HomeComponent extends Component {
                     <Grid item xs={12}>
                         <AppContext.Consumer>
                             {(context) => (
-                                <Stepper nonLinear activeStep={null} alternativeLabel orientation={"horizontal"}>
+                                <Stepper
+                                    className={classes.stepper}
+                                    nonLinear
+                                    activeStep={null}
+                                    alternativeLabel
+                                    orientation={"horizontal"}
+                                >
                                     {
                                         HomeComponent.getMakeTeamSteps(context).map(stepData => (
                                             <Step key={stepData.label}>
@@ -156,7 +189,7 @@ class HomeComponent extends Component {
                                                         >
                                                             {stepData.label}
                                                         </Typography>
-                                                        <Hidden smDown>
+                                                        <Hidden xsDown>
                                                             <Typography
                                                                 variant={"body2"}
                                                             >
