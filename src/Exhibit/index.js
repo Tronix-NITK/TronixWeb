@@ -4,19 +4,19 @@ import {withStyles} from "@material-ui/core";
 import AppContext from "../AppContext";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import WarningIcon from '@material-ui/icons/Warning';
+import Grid from "@material-ui/core/Grid";
+import {Carousel} from "react-responsive-carousel";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
 const styles = theme => ({
     root: {
-        display: "flex",
-        justifyContent: "center",
+        ...theme.styles.horizontalCenter,
     },
     paper: {
-        margin: theme.spacing(2, 2),
-        padding: theme.spacing(4, 3),
-        maxWidth: "700px",
-        width: "100%",
+        ...theme.styles.paper,
+        margin: theme.spacing(2),
+        padding: theme.spacing(3),
     },
     spaceBetween: {
         display: "flex",
@@ -40,18 +40,44 @@ class EventDisplay extends Component {
 
     render() {
         const {classes} = this.props;
-        let eventName = this.props.match.params["name"];
+        let eventCode = this.props.match.params["code"];
         let {showErrorIcon, event} = this.state;
         if (event != null) {
             return (
                 <div className={classes.root}>
                     <Paper className={classes.paper}>
-                        <Typography variant="h3" gutterBottom>
-                            {event.name}
-                        </Typography>
-                        <Typography variant="body1">
-                            {event.description}
-                        </Typography>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12} sm={8}>
+                                <Typography variant="h3">
+                                    {event.name}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Typography variant="body1">
+                                    {event.description}
+                                </Typography>
+                            </Grid>
+                            {
+                                event.gallery.length ?
+                                    <Grid item xs={12}>
+                                        <Carousel
+                                            autoPlay={true}
+                                            showThumbs={false}
+                                            interval={2000}
+                                            infiniteLoop={true}
+                                            dynamicHeight={true}
+                                            showStatus={false}
+                                            useKeyboardArrows={true}
+                                        >
+                                            {
+                                                event.gallery.map(url => (
+                                                    <img key={url} src={url} alt={":("}/>
+                                                ))
+                                            }
+                                        </Carousel>
+                                    </Grid> : null
+                            }
+                        </Grid>
                     </Paper>
                 </div>
             );
@@ -59,12 +85,28 @@ class EventDisplay extends Component {
             return (
                 <div className={classes.root}>
                     <Paper className={classes.paper}>
-                        <div className={classes.spaceBetween}>
-                            <Typography variant="h2">
-                                {eventName}
-                            </Typography>
-                            {showErrorIcon ? <WarningIcon fontSize="large"/> : <CircularProgress/>}
-                        </div>
+                        <Grid justify="space-between" container>
+                            {
+                                showErrorIcon ?
+                                    <Grid item>
+                                        <Typography variant="h3`">
+                                            {eventCode}
+                                        </Typography>
+                                    </Grid> : null
+                            }
+                            {
+                                showErrorIcon ?
+                                    <Grid item>
+                                        <WarningIcon fontSize="large"/>
+                                    </Grid> : null
+                            }
+                            {
+                                !showErrorIcon ?
+                                    <Grid item xs={12}>
+                                        <LinearProgress/>
+                                    </Grid> : null
+                            }
+                        </Grid>
                     </Paper>
                 </div>
             );

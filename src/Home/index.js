@@ -30,17 +30,12 @@ import SocialIcon from '@material-ui/icons/ThumbUp';
 import CollegeIcon from '@material-ui/icons/LocationCity';
 import MailIcon from '@material-ui/icons/Mail';
 import Hidden from "@material-ui/core/Hidden";
+import Paper from "@material-ui/core/Paper";
 
 const styles = theme => ({
     title: {
         padding: theme.spacing(4, 0, 2, 0),
-        display: "flex",
-        justifyContent: "center",
-    },
-    paper: {
-        padding: theme.spacing(2),
-        textAlign: 'center',
-        color: theme.palette.text.secondary,
+        ...theme.styles.horizontalCenter,
     },
     fabContainer: {
         position: 'absolute',
@@ -59,13 +54,15 @@ const styles = theme => ({
         margin: theme.spacing(1),
     },
     centerFlex: {
-        display: "flex",
-        justifyContent: "center",
+        ...theme.styles.horizontalCenter,
     },
-    footerContainer: {
-        margin: theme.spacing(1),
+    trailerDesktop: {
+        ...theme.styles.horizontalCenter,
     },
     stepper: {
+        margin: theme.spacing(1),
+    },
+    bottomNav: {
         margin: theme.spacing(1),
     },
     trailerWrapper: {
@@ -77,7 +74,8 @@ const styles = theme => ({
         top: 0,
         left: 0,
     },
-    ...theme.styles
+    successColor: {...theme.styles.successColor},
+    hover: {...theme.styles.hover},
 });
 
 class HomeComponent extends Component {
@@ -107,21 +105,36 @@ class HomeComponent extends Component {
                         </Grid>
                     }
                     {!showTrailer ? null :
-                        <Grid item xs={12}>
-                            <div className={classes.trailerWrapper}>
-                                <ReactPlayer
-                                    className={classes.trailer}
-                                    width='100%'
-                                    height='100%'
-                                    url="https://www.youtube.com/watch?v=XmMHKcGBnsQ"
-                                    controls={false}
-                                    playing={true}
-                                />
-                            </div>
-                        </Grid>
+                        <Hidden smUp>
+                            <Grid item xs={12}>
+                                <div className={classes.trailerWrapper}>
+                                    <ReactPlayer
+                                        className={classes.trailer}
+                                        width='100%'
+                                        height='100%'
+                                        url="https://www.youtube.com/watch?v=XmMHKcGBnsQ"
+                                        controls={false}
+                                        playing={true}
+                                    />
+                                </div>
+                            </Grid>
+                        </Hidden>
+                    }
+                    {!showTrailer ? null :
+                        <Hidden xsDown>
+                            <Grid item xs={12}>
+                                <div className={classes.trailerDesktop}>
+                                    <ReactPlayer
+                                        url="https://www.youtube.com/watch?v=XmMHKcGBnsQ"
+                                        controls={false}
+                                        playing={true}
+                                    />
+                                </div>
+                            </Grid>
+                        </Hidden>
                     }
                     <Hidden smUp>
-                        <Grid item xs={12} sm={4}>
+                        <Grid item xs={12}>
                             <div className={classes.centerFlex}>
                                 <Button onClick={this.toggleTrailer}>
                                     {trailerIcon}
@@ -168,6 +181,7 @@ class HomeComponent extends Component {
                         <AppContext.Consumer>
                             {(context) => (
                                 <Stepper
+                                    component={Paper}
                                     className={classes.stepper}
                                     nonLinear
                                     activeStep={null}
@@ -206,23 +220,23 @@ class HomeComponent extends Component {
                         </AppContext.Consumer>
                     </Grid>
                     <Grid item xs={12}>
-                        <div className={classes.footerContainer}>
-                            <BottomNavigation
-                                showLabels
-                                onChange={(_, val) => window.open(val, "_blank")}
-                            >
-                                {
-                                    HomeComponent.getFooterData().map(d =>
-                                        <BottomNavigationAction
-                                            {...d}
-                                            key={d.label}
-                                            className={classes.hover}
-                                        >
-                                        </BottomNavigationAction>
-                                    )
-                                }
-                            </BottomNavigation>
-                        </div>
+                        <BottomNavigation
+                            component={Paper}
+                            className={classes.bottomNav}
+                            showLabels
+                            onChange={(_, val) => window.open(val, "_blank")}
+                        >
+                            {
+                                HomeComponent.getFooterData().map(d =>
+                                    <BottomNavigationAction
+                                        {...d}
+                                        key={d.label}
+                                        className={classes.hover}
+                                    >
+                                    </BottomNavigationAction>
+                                )
+                            }
+                        </BottomNavigation>
                     </Grid>
                 </Grid>
                 <div ref={this.fabContainerRef} className={classes.fabContainer}>

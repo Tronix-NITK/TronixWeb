@@ -17,14 +17,12 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 
 const styles = theme => ({
     root: {
-        display: "flex",
-        justifyContent: "center",
+        ...theme.styles.horizontalCenter,
     },
     paper: {
+        ...theme.styles.paper,
         margin: theme.spacing(2),
         padding: theme.spacing(3),
-        maxWidth: "700px",
-        width: "100%",
     },
     pdfIFrame: {
         width: "100%",
@@ -150,7 +148,7 @@ class EventDisplay extends Component {
                             {
                                 showErrorIcon ?
                                     <Grid item>
-                                        <Typography variant="h2">
+                                        <Typography variant="h3">
                                             {eventCode}
                                         </Typography>
                                     </Grid> : null
@@ -214,7 +212,7 @@ function PSComponent(props) {
     const {classes, link} = props;
     return (
         <div>
-            <Typography variant="h4">
+            <Typography variant="h4" gutterBottom>
                 Problem Statement
             </Typography>
             <iframe

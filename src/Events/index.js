@@ -16,18 +16,17 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 
 const styles = theme => ({
     root: {
-        display: "flex",
-        justifyContent: "center",
+        ...theme.styles.horizontalCenter,
     },
     paper: {
+        ...theme.styles.paper,
         margin: theme.spacing(2, 2),
         padding: theme.spacing(4, 3),
-        maxWidth: "700px",
-        width: "100%",
     },
-    heading: {},
-    secondaryHeading: {
-        color: theme.palette.text.secondary,
+    panel: {
+        ...theme.styles.paper,
+        margin: theme.spacing(2, 2),
+        padding: theme.spacing(2, 0),
     },
     flexOne: {
         flex: 1,
@@ -51,7 +50,7 @@ class EventsComponent extends Component {
         if (!showLoading) {
             if (events) {
                 view = (
-                    <div className={classes.paper}>
+                    <div className={classes.panel}>
                         {
                             events.map(e => this.getExpansionPanel(e))
                         }
@@ -100,9 +99,9 @@ class EventsComponent extends Component {
                 onChange={this.handleExpansion(event.code)}
             >
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                    <Typography className={classes.heading}>{event.name}</Typography>
+                    <Typography>{event.name}</Typography>
                     <div className={classes.flexOne}/>
-                    <Typography className={classes.secondaryHeading}>
+                    <Typography color="secondary">
                         {
                             event.date.toLocaleDateString("en-US", {
                                 month: 'short',

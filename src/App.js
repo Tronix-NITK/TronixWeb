@@ -56,6 +56,26 @@ const theme = {
                 '&:hover': {
                     color: blue[500],
                 },
+            },
+            paper: {
+                maxWidth: "800px",
+                width: "100%",
+            },
+            horizontalCenter: {
+                display: "flex",
+                justifyContent: "center",
+            }
+        },
+        overrides: {
+            MuiPaper: {
+                root: {
+                    backgroundColor: "rgba(66,66,66,0.9)",
+                }
+            },
+            MuiBottomNavigation: {
+                root: {
+                    backgroundColor: null,
+                }
             }
         }
     }),

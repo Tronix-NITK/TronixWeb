@@ -11,8 +11,7 @@ import Typography from "@material-ui/core/Typography";
 
 const styles = theme => ({
     root: {
-        display: "flex",
-        justifyContent: "center",
+        ...theme.styles.horizontalCenter,
     },
     rootPaper: {
         margin: theme.spacing(2),
