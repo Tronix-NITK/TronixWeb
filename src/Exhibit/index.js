@@ -4,36 +4,23 @@ import {withStyles} from "@material-ui/core";
 import AppContext from "../AppContext";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
-import WarningIcon from '@material-ui/icons/Warning';
 import Grid from "@material-ui/core/Grid";
 import {Carousel} from "react-responsive-carousel";
-import LinearProgress from "@material-ui/core/LinearProgress";
+import LinearProgress from "../LinearProgress";
+import SimpleError from "../SimpleError";
+import Container from "@material-ui/core/Container";
 
 const styles = theme => ({
-    root: {
-        ...theme.styles.horizontalCenter,
-    },
     paper: {
-        ...theme.styles.paper,
-        margin: theme.spacing(2),
-        padding: theme.spacing(3),
+        ...theme.styles.translucentPaperContainer,
     },
-    spaceBetween: {
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-    },
-    pdfIFrame: {
-        width: "100%",
-        height: "70vh",
-    }
 });
 
 class EventDisplay extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            showErrorIcon: false,
+            showLoading: false,
             event: null,
         }
     }
@@ -41,10 +28,11 @@ class EventDisplay extends Component {
     render() {
         const {classes} = this.props;
         let eventCode = this.props.match.params["code"];
-        let {showErrorIcon, event} = this.state;
-        if (event != null) {
-            return (
-                <div className={classes.root}>
+        let {showLoading, event} = this.state;
+        let view;
+        if (!showLoading) {
+            if (event) {
+                view = (
                     <Paper className={classes.paper}>
                         <Grid container spacing={3}>
                             <Grid item xs={12} sm={8}>
@@ -79,38 +67,22 @@ class EventDisplay extends Component {
                             }
                         </Grid>
                     </Paper>
-                </div>
-            );
+                );
+            } else {
+                view = (
+                    <SimpleError message={`Could not load ${eventCode}`}/>
+                );
+            }
         } else {
-            return (
-                <div className={classes.root}>
-                    <Paper className={classes.paper}>
-                        <Grid justify="space-between" container>
-                            {
-                                showErrorIcon ?
-                                    <Grid item>
-                                        <Typography variant="h3`">
-                                            {eventCode}
-                                        </Typography>
-                                    </Grid> : null
-                            }
-                            {
-                                showErrorIcon ?
-                                    <Grid item>
-                                        <WarningIcon fontSize="large"/>
-                                    </Grid> : null
-                            }
-                            {
-                                !showErrorIcon ?
-                                    <Grid item xs={12}>
-                                        <LinearProgress/>
-                                    </Grid> : null
-                            }
-                        </Grid>
-                    </Paper>
-                </div>
+            view = (
+                <LinearProgress/>
             );
         }
+        return (
+            <Container maxWidth="md">
+                {view}
+            </Container>
+        );
     }
 
     componentDidMount() {
@@ -122,6 +94,7 @@ class EventDisplay extends Component {
 
 
     getEvent(code) {
+        this.setState({showLoading: true});
         fetch(`${this.server}/pub/exhibit/ofCode/${code}`, {
             mode: 'cors',
             credentials: 'include',
@@ -136,10 +109,10 @@ class EventDisplay extends Component {
                 return res.json();
         }).then((event) => {
             event.date = new Date(event.date);
-            this.setState({event});
+            this.setState({event, showLoading: false});
         }).catch(err => {
             this.snack("error", err.message);
-            this.setState({showErrorIcon: true});
+            this.setState({showLoading: false});
         });
     }
 }

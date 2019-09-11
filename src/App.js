@@ -57,24 +57,31 @@ const theme = {
                     color: blue[500],
                 },
             },
-            paper: {
-                maxWidth: "800px",
-                width: "100%",
+            translucentPaperContainer: {
+                padding: 8 * 3,
+                backgroundColor: "rgba(66,66,66,0.9)",
+            },
+            translucentPaper: {
+                backgroundColor: "rgba(66,66,66,0.9)",
             },
             horizontalCenter: {
                 display: "flex",
                 justifyContent: "center",
-            }
+            },
         },
         overrides: {
             MuiPaper: {
-                root: {
-                    backgroundColor: "rgba(66,66,66,0.9)",
-                }
+                root: {}
             },
             MuiBottomNavigation: {
                 root: {
                     backgroundColor: null,
+                }
+            },
+            MuiContainer: {
+                root: {
+                    marginTop: "16px",
+                    marginBottom: "16px",
                 }
             }
         }

@@ -60,9 +60,11 @@ const styles = theme => ({
         ...theme.styles.horizontalCenter,
     },
     stepper: {
+        ...theme.styles.translucentPaper,
         margin: theme.spacing(1),
     },
     bottomNav: {
+        ...theme.styles.translucentPaper,
         margin: theme.spacing(1),
     },
     trailerWrapper: {

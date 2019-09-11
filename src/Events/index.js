@@ -2,7 +2,6 @@ import React, {Component} from "react";
 import * as PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core";
 import AppContext from "../AppContext";
-import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
@@ -12,25 +11,23 @@ import Button from "@material-ui/core/Button";
 import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
 import {Link} from "react-router-dom";
 import Divider from "@material-ui/core/Divider";
-import LinearProgress from "@material-ui/core/LinearProgress";
+import LinearProgress from "../LinearProgress";
+import Container from "@material-ui/core/Container";
+import SimpleError from "../SimpleError";
 
 const styles = theme => ({
-    root: {
-        ...theme.styles.horizontalCenter,
-    },
-    paper: {
-        ...theme.styles.paper,
-        margin: theme.spacing(2, 2),
-        padding: theme.spacing(4, 3),
-    },
     panel: {
-        ...theme.styles.paper,
-        margin: theme.spacing(2, 2),
-        padding: theme.spacing(2, 0),
+        ...theme.styles.translucentPaper,
+    },
+    panelSummary: {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        width: "100%",
     },
     flexOne: {
         flex: 1,
-    }
+    },
 });
 
 class EventsComponent extends Component {
@@ -44,38 +41,25 @@ class EventsComponent extends Component {
     }
 
     render() {
-        const {classes} = this.props;
         let {showLoading, events} = this.state;
         let view;
         if (!showLoading) {
             if (events) {
-                view = (
-                    <div className={classes.panel}>
-                        {
-                            events.map(e => this.getExpansionPanel(e))
-                        }
-                    </div>
-                );
+                view = events.map(e => this.getExpansionPanel(e));
             } else {
                 view = (
-                    <Paper className={classes.paper}>
-                        <Typography variant={"h3"}>
-                            Could not load events
-                        </Typography>
-                    </Paper>
+                    <SimpleError message={"Could not load events"}/>
                 );
             }
         } else {
             view = (
-                <Paper className={classes.paper}>
-                    <LinearProgress/>
-                </Paper>
+                <LinearProgress/>
             );
         }
         return (
-            <div className={classes.root}>
+            <Container maxWidth="md">
                 {view}
-            </div>
+            </Container>
         );
     }
 
@@ -94,21 +78,23 @@ class EventsComponent extends Component {
         const {expandedEvent} = this.state;
         return (
             <ExpansionPanel
+                className={classes.panel}
                 key={event.code}
                 expanded={expandedEvent === event.code}
                 onChange={this.handleExpansion(event.code)}
             >
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                    <Typography>{event.name}</Typography>
-                    <div className={classes.flexOne}/>
-                    <Typography color="secondary">
-                        {
-                            event.date.toLocaleDateString("en-US", {
-                                month: 'short',
-                                day: 'numeric'
-                            })
-                        }
-                    </Typography>
+                    <div className={classes.panelSummary}>
+                        <Typography variant="h6">{event.name}</Typography>
+                        <Typography variant="body1" color="secondary">
+                            {
+                                event.date.toLocaleDateString("en-US", {
+                                    month: 'short',
+                                    day: 'numeric'
+                                })
+                            }
+                        </Typography>
+                    </div>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     {event.description}
@@ -124,7 +110,6 @@ class EventsComponent extends Component {
                     >
                         Register
                     </Button>
-
                 </ExpansionPanelActions>
             </ExpansionPanel>
         );

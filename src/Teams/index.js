@@ -65,8 +65,10 @@ class Teams extends Component {
         this.snack = this.context.snack;
         this.server = this.context.server;
         this.user = this.context.user;
-        this.loadTeams();
-
+        if (this.user)
+            this.loadTeams();
+        else
+            this.props.history.push("/login");
     }
 
     loadTeams() {
