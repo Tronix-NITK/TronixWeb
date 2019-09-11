@@ -16,15 +16,13 @@ import Paper from "@material-ui/core/Paper";
 import UserGroup from "../helpers/userGroup";
 import AppContext from "../AppContext";
 import {Link} from "react-router-dom";
+import Container from "@material-ui/core/Container";
 
+const dialogWidth = "xs";
 const styles = theme => ({
-    root: {
-        ...theme.styles.horizontalCenter,
-    },
+    dialog: {},
     rootPaper: {
-        margin: theme.spacing(2),
-        padding: theme.spacing(4),
-        maxWidth: "600px",
+        ...theme.styles.translucentPaperContainer,
     },
     paperButton: {
         marginTop: theme.spacing(4),
@@ -169,7 +167,6 @@ class Signup extends Component {
     }
 
     render() {
-        const {classes} = this.props;
         let stageView = null;
         switch (this.state.stage) {
             case "error(4)":
@@ -188,9 +185,9 @@ class Signup extends Component {
                 stageView = this.getStage0View();
         }
         return (
-            <div className={classes.root}>
+            <Container maxWidth="md">
                 {stageView}
-            </div>
+            </Container>
         );
     }
 
@@ -309,8 +306,13 @@ class Signup extends Component {
     }
 
     getStage0View() {
+        const {classes} = this.props;
         return (
-            <Dialog open={true}>
+            <Dialog
+                fullWidth
+                maxWidth={dialogWidth}
+                open={true}
+                className={classes.dialog}>
                 <DialogTitle>Signup</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -328,7 +330,11 @@ class Signup extends Component {
     getStage1View() {
         const {classes} = this.props;
         return (
-            <Dialog open={true} onClose={this.onClose.bind(this)}>
+            <Dialog
+                fullWidth
+                maxWidth={dialogWidth}
+                open={true}
+                onClose={this.onClose.bind(this)} className={classes.dialog}>
                 <DialogTitle>Signup</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -343,7 +349,7 @@ class Signup extends Component {
                         fullWidth
                         onClick={this.continueWithGoogle.bind(this)}
                     >
-                        Continue with Google
+                        Continue
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -362,55 +368,62 @@ class Signup extends Component {
             }),
         };
         return (
-            <Paper className={classes.rootPaper}>
-                <Typography variant="h4" gutterBottom>Signup</Typography>
-                <Typography variant="subtitle1" gutterBottom> Complete signup by filling your details </Typography>
-                <TextField
-                    margin="dense"
-                    placeholder="Email"
-                    type="email"
-                    value={this.state.email}
-                    disabled
-                    fullWidth
-                />
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    placeholder="Name"
-                    type="text"
-                    value={this.state.displayName}
-                    onChange={this.handleTextChange('displayName')}
-                    fullWidth
-                />
-                <NoSsr>
-                    <Select
-                        classes={classes}
-                        styles={selectStyles}
-                        options={this.state.collegeSuggestions}
-                        components={components}
-                        value={this.state.college}
-                        onChange={this.handleCollegeChange}
-                        placeholder="College"
-                        isClearable
+            <Container maxWidth="sm">
+                <Paper className={classes.rootPaper}>
+                    <Typography variant="h4" gutterBottom>Signup</Typography>
+                    <Typography variant="subtitle1" gutterBottom> Complete signup by filling your details </Typography>
+                    <TextField
+                        margin="dense"
+                        placeholder="Email"
+                        type="email"
+                        value={this.state.email}
+                        disabled
                         fullWidth
                     />
-                </NoSsr>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.paperButton}
-                    onClick={this.signup.bind(this)}
-                >
-                    Complete signup
-                </Button>
-            </Paper>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        placeholder="Name"
+                        type="text"
+                        value={this.state.displayName}
+                        onChange={this.handleTextChange('displayName')}
+                        fullWidth
+                    />
+                    <NoSsr>
+                        <Select
+                            classes={classes}
+                            styles={selectStyles}
+                            options={this.state.collegeSuggestions}
+                            components={components}
+                            value={this.state.college}
+                            onChange={this.handleCollegeChange}
+                            placeholder="College"
+                            isClearable
+                            fullWidth
+                        />
+                    </NoSsr>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        className={classes.paperButton}
+                        onClick={this.signup.bind(this)}
+                    >
+                        Complete signup
+                    </Button>
+                </Paper>
+            </Container>
         );
     }
 
     getStage3View() {
         const {classes} = this.props;
         return (
-            <Dialog open={true} onClose={this.onClose.bind(this)}>
+            <Dialog
+                fullWidth
+                maxWidth={dialogWidth}
+                open={true}
+                onClose={this.onClose.bind(this)}
+                className={classes.dialog}>
                 <DialogTitle>Signup</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -425,7 +438,7 @@ class Signup extends Component {
                         fullWidth
                         component={Link} to={'/'}
                     >
-                        Continue to Tronix
+                        Continue
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -435,7 +448,12 @@ class Signup extends Component {
     getStage4View() {
         const {classes} = this.props;
         return (
-            <Dialog open={true} onClose={this.onClose.bind(this)}>
+            <Dialog
+                fullWidth
+                maxWidth={dialogWidth}
+                open={true}
+                onClose={this.onClose.bind(this)}
+                className={classes.dialog}>
                 <DialogTitle>Signup</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -450,7 +468,7 @@ class Signup extends Component {
                         fullWidth
                         component={Link} to={'/'}
                     >
-                        Continue to Tronix
+                        Continue
                     </Button>
                 </DialogActions>
             </Dialog>

@@ -8,23 +8,14 @@ import MenuItem from "@material-ui/core/MenuItem";
 import AppContext from "../../AppContext";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
+import Container from "@material-ui/core/Container";
 
 const styles = theme => ({
-    root: {
-        ...theme.styles.horizontalCenter,
-    },
-    rootPaper: {
-        margin: theme.spacing(2),
-        padding: theme.spacing(4),
-        maxWidth: "600px",
-    },
-    actionButtonContainer: {
-        display: "flex",
-        flexDirection: "row-reverse",
-        marginTop: theme.spacing(2),
+    paper: {
+        ...theme.styles.translucentPaperContainer,
     },
     button: {
-        marginLeft: theme.spacing(2),
+        margin: theme.spacing(2, 0, 0, 1),
     },
     paperWrap: {
         marginTop: theme.spacing(2),
@@ -55,16 +46,15 @@ class Register extends Component {
     }
 
     render() {
-        const {classes} = this.props;
         let view;
         if (this.state.linkID.length)
             view = this.getState2View();
         else
             view = this.getState1View();
         return (
-            <div className={classes.root}>
+            <Container maxWidth="sm">
                 {view}
-            </div>
+            </Container>
         );
     }
 
@@ -75,7 +65,7 @@ class Register extends Component {
             <MenuItem key={`e_${e.code}`} value={e.name}>{e.name}</MenuItem>
         );
         return (
-            <Paper className={classes.rootPaper}>
+            <Paper className={classes.paper}>
                 <Typography variant="h4" gutterBottom>{title}</Typography>
                 <Typography variant="subtitle1" gutterBottom>Create a team to participate.</Typography>
                 <TextField
@@ -104,11 +94,11 @@ class Register extends Component {
                     </MenuItem>
                     {menu}
                 </Select>
-                <div className={classes.actionButtonContainer}>
+                <div dir="rtl">
                     <Button
                         variant="contained"
-                        color="primary"
                         className={classes.button}
+                        color="primary"
                         onClick={this.onRegister.bind(this)}
                     >
                         Register
@@ -130,7 +120,7 @@ class Register extends Component {
         const title = `Registered for ${this.state.eventName}!`;
         const linkID = this.state.linkID;
         return (
-            <Paper className={classes.rootPaper}>
+            <Paper className={classes.paper}>
                 <Typography variant="h4" gutterBottom>{title}</Typography>
                 <Typography variant="subtitle1" gutterBottom>Share the team invite link.</Typography>
                 <Paper className={classes.paperWrap}>
@@ -138,21 +128,21 @@ class Register extends Component {
                         {`https://tronixweb.herokuapp.com/j/${linkID}`}
                     </Typography>
                 </Paper>
-                <div className={classes.actionButtonContainer}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}
-                        onClick={copyToClipboard.bind(null, linkID)}
-                    >
-                        Copy Link
-                    </Button>
+                <div dir="rtl">
                     <Button
                         variant="contained"
                         className={classes.button}
                         onClick={this.resetFields.bind(this)}
                     >
                         Back
+                    </Button>
+                    <Button
+                        variant="contained"
+                        className={classes.button}
+                        color="primary"
+                        onClick={copyToClipboard.bind(null, linkID)}
+                    >
+                        Copy Link
                     </Button>
                 </div>
             </Paper>
