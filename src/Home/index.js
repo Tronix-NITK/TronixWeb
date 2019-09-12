@@ -308,18 +308,11 @@ class HomeComponent extends Component {
     }
 
     static hasSignedUp({partUser}) {
-        if (partUser == null)
-            return false;
-        return partUser.group <= UserGroup.PARTICIPANT;
-
+        return partUser != null;
     }
 
     static hasCompletedProfile({partUser}) {
-        if (partUser == null)
-            return false;
-        if (partUser.group > UserGroup.PARTICIPANT)
-            return false;
-        return partUser.group >= UserGroup.PARTICIPANT;
+        return partUser != null && partUser.group === UserGroup.PARTICIPANT;
     }
 
     static getMakeTeamSteps(context) {
