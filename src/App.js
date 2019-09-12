@@ -130,12 +130,13 @@ class App extends Component {
         super(props);
         this.state = {
             infoSnack: "", successSnack: "", warnSnack: "", errorSnack: "",
-            partUser: null,
+            user: null,
         };
     }
 
     render() {
         const {classes} = this.props;
+        const {user} = this.state;
         return (
             <MuiThemeProvider theme={theme["dark"]}>
                 <React.Fragment>
@@ -144,7 +145,7 @@ class App extends Component {
                         {
                             snack: (t, m) => this.snack(t, m),
                             server: API_SERVER,
-                            partUser: this.state.partUser,
+                            user: user,
                         }
                     }>
                         <Router>
@@ -173,14 +174,6 @@ class App extends Component {
                                                                       onLogout={this.onLogout.bind(this)}/>}/>
                                     <Route path="/signup"
                                            component={Signup}/>
-                                    <Route path="/register/:code"
-                                           component={TeamRegister}/>
-                                    <Route path="/register"
-                                           component={TeamRegister}/>
-                                    <Route path="/j/:linkID"
-                                           component={TeamJoin}/>
-                                    <Route path="/teams"
-                                           component={Teams}/>
                                     <Route path="/e/:code"
                                            component={Event}/>
                                     <Route path="/e"
@@ -189,6 +182,16 @@ class App extends Component {
                                            component={Exhibit}/>
                                     <Route path="/x"
                                            component={ExhibitsComponent}/>
+
+                                    <Route path="/register/:code"
+                                           component={user ? TeamRegister : Login}/>
+                                    <Route path="/register"
+                                           component={user ? TeamRegister : Login}/>
+                                    <Route path="/j/:linkID"
+                                           component={user ? TeamJoin : Login}/>
+                                    <Route path="/teams"
+                                           component={user ? Teams : Login}/>
+
                                     <Route path="/"
                                            component={this.notFound.bind(this)}/>
                                 </Switch>
@@ -278,7 +281,7 @@ class App extends Component {
     }
 
     onLogout() {
-        this.setState({partUser: null});
+        this.setState({user: null});
         this.snack("success", "Logged out");
     }
 
@@ -300,10 +303,10 @@ class App extends Component {
                 return res.json();
             else
                 throw Error(res.statusText);
-        }).then(partUser => {
-            this.setState({partUser});
+        }).then(user => {
+            this.setState({user});
         }).catch(() => {
-            this.setState({partUser: null});
+            this.setState({user: null});
         });
     }
 }

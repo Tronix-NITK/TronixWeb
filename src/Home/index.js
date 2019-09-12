@@ -307,12 +307,12 @@ class HomeComponent extends Component {
         this.setState({showNavMenu: true});
     }
 
-    static hasSignedUp({partUser}) {
-        return partUser != null;
+    static hasSignedUp({user}) {
+        return user != null;
     }
 
-    static hasCompletedProfile({partUser}) {
-        return partUser != null && partUser.group === UserGroup.PARTICIPANT;
+    static hasCompletedProfile({user}) {
+        return user != null && user.group === UserGroup.PARTICIPANT;
     }
 
     static getMakeTeamSteps(context) {
@@ -371,7 +371,7 @@ class HomeComponent extends Component {
     componentDidMount() {
         this.server = this.context.server;
         this.snack = this.context.snack;
-        this.partUser = this.context.partUser;
+        this.user = this.context.user;
     }
 }
 

@@ -175,7 +175,7 @@ class Join extends Component {
             else
                 return res.json();
         }).then((team) => {
-            let user = this.context.partUser;
+            let user = this.context.user;
             let emails = team.members.map((m) => m.email);
             if (user != null && emails.indexOf(user.email) !== -1)
                 this.setState({team, stage: "joined(2)"});
