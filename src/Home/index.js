@@ -27,8 +27,9 @@ import {Link} from "react-router-dom";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
 import SocialIcon from '@material-ui/icons/ThumbUp';
-import CollegeIcon from '@material-ui/icons/LocationCity';
+// import CollegeIcon from '@material-ui/icons/LocationCity';
 import MailIcon from '@material-ui/icons/Mail';
+import FAQIcon from '@material-ui/icons/QuestionAnswer';
 import Hidden from "@material-ui/core/Hidden";
 import Paper from "@material-ui/core/Paper";
 
@@ -355,10 +356,15 @@ class HomeComponent extends Component {
                 icon: <SocialIcon/>,
                 value: "https://www.facebook.com/tronixcommittee/",
             },
+            // {
+            //     label: "NITK",
+            //     icon: <CollegeIcon/>,
+            //     value: "https://www.nitk.ac.in/",
+            // },
             {
-                label: "NITK",
-                icon: <CollegeIcon/>,
-                value: "https://www.nitk.ac.in/",
+                label: "FAQ",
+                icon: <FAQIcon/>,
+                value: "/faq",
             },
             {
                 label: "Mail",

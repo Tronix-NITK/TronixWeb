@@ -12,6 +12,7 @@ import Teams from "./Teams";
 import TeamRegister from "./Teams/Register";
 import TeamJoin from "./Teams/Join";
 import Restore from "./Restore";
+import FAQ from "./FAQ";
 import Event from "./Event";
 import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
@@ -30,6 +31,8 @@ import Exhibit from "./Exhibit";
 import Home from "./Home";
 import Particles from "react-particles-js";
 import Hidden from "@material-ui/core/Hidden";
+import SimpleError from "./SimpleError";
+import Container from "@material-ui/core/Container";
 
 const theme = {
     "dark": createMuiTheme({
@@ -182,7 +185,10 @@ class App extends Component {
                                            component={Exhibit}/>
                                     <Route path="/x"
                                            component={ExhibitsComponent}/>
+                                    <Route path="/faq"
+                                           component={FAQ}/>
 
+                                    {/* Todo: Check user.group == participant */}
                                     <Route path="/register/:code"
                                            component={user ? TeamRegister : Login}/>
                                     <Route path="/register"
@@ -270,9 +276,9 @@ class App extends Component {
 
     notFound() {
         return (
-            <div>
-                Not Found
-            </div>
+            <Container maxWidth="md">
+                <SimpleError message="Page not found!"/>
+            </Container>
         );
     }
 
