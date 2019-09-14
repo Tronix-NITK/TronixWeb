@@ -22,16 +22,17 @@ import PlayIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
 import EventButtonIcon from "@material-ui/icons/EventNote";
 import ExhibitButtonIcon from "@material-ui/icons/Star";
+import LoginIcon from "@material-ui/icons/AccountCircle";
+import LogoutIcon from "@material-ui/icons/ExitToApp";
 import Button from "@material-ui/core/Button";
 import {Link} from "react-router-dom";
-import BottomNavigation from "@material-ui/core/BottomNavigation";
-import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
-import SocialIcon from '@material-ui/icons/ThumbUp';
-// import CollegeIcon from '@material-ui/icons/LocationCity';
 import MailIcon from '@material-ui/icons/Mail';
-import FAQIcon from '@material-ui/icons/QuestionAnswer';
+import FAQIcon from '@material-ui/icons/LiveHelp';
 import Hidden from "@material-ui/core/Hidden";
 import Paper from "@material-ui/core/Paper";
+import SvgIcon from "@material-ui/core/SvgIcon";
+import IconButton from "@material-ui/core/IconButton";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const styles = theme => ({
     title: {
@@ -45,15 +46,6 @@ const styles = theme => ({
         padding: theme.spacing(3),
     },
     fab: {},
-    eventsContainer: {
-        padding: theme.spacing(2),
-    },
-    eventsListContainer: {
-        padding: theme.spacing(1, 0),
-    },
-    margin: {
-        margin: theme.spacing(1),
-    },
     centerFlex: {
         ...theme.styles.horizontalCenter,
     },
@@ -61,10 +53,6 @@ const styles = theme => ({
         ...theme.styles.horizontalCenter,
     },
     stepper: {
-        ...theme.styles.translucentPaper,
-        margin: theme.spacing(1),
-    },
-    bottomNav: {
         ...theme.styles.translucentPaper,
         margin: theme.spacing(1),
     },
@@ -76,6 +64,10 @@ const styles = theme => ({
         position: "absolute",
         top: 0,
         left: 0,
+    },
+    footer: {
+        ...theme.styles.translucentPaper,
+        margin: theme.spacing(1),
     },
     successColor: {...theme.styles.successColor},
     hover: {...theme.styles.hover},
@@ -223,23 +215,19 @@ class HomeComponent extends Component {
                         </AppContext.Consumer>
                     </Grid>
                     <Grid item xs={12}>
-                        <BottomNavigation
-                            component={Paper}
-                            className={classes.bottomNav}
-                            showLabels
-                            onChange={(_, val) => window.open(val, "_blank")}
-                        >
-                            {
-                                HomeComponent.getFooterData().map(d =>
-                                    <BottomNavigationAction
-                                        {...d}
-                                        key={d.label}
-                                        className={classes.hover}
-                                    >
-                                    </BottomNavigationAction>
-                                )
-                            }
-                        </BottomNavigation>
+                        <Paper className={classes.footer}>
+                            <Grid container justify="center" spacing={1}>
+                                <AppContext.Consumer>
+                                    {(context) => (
+                                        HomeComponent.getFooterData(context).map((button, i) =>
+                                            <Grid item key={i}>
+                                                {button}
+                                            </Grid>
+                                        )
+                                    )}
+                                </AppContext.Consumer>
+                            </Grid>
+                        </Paper>
                     </Grid>
                 </Grid>
                 <div ref={this.fabContainerRef} className={classes.fabContainer}>
@@ -281,11 +269,13 @@ class HomeComponent extends Component {
 
     getMenuOptions(context) {
         const loggedInOptions = [
+            {key: "FAQ", to: "/faq"},
             {key: "My teams", to: "/teams",},
             {key: "Register team", to: "/register"},
             {key: "Logout", to: "/logout"},
         ];
         const loggedOutOptions = [
+            {key: "FAQ", to: "/faq"},
             {key: "Signup", to: "/signup",},
             {key: "Login", to: "/login"},
         ];
@@ -349,28 +339,35 @@ class HomeComponent extends Component {
         ];
     }
 
-    static getFooterData() {
+    static getFooterData(context) {
         return [
-            {
-                label: "Facebook",
-                icon: <SocialIcon/>,
-                value: "https://www.facebook.com/tronixcommittee/",
-            },
-            // {
-            //     label: "NITK",
-            //     icon: <CollegeIcon/>,
-            //     value: "https://www.nitk.ac.in/",
-            // },
-            {
-                label: "FAQ",
-                icon: <FAQIcon/>,
-                value: "/faq",
-            },
-            {
-                label: "Mail",
-                icon: <MailIcon/>,
-                value: "mailto:tronix@gmail.com",
-            },
+            <Tooltip title="Facebook" placement="top">
+                <IconButton href="https://www.facebook.com/tronixcommittee/" target="_blank">
+                    <SvgIcon>
+                        <path
+                            d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2m13 2h-2.5A3.5 3.5 0 0 0 12 8.5V11h-2v3h2v7h3v-7h3v-3h-3V9a1 1 0 0 1 1-1h2V5z"/>
+                    </SvgIcon>
+                </IconButton>
+            </Tooltip>
+            ,
+            <Tooltip title="FAQ" placement="top">
+                <IconButton component={Link} to="/faq">
+                    <FAQIcon/>
+                </IconButton>
+            </Tooltip>
+            ,
+            <Tooltip title="Mail" placement="top">
+                <IconButton href="mailto:tronix@gmail.com" target="_blank">
+                    <MailIcon/>
+                </IconButton>
+            </Tooltip>
+            ,
+            <Tooltip title={context.user ? "Logout" : "Login"} placement="top">
+                <IconButton component={Link} to={context.user ? "/logout" : "/login"}>
+                    {context.user ? <LogoutIcon/> : <LoginIcon/>}
+                </IconButton>
+            </Tooltip>
+            ,
         ]
     }
 
