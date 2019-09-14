@@ -78,7 +78,10 @@ class FAQ extends Component {
                 else
                     throw Error(res.statusText);
             })
-            .then(faqs => this.setState({faqs, showLoading: false}))
+            .then(faqs => {
+                faqs.sort((f1, f2) => f2.rank - f1.rank);
+                this.setState({faqs, showLoading: false});
+            })
             .catch((err) => {
                 this.setState({faqs: [], showLoading: false});
                 this.snack("error", err.message);
