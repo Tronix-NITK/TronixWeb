@@ -4,7 +4,6 @@ import {withStyles} from "@material-ui/core";
 import AppContext from "../AppContext";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import Fab from "@material-ui/core/Fab";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
 import StepButton from "@material-ui/core/StepButton";
@@ -14,9 +13,6 @@ import RegisterIcon from '@material-ui/icons/Event';
 import InviteIcon from '@material-ui/icons/GroupAdd';
 import StepLabel from "@material-ui/core/StepLabel";
 import UserGroup from "../helpers/userGroup";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
-import NavMenuIcon from '@material-ui/icons/Menu';
 import ReactPlayer from 'react-player/lib/players/YouTube';
 import PlayIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
@@ -33,28 +29,29 @@ import Paper from "@material-ui/core/Paper";
 import SvgIcon from "@material-ui/core/SvgIcon";
 import IconButton from "@material-ui/core/IconButton";
 import Tooltip from "@material-ui/core/Tooltip";
+import Container from "@material-ui/core/Container";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
 
 const styles = theme => ({
-    title: {
-        padding: theme.spacing(4, 0, 2, 0),
+    root: {
+        paddingTop: theme.spacing(4),
+    },
+    logoContainer: {
+        marginTop: 0,
+        marginBottom: 0,
+    },
+    trailerDesktopContainer: {
+        padding: theme.spacing(2),
         ...theme.styles.horizontalCenter,
     },
-    fabContainer: {
-        position: 'absolute',
-        right: 0,
-        bottom: 0,
-        padding: theme.spacing(3),
+    gridItem: {
+        padding: theme.spacing(1),
     },
-    fab: {},
-    centerFlex: {
-        ...theme.styles.horizontalCenter,
+    footer: {
+        paddingTop: theme.spacing(1),
     },
-    trailerDesktop: {
-        ...theme.styles.horizontalCenter,
-    },
-    stepper: {
+    paper: {
         ...theme.styles.translucentPaper,
-        margin: theme.spacing(1),
     },
     trailerWrapper: {
         position: "relative",
@@ -64,10 +61,6 @@ const styles = theme => ({
         position: "absolute",
         top: 0,
         left: 0,
-    },
-    footer: {
-        ...theme.styles.translucentPaper,
-        margin: theme.spacing(1),
     },
     successColor: {...theme.styles.successColor},
     hover: {...theme.styles.hover},
@@ -80,7 +73,6 @@ class HomeComponent extends Component {
             showNavMenu: false,
             showTrailer: false,
         };
-        this.fabContainerRef = React.createRef();
     }
 
     render() {
@@ -88,20 +80,23 @@ class HomeComponent extends Component {
         const {showTrailer} = this.state;
         const trailerIcon = showTrailer ? <PauseIcon fontSize="large"/> : <PlayIcon fontSize="large"/>;
         return (
-            <div>
+            <div className={classes.root}>
                 <Grid container item xs={12}>
+                    <Grid item xs={12} className={classes.gridItem}>
+                        <Typography variant={"h1"} align={"center"}>
+                            TroniX
+                        </Typography>
+                    </Grid>
                     {showTrailer ? null :
-                        <Grid item xs={12}>
-                            <div className={classes.title}>
-                                <Typography variant={"h1"}>
-                                    TroniX
-                                </Typography>
-                            </div>
+                        <Grid item xs={12} className={classes.gridItem}>
+                            <Container maxWidth="sm" className={classes.logoContainer}>
+                                <img width="100%" src="/images/logo_1.png" alt={"tronix logo"}/>
+                            </Container>
                         </Grid>
                     }
                     {!showTrailer ? null :
                         <Hidden smUp>
-                            <Grid item xs={12}>
+                            <Grid item xs={12} className={classes.gridItem}>
                                 <div className={classes.trailerWrapper}>
                                     <ReactPlayer
                                         className={classes.trailer}
@@ -117,67 +112,44 @@ class HomeComponent extends Component {
                     }
                     {!showTrailer ? null :
                         <Hidden xsDown>
-                            <Grid item xs={12}>
-                                <div className={classes.trailerDesktop}>
-                                    <ReactPlayer
-                                        url="https://www.youtube.com/watch?v=XmMHKcGBnsQ"
-                                        controls={false}
-                                        playing={true}
-                                    />
-                                </div>
+                            <Grid item xs={12} className={classes.trailerDesktopContainer}>
+                                <ReactPlayer
+                                    url="https://www.youtube.com/watch?v=XmMHKcGBnsQ"
+                                    controls={false}
+                                    playing={true}
+                                />
                             </Grid>
                         </Hidden>
                     }
-                    <Hidden smUp>
-                        <Grid item xs={12}>
-                            <div className={classes.centerFlex}>
-                                <Button onClick={this.toggleTrailer}>
-                                    {trailerIcon}
-                                    <Typography>
-                                        Trailer
-                                    </Typography>
-                                </Button>
-                            </div>
-                        </Grid>
-                    </Hidden>
-                    <Grid item xs={12} sm={4}>
-                        <div className={classes.centerFlex}>
-                            <Button component={Link} to={"/e"}>
-                                <EventButtonIcon fontSize="large"/>
+                    <Grid item xs={12} className={classes.gridItem}>
+                        <ButtonGroup fullWidth>
+                            <Button component={Link} to={"/e"} variant="outlined">
+                                <Hidden xsDown>
+                                    <EventButtonIcon fontSize="large"/>
+                                </Hidden>
                                 <Typography>
                                     Events
                                 </Typography>
                             </Button>
-                        </div>
-                    </Grid>
-                    <Hidden xsDown>
-                        <Grid item xs={12} sm={4}>
-                            <div className={classes.centerFlex}>
-                                <Button onClick={this.toggleTrailer}>
-                                    {trailerIcon}
-                                    <Typography>
-                                        Trailer
-                                    </Typography>
-                                </Button>
-                            </div>
-                        </Grid>
-                    </Hidden>
-                    <Grid item xs={12} sm={4}>
-                        <div className={classes.centerFlex}>
-                            <Button component={Link} to={"/x"}>
-                                <ExhibitButtonIcon fontSize="large"/>
+                            <Button onClick={this.toggleTrailer}>
+                                {trailerIcon}
+                            </Button>
+                            <Button component={Link} to={"/x"} variant="outlined">
+                                <Hidden xsDown>
+                                    <ExhibitButtonIcon fontSize="large"/>
+                                </Hidden>
                                 <Typography>
                                     Exhibits
                                 </Typography>
                             </Button>
-                        </div>
+                        </ButtonGroup>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} className={classes.gridItem}>
                         <AppContext.Consumer>
                             {(context) => (
                                 <Stepper
                                     component={Paper}
-                                    className={classes.stepper}
+                                    className={classes.paper}
                                     nonLinear
                                     activeStep={null}
                                     alternativeLabel
@@ -214,8 +186,8 @@ class HomeComponent extends Component {
                             )}
                         </AppContext.Consumer>
                     </Grid>
-                    <Grid item xs={12}>
-                        <Paper className={classes.footer}>
+                    <Grid item xs={12} className={classes.gridItem}>
+                        <Paper className={classes.paper}>
                             <Grid container justify="center" spacing={1}>
                                 <AppContext.Consumer>
                                     {(context) => (
@@ -229,34 +201,9 @@ class HomeComponent extends Component {
                             </Grid>
                         </Paper>
                     </Grid>
+                    <Grid item xs={12} className={classes.footer}>
+                    </Grid>
                 </Grid>
-                <div ref={this.fabContainerRef} className={classes.fabContainer}>
-                    <Fab
-                        color="primary"
-                        className={classes.fab}
-                        onClick={this.showNavMenu.bind(this)}
-                    >
-                        <NavMenuIcon/>
-                    </Fab>
-                    {/* FIXME: Menu doesn't resize when menu options change*/}
-                    <AppContext.Consumer>
-                        {(context) => (
-                            <Menu
-                                anchorEl={this.fabContainerRef.current}
-                                getContentAnchorEl={null}
-                                transformOrigin={{vertical: 'bottom', horizontal: 'center',}}
-                                open={this.state.showNavMenu}
-                                onClose={this.hideNavMenu.bind(this)}
-                                PaperProps={{
-                                    style: {
-                                        width: 150,
-                                    },
-                                }}
-                            >
-                                {this.getMenuOptions(context)}
-                            </Menu>)}
-                    </AppContext.Consumer>
-                </div>
             </div>
         );
     }
@@ -266,37 +213,6 @@ class HomeComponent extends Component {
             showTrailer: !prevState.showTrailer
         }));
     };
-
-    getMenuOptions(context) {
-        const loggedInOptions = [
-            {key: "FAQ", to: "/faq"},
-            {key: "My teams", to: "/teams",},
-            {key: "Register team", to: "/register"},
-            {key: "Logout", to: "/logout"},
-        ];
-        const loggedOutOptions = [
-            {key: "FAQ", to: "/faq"},
-            {key: "Signup", to: "/signup",},
-            {key: "Login", to: "/login"},
-        ];
-        let options = HomeComponent.hasSignedUp(context) ? loggedInOptions : loggedOutOptions;
-        return options.map(option => (
-            <MenuItem
-                component={Link}
-                {...option}
-            >
-                {option.key}
-            </MenuItem>
-        ))
-    }
-
-    hideNavMenu() {
-        this.setState({showNavMenu: false});
-    }
-
-    showNavMenu() {
-        this.setState({showNavMenu: true});
-    }
 
     static hasSignedUp({user}) {
         return user != null;
