@@ -98,7 +98,8 @@ class Teams extends Component {
                 <Typography variant="h6">Team contact</Typography>
                 <Typography variant="body1" gutterBottom>{team.contact}</Typography>
                 <Typography variant="h6">Invite link</Typography>
-                <Typography variant="body1" gutterBottom>https://tronixweb.herokuapp.com/j/{team.linkID}</Typography>
+                <Typography variant="body1"
+                            gutterBottom>{`https://${window.location.host}/j/${team.linkID}`}</Typography>
             </div>
         );
     }

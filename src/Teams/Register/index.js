@@ -125,7 +125,7 @@ class Register extends Component {
                 <Typography variant="subtitle1" gutterBottom>Share the team invite link.</Typography>
                 <Paper className={classes.paperWrap}>
                     <Typography>
-                        {`https://tronixweb.herokuapp.com/j/${linkID}`}
+                        {`https://${window.location.host}/j/${linkID}`}
                     </Typography>
                 </Paper>
                 <div dir="rtl">
