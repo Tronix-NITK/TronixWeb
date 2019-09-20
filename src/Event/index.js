@@ -23,7 +23,10 @@ const styles = theme => ({
     pdfIFrame: {
         width: "100%",
         height: "70vh",
-    }
+    },
+    spaceageFont: {
+        ...theme.styles.spaceageFont,
+    },
 });
 
 class EventDisplay extends Component {
@@ -46,7 +49,7 @@ class EventDisplay extends Component {
                     <Paper className={classes.paper}>
                         <Grid container spacing={3}>
                             <Grid item xs={12} sm={8}>
-                                <Typography variant="h3">
+                                <Typography variant="h4" className={classes.spaceageFont}>
                                     {event.name}
                                 </Typography>
                             </Grid>
@@ -194,7 +197,7 @@ function PSComponent(props) {
     const {classes, link} = props;
     return (
         <div>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h5" gutterBottom>
                 Problem Statement
             </Typography>
             <iframe

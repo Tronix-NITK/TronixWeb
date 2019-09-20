@@ -16,8 +16,6 @@ import UserGroup from "../helpers/userGroup";
 import ReactPlayer from 'react-player/lib/players/YouTube';
 import PlayIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
-import EventButtonIcon from "@material-ui/icons/EventNote";
-import ExhibitButtonIcon from "@material-ui/icons/Star";
 import LoginIcon from "@material-ui/icons/AccountCircle";
 import LogoutIcon from "@material-ui/icons/ExitToApp";
 import Button from "@material-ui/core/Button";
@@ -35,6 +33,9 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 const styles = theme => ({
     root: {
         paddingTop: theme.spacing(4),
+    },
+    spaceageFont: {
+        ...theme.styles.spaceageFont,
     },
     logoContainer: {
         marginTop: 0,
@@ -83,14 +84,21 @@ class HomeComponent extends Component {
             <div className={classes.root}>
                 <Grid container item xs={12}>
                     <Grid item xs={12} className={classes.gridItem}>
-                        <Typography variant={"h1"} align={"center"}>
-                            TroniX
-                        </Typography>
+                        <Hidden smUp>
+                            <Typography variant={"h2"} align={"center"} className={classes.spaceageFont}>
+                                Tronix
+                            </Typography>
+                        </Hidden>
+                        <Hidden xsDown>
+                            <Typography variant={"h1"} align={"center"} className={classes.spaceageFont}>
+                                Tronix
+                            </Typography>
+                        </Hidden>
                     </Grid>
                     {showTrailer ? null :
                         <Grid item xs={12} className={classes.gridItem}>
                             <Container maxWidth="sm" className={classes.logoContainer}>
-                                <img width="100%" src="/images/logo_1.png" alt={"tronix logo"}/>
+                                <img width="100%" src="/images/logo1.png" alt={"tronix logo"}/>
                             </Container>
                         </Grid>
                     }
@@ -124,10 +132,7 @@ class HomeComponent extends Component {
                     <Grid item xs={12} className={classes.gridItem}>
                         <ButtonGroup fullWidth>
                             <Button component={Link} to={"/e"} variant="outlined">
-                                <Hidden xsDown>
-                                    <EventButtonIcon fontSize="large"/>
-                                </Hidden>
-                                <Typography>
+                                <Typography className={classes.spaceageFont}>
                                     Events
                                 </Typography>
                             </Button>
@@ -135,10 +140,7 @@ class HomeComponent extends Component {
                                 {trailerIcon}
                             </Button>
                             <Button component={Link} to={"/x"} variant="outlined">
-                                <Hidden xsDown>
-                                    <ExhibitButtonIcon fontSize="large"/>
-                                </Hidden>
-                                <Typography>
+                                <Typography className={classes.spaceageFont}>
                                     Exhibits
                                 </Typography>
                             </Button>
@@ -273,7 +275,7 @@ class HomeComponent extends Component {
             </Tooltip>
             ,
             <Tooltip title="Mail" placement="top">
-                <IconButton href="mailto:tronix@gmail.com" target="_blank">
+                <IconButton href="mailto:tronix@nitk.edu.in" target="_blank">
                     <MailIcon/>
                 </IconButton>
             </Tooltip>

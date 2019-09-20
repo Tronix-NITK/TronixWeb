@@ -1,3 +1,4 @@
+import "./App.css";
 import React, {Component} from "react";
 import * as PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core";
@@ -52,6 +53,10 @@ const theme = {
             useNextVariants: true,
         },
         styles: {
+            spaceageFont: {
+                fontFamily: "spaceage",
+                transform: "scale(1, 1.4)",
+            },
             successColor: {
                 color: green[500],
             },

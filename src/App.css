@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'spaceage';
+    font-style: normal;
+    font-weight: normal;
+    src: url('/fonts/spaceage/spaceage.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'sevensegment';
+    font-style: normal;
+    font-weight: normal;
+    src: url('/fonts/sevensegment/sevensegment.ttf') format('truetype');
+}

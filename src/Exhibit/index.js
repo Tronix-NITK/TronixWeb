@@ -14,6 +14,9 @@ const styles = theme => ({
     paper: {
         ...theme.styles.translucentPaperContainer,
     },
+    spaceageFont: {
+        ...theme.styles.spaceageFont,
+    },
 });
 
 class EventDisplay extends Component {
@@ -36,7 +39,7 @@ class EventDisplay extends Component {
                     <Paper className={classes.paper}>
                         <Grid container spacing={3}>
                             <Grid item xs={12} sm={8}>
-                                <Typography variant="h3">
+                                <Typography variant="h4" className={classes.spaceageFont}>
                                     {event.name}
                                 </Typography>
                             </Grid>
