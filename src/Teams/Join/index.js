@@ -11,6 +11,7 @@ import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/es/LinearProgress/LinearProgress";
 import {Link} from "react-router-dom";
 
+const dialogWidth = "xs";
 const styles = theme => ({
     dialogButton: {
         margin: theme.spacing(1),
@@ -41,7 +42,7 @@ class Join extends Component {
 
     stage0() {
         return (
-            <Dialog open={true}>
+            <Dialog open={true} fullWidth maxWidth={dialogWidth}>
                 <DialogTitle>Join team</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -60,7 +61,7 @@ class Join extends Component {
         const {classes} = this.props;
         const team = this.state.team;
         return (
-            <Dialog open={true}>
+            <Dialog open={true} fullWidth maxWidth={dialogWidth}>
                 <DialogTitle>Join team</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -95,11 +96,11 @@ class Join extends Component {
         const {classes} = this.props;
         const team = this.state.team;
         return (
-            <Dialog open={true}>
+            <Dialog open={true} fullWidth maxWidth={dialogWidth}>
                 <DialogTitle>Join team</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Join team "{team.name}".
+                        Join "{team.name}".
                     </DialogContentText>
                     <DialogContentText>
                         You are in!
@@ -122,7 +123,7 @@ class Join extends Component {
     stageErr() {
         const {classes} = this.props;
         return (
-            <Dialog open={true}>
+            <Dialog open={true} fullWidth maxWidth={dialogWidth}>
                 <DialogTitle>Join team</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -136,7 +137,7 @@ class Join extends Component {
                         className={classes.dialogButton}
                         component={Link} to={'/'}
                     >
-                        Go Home
+                        Home
                     </Button>
                 </DialogActions>
             </Dialog>
