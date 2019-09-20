@@ -9,6 +9,9 @@ import AppContext from "../../AppContext";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+import {Link} from "react-router-dom";
+import MUILink from '@material-ui/core/Link';
 
 const styles = theme => ({
     paper: {
@@ -18,20 +21,9 @@ const styles = theme => ({
         margin: theme.spacing(2, 0, 0, 1),
     },
     paperWrap: {
-        marginTop: theme.spacing(2),
-        marginBottom: theme.spacing(2),
         padding: theme.spacing(2),
     },
 });
-
-function copyToClipboard(text) {
-    const dummy = document.createElement("input");
-    document.body.appendChild(dummy);
-    dummy.setAttribute("value", text);
-    dummy.select();
-    document.execCommand("copy");
-    document.body.removeChild(dummy);
-}
 
 class Register extends Component {
     constructor(props) {
@@ -52,7 +44,7 @@ class Register extends Component {
         else
             view = this.getState1View();
         return (
-            <Container maxWidth="sm">
+            <Container maxWidth="md">
                 {view}
             </Container>
         );
@@ -66,51 +58,72 @@ class Register extends Component {
         );
         return (
             <Paper className={classes.paper}>
-                <Typography variant="h4" gutterBottom>{title}</Typography>
-                <Typography variant="subtitle1" gutterBottom>Create a team to participate.</Typography>
-                <TextField
-                    autoFocus
-                    margin="dense"
-                    placeholder="Team name"
-                    type="text"
-                    onChange={this.handleChange("teamName")}
-                    fullWidth
-                />
-                <TextField
-                    margin="dense"
-                    placeholder="Phone number"
-                    type="text"
-                    onChange={this.handleChange("teamContact")}
-                    fullWidth
-                />
-                <Select
-                    value={this.state.eventName}
-                    onChange={this.handleChange("eventName")}
-                    displayEmpty
-                    fullWidth
-                >
-                    <MenuItem value="" disabled>
-                        Select an event
-                    </MenuItem>
-                    {menu}
-                </Select>
-                <div dir="rtl">
-                    <Button
-                        variant="contained"
-                        className={classes.button}
-                        color="primary"
-                        onClick={this.onRegister.bind(this)}
-                    >
-                        Register
-                    </Button>
-                    <Button
-                        variant="contained"
-                        className={classes.button}
-                        onClick={this.onClose.bind(this)}
-                    >
-                        Cancel
-                    </Button>
-                </div>
+                <Grid container spacing={1}>
+                    <Grid item xs={12}>
+                        <Typography variant="h4">{title}</Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant="subtitle1">
+                            Create a team to participate.
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            placeholder="Team name"
+                            type="text"
+                            onChange={this.handleChange("teamName")}
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            margin="dense"
+                            placeholder="Phone number"
+                            type="tel"
+                            onChange={this.handleChange("teamContact")}
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Select
+                            value={this.state.eventName}
+                            onChange={this.handleChange("eventName")}
+                            displayEmpty
+                            fullWidth
+                        >
+                            <MenuItem value="" disabled>
+                                Select an event
+                            </MenuItem>
+                            {menu}
+                        </Select>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant="subtitle2">
+                            Checkout the <MUILink component={Link} to="/faq">FAQ</MUILink> if you face any problems.
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <div dir="rtl">
+                            <Button
+                                variant="contained"
+                                className={classes.button}
+                                color="primary"
+                                onClick={this.onRegister.bind(this)}
+                            >
+                                Register
+                            </Button>
+                            <Button
+                                variant="contained"
+                                className={classes.button}
+                                onClick={this.onClose.bind(this)}
+                            >
+                                Cancel
+                            </Button>
+                        </div>
+                    </Grid>
+                </Grid>
             </Paper>
         );
     }
@@ -119,32 +132,43 @@ class Register extends Component {
         const {classes} = this.props;
         const title = `Registered for ${this.state.eventName}!`;
         const linkID = this.state.linkID;
+        const link = `https://${window.location.host}/j/${linkID}`;
         return (
             <Paper className={classes.paper}>
-                <Typography variant="h4" gutterBottom>{title}</Typography>
-                <Typography variant="subtitle1" gutterBottom>Share the team invite link.</Typography>
-                <Paper className={classes.paperWrap}>
-                    <Typography>
-                        {`https://${window.location.host}/j/${linkID}`}
-                    </Typography>
-                </Paper>
-                <div dir="rtl">
-                    <Button
-                        variant="contained"
-                        className={classes.button}
-                        onClick={this.resetFields.bind(this)}
-                    >
-                        Back
-                    </Button>
-                    <Button
-                        variant="contained"
-                        className={classes.button}
-                        color="primary"
-                        onClick={copyToClipboard.bind(null, linkID)}
-                    >
-                        Copy Link
-                    </Button>
-                </div>
+                <Grid container spacing={1}>
+                    <Grid item xs={12}>
+                        <Typography variant="h4" gutterBottom>{title}</Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Typography variant="subtitle1" gutterBottom>Share the team invite link.</Typography>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Paper className={classes.paperWrap}>
+                            <MUILink href={link}>
+                                {link}
+                            </MUILink>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <div dir="rtl">
+                            <Button
+                                variant="contained"
+                                className={classes.button}
+                                color="primary"
+                                onClick={() => this.copyToClipBoard(link)}
+                            >
+                                Copy Link
+                            </Button>
+                            <Button
+                                variant="contained"
+                                className={classes.button}
+                                onClick={this.resetFields.bind(this)}
+                            >
+                                Back
+                            </Button>
+                        </div>
+                    </Grid>
+                </Grid>
             </Paper>
         );
     }
@@ -234,6 +258,11 @@ class Register extends Component {
             eventName: "",
             linkID: "",
         });
+    }
+
+    copyToClipBoard(content){
+        navigator.clipboard.writeText(content);
+        this.snack("success", "Copied!")
     }
 }
 

@@ -1,9 +1,11 @@
 import React, {Component} from "react";
 import * as PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core";
+import MUILink from "@material-ui/core/Link";
 import AppContext from "../AppContext";
 import MaterialTable from "material-table";
 import Typography from "@material-ui/core/Typography";
+import InviteIcon from '@material-ui/icons/PersonAdd';
 
 const styles = theme => ({
     root: {},
@@ -12,14 +14,17 @@ const styles = theme => ({
     },
     teamDetails: {
         padding: theme.spacing(2),
-    }
+    },
+    noWrapTypo:{
+      maxWidth: "50vw",
+    },
 });
 
 class Teams extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            teams: [],
+            teams: null,
         };
     }
 
@@ -30,9 +35,13 @@ class Teams extends Component {
                 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
                 <div className={classes.tableContainer}>
                     <MaterialTable
+                        isLoading={this.state.teams == null}
                         columns={[
-                            {title: 'Team', field: 'name',},
                             {title: 'Event', field: 'event.name',},
+                            {
+                                title: 'Team', field: 'name',
+                                render: rowData => <Typography className={classes.noWrapTypo} noWrap>{rowData.name}</Typography>
+                            },
                         ]}
                         actions={[
                             {
@@ -42,18 +51,18 @@ class Teams extends Component {
                                 onClick: () => this.loadTeams()
                             },
                             {
-                                icon: 'add',
                                 tooltip: 'Invite',
-                                onClick: (team) => this.copyLinkID(team)
+                                icon: () => <InviteIcon/>,
+                                onClick: (e, team) => this.copyToClipBoard(this.makeJoinLink(team.linkID))
                             }
                         ]}
+                        onRowClick={(event, rowData, togglePanel) => togglePanel()}
                         detailPanel={team => this.getDetailView(team)}
                         options={{
-                            actionsColumnIndex: -1,
                             search: false,
                             paging: false,
                         }}
-                        data={this.state.teams}
+                        data={this.state.teams || []}
                         title="My Teams"
                     />
                 </div>
@@ -91,22 +100,26 @@ class Teams extends Component {
 
     getDetailView(team) {
         const {classes} = this.props;
+        const link = this.makeJoinLink(team.linkID);
         return (
             <div className={classes.teamDetails}>
-                <Typography variant="h6">Team members</Typography>
-                <Typography variant="body1" gutterBottom>{team.memberNames}</Typography>
+                <Typography variant={"h4"}>{team.name}</Typography>
+                <Typography variant="body1" paragraph>{team.memberNames}</Typography>
                 <Typography variant="h6">Team contact</Typography>
-                <Typography variant="body1" gutterBottom>{team.contact}</Typography>
+                <Typography variant="body1" paragraph>{team.contact}</Typography>
                 <Typography variant="h6">Invite link</Typography>
-                <Typography variant="body1"
-                            gutterBottom>{`https://${window.location.host}/j/${team.linkID}`}</Typography>
+                <MUILink href={link}>{link}</MUILink>
             </div>
         );
     }
 
-    copyLinkID(team) {
-        // Todo: Implement copy
-        this.snack("success", "Copied invite link");
+    makeJoinLink(id) {
+        return `${window.location.protocol}//${window.location.host}/j/${id}`;
+    }
+
+    copyToClipBoard(content) {
+        navigator.clipboard.writeText(content);
+        this.snack("success", "Copied invite link!")
     }
 }
 
