@@ -34,6 +34,9 @@ const styles = theme => ({
     root: {
         paddingTop: theme.spacing(4),
     },
+    title: {
+        fontFamily: "spaceage",
+    },
     spaceageFont: {
         ...theme.styles.spaceageFont,
     },
@@ -85,12 +88,12 @@ class HomeComponent extends Component {
                 <Grid container item xs={12}>
                     <Grid item xs={12} className={classes.gridItem}>
                         <Hidden smUp>
-                            <Typography variant={"h2"} align={"center"} className={classes.spaceageFont}>
+                            <Typography variant={"h2"} align={"center"} className={classes.title}>
                                 Tronix
                             </Typography>
                         </Hidden>
                         <Hidden xsDown>
-                            <Typography variant={"h1"} align={"center"} className={classes.spaceageFont}>
+                            <Typography variant={"h1"} align={"center"} className={classes.title}>
                                 Tronix
                             </Typography>
                         </Hidden>

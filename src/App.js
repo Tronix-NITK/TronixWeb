@@ -162,13 +162,13 @@ class App extends Component {
                                     <Particles
                                         className={classes.backgroundWrapper}
                                         canvasClassName={classes.background}
-                                        params={particleParams}/>
+                                        params={particleConfDesktop}/>
                                 </Hidden>
                                 <Hidden smUp>
                                     <Particles
                                         className={classes.backgroundWrapper}
                                         canvasClassName={classes.background}
-                                        params={particleParams1}/>
+                                        params={particleConfMobile}/>
                                 </Hidden>
                                 <Switch>
                                     <Route exact path="/"
@@ -326,19 +326,20 @@ App.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-const particleParams = {
+const particleColor = blue[500], lineColor = blue[700];
+const particleConfDesktop = {
     "particles": {
         "number": {
-            "value": 60
+            "value": 70,
         },
         "color": {
-            "value": "#69ff00",
+            "value": particleColor,
         },
         "size": {
             "value": 3
         },
         "line_linked": {
-            "color": "#78ff00",
+            "color": lineColor,
             "width": 2,
         }
     },
@@ -352,19 +353,19 @@ const particleParams = {
         }
     }
 };
-const particleParams1 = {
+const particleConfMobile = {
     "particles": {
         "number": {
-            "value": 30,
+            "value": 20,
         },
         "color": {
-            "value": "#69ff00",
+            "value": particleColor,
         },
         "size": {
             "value": 3
         },
         "line_linked": {
-            "color": "#78ff00",
+            "color": lineColor,
             "width": 2,
         }
     },

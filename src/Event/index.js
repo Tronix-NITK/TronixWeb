@@ -49,7 +49,7 @@ class EventDisplay extends Component {
                     <Paper className={classes.paper}>
                         <Grid container spacing={3}>
                             <Grid item xs={12} sm={8}>
-                                <Typography variant="h4" className={classes.spaceageFont}>
+                                <Typography variant="h4" noWrap className={classes.spaceageFont}>
                                     {event.name}
                                 </Typography>
                             </Grid>
