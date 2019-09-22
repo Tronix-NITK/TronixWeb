@@ -34,6 +34,7 @@ const styles = theme => ({
     input: {
         display: 'flex',
         padding: 0,
+        height: 'auto',
     },
     valueContainer: {
         display: 'flex',
@@ -51,6 +52,7 @@ const styles = theme => ({
     placeholder: {
         position: 'absolute',
         left: 2,
+        bottom: 6,
         fontSize: 16,
     },
     paper: {
