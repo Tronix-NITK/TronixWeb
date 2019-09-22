@@ -39,6 +39,9 @@ const theme = {
     "dark": createMuiTheme({
         palette: {
             type: "dark",
+            background: {
+                default: "#121212"
+            },
             primary: {
                 main: blue[500]
             },
@@ -67,10 +70,10 @@ const theme = {
             },
             translucentPaperContainer: {
                 padding: 8 * 3,
-                backgroundColor: "rgba(66,66,66,0.9)",
+                backgroundColor: "rgba(30,30,30,0.9)",
             },
             translucentPaper: {
-                backgroundColor: "rgba(66,66,66,0.9)",
+                backgroundColor: "rgba(30,30,30,0.9)",
             },
             horizontalCenter: {
                 display: "flex",
@@ -79,11 +82,8 @@ const theme = {
         },
         overrides: {
             MuiPaper: {
-                root: {}
-            },
-            MuiBottomNavigation: {
                 root: {
-                    backgroundColor: null,
+                    backgroundColor: "rgba(30,30,30)",
                 }
             },
             MuiContainer: {
