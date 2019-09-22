@@ -1,11 +1,12 @@
 import React, {Component} from "react";
 import * as PropTypes from "prop-types";
-import {withStyles} from "@material-ui/core";
+import {LinearProgress, withStyles} from "@material-ui/core";
 import Dialog from '@material-ui/core/Dialog/index';
 import DialogTitle from "@material-ui/core/DialogTitle/index";
 import DialogContent from "@material-ui/core/DialogContent/index";
 import DialogContentText from "@material-ui/core/DialogContentText/index";
 import AppContext from "../AppContext";
+import DialogActions from "@material-ui/core/DialogActions";
 
 const styles = theme => ({
     button: {
@@ -17,11 +18,15 @@ const styles = theme => ({
 class Logout extends Component {
     render() {
         return (
-            <Dialog open={true}>
+            <Dialog open={true} fullWidth maxWidth="xs">
                 <DialogTitle>Logging out</DialogTitle>
                 <DialogContent>
                     <DialogContentText>Please wait</DialogContentText>
                 </DialogContent>
+                <DialogContent>
+                    <LinearProgress/>
+                </DialogContent>
+                <DialogActions/>
             </Dialog>
         );
     }

@@ -5,13 +5,10 @@ import MUILink from "@material-ui/core/Link";
 import AppContext from "../AppContext";
 import MaterialTable from "material-table";
 import Typography from "@material-ui/core/Typography";
-import InviteIcon from '@material-ui/icons/PersonAdd';
+import Container from "@material-ui/core/Container";
 
 const styles = theme => ({
     root: {},
-    tableContainer: {
-        margin: theme.spacing(2),
-    },
     teamDetails: {
         padding: theme.spacing(2),
     },
@@ -33,7 +30,7 @@ class Teams extends Component {
         return (
             <div className={classes.root}>
                 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-                <div className={classes.tableContainer}>
+                <Container maxWidth="md">
                     <MaterialTable
                         isLoading={this.state.teams == null}
                         columns={[
@@ -52,7 +49,7 @@ class Teams extends Component {
                             },
                             {
                                 tooltip: 'Invite',
-                                icon: () => <InviteIcon/>,
+                                icon: 'person_add',
                                 onClick: (e, team) => this.copyToClipBoard(this.makeJoinLink(team.linkID))
                             }
                         ]}
@@ -65,7 +62,7 @@ class Teams extends Component {
                         data={this.state.teams || []}
                         title="My Teams"
                     />
-                </div>
+                </Container>
             </div>
         );
     }
