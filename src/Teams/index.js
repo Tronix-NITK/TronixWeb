@@ -6,14 +6,15 @@ import AppContext from "../AppContext";
 import MaterialTable from "material-table";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import Paper from "@material-ui/core/Paper";
 
 const styles = theme => ({
     root: {},
     teamDetails: {
         padding: theme.spacing(2),
     },
-    noWrapTypo:{
-      maxWidth: "50vw",
+    noWrapTypo: {
+        maxWidth: "50vw",
     },
 });
 
@@ -37,7 +38,8 @@ class Teams extends Component {
                             {title: 'Event', field: 'event.name',},
                             {
                                 title: 'Team', field: 'name',
-                                render: rowData => <Typography className={classes.noWrapTypo} noWrap>{rowData.name}</Typography>
+                                render: rowData => <Typography className={classes.noWrapTypo}
+                                                               noWrap>{rowData.name}</Typography>
                             },
                         ]}
                         actions={[
@@ -58,6 +60,7 @@ class Teams extends Component {
                         options={{
                             search: false,
                             paging: false,
+                            header: false,
                         }}
                         data={this.state.teams || []}
                         title="My Teams"
