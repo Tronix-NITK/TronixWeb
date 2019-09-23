@@ -59,8 +59,13 @@ class Login extends Component {
     }
 
     onClickLogin() {
-        // localStorage.setItem('restore.pathname', window.location.pathname);
-        window.location.href = this.server + "/part/auth/login/google";
+        let app = window.location.protocol + "//" + window.location.host;
+        let s, f;
+        s = window.location.pathname === "/login" ? "/" : window.location.pathname;
+        f = "/restore/PLF/";
+        s = encodeURIComponent(app + s);
+        f = encodeURIComponent(app + f);
+        window.location.href = `${this.server}/part/auth/login/google?s=${s}&f=${f}`;
     }
 }
 

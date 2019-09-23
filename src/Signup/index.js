@@ -284,8 +284,13 @@ class Signup extends Component {
     }
 
     continueWithGoogle() {
-        // localStorage.setItem('restore.pathname', window.location.pathname);
-        window.location.href = this.server + "/part/auth/login/google";
+        let app = window.location.protocol + "//" + window.location.host;
+        let s, f;
+        s = window.location.pathname === "/login" ? "/" : window.location.pathname;
+        f = "/restore/PLF/";
+        s = encodeURIComponent(app + s);
+        f = encodeURIComponent(app + f);
+        window.location.href = `${this.server}/part/auth/login/google?s=${s}&f=${f}`;
     }
 
     handleCollegeChange = value => {
@@ -433,12 +438,13 @@ class Signup extends Component {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
+                    {/*Note the use of window nav to hard reload the home page to refresh the user context var*/}
                     <Button
                         variant="contained"
                         color="primary"
                         className={classes.dialogButton}
                         fullWidth
-                        component={Link} to={'/'}
+                        onClick={() => window.location.href = "/"}
                     >
                         Continue
                     </Button>
