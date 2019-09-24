@@ -33,9 +33,12 @@ import Home from "./Home";
 import Particles from "react-particles-js";
 import Hidden from "@material-ui/core/Hidden";
 import SimpleError from "./SimpleError";
+import Footer from "./Footer";
 import Container from "@material-ui/core/Container";
+import UserGroup from "./helpers/userGroup";
 
-const theme = {
+const paperColor = "rgba(30,30,30,0.9)";
+const MuiTheme = {
     "dark": createMuiTheme({
         palette: {
             type: "dark",
@@ -70,10 +73,10 @@ const theme = {
             },
             translucentPaperContainer: {
                 padding: 8 * 3,
-                backgroundColor: "rgba(30,30,30,0.9)",
+                backgroundColor: paperColor,
             },
             translucentPaper: {
-                backgroundColor: "rgba(30,30,30,0.9)",
+                backgroundColor: paperColor,
             },
             horizontalCenter: {
                 display: "flex",
@@ -88,8 +91,8 @@ const theme = {
             },
             MuiContainer: {
                 root: {
-                    marginTop: "16px",
-                    marginBottom: "16px",
+                    paddingTop: "16px",
+                    paddingBottom: "16px",
                 }
             }
         }
@@ -97,7 +100,9 @@ const theme = {
 };
 
 const styles = theme => ({
-    app: {},
+    app: {
+        paddingBottom: "56px",
+    },
     backgroundWrapper: {
         position: "fixed",
         zIndex: "-1",
@@ -145,8 +150,10 @@ class App extends Component {
     render() {
         const {classes} = this.props;
         const {user} = this.state;
+        const participant = user != null && user.group === UserGroup.PARTICIPANT;
+        const urp = user != null && user.group === UserGroup.URP;
         return (
-            <MuiThemeProvider theme={theme["dark"]}>
+            <MuiThemeProvider theme={MuiTheme["dark"]}>
                 <React.Fragment>
                     <CssBaseline/>
                     <AppContext.Provider value={
@@ -156,21 +163,84 @@ class App extends Component {
                             user: user,
                         }
                     }>
+                        <Hidden xsDown>
+                            <Particles
+                                className={classes.backgroundWrapper}
+                                canvasClassName={classes.background}
+                                params={particleConfDesktop}/>
+                        </Hidden>
+                        <Hidden smUp>
+                            <Particles
+                                className={classes.backgroundWrapper}
+                                canvasClassName={classes.background}
+                                params={particleConfMobile}/>
+                        </Hidden>
+                        <Snackbar
+                            anchorOrigin={{vertical: "top", horizontal: "right"}}
+                            open={this.state.infoSnack.length !== 0}
+                            onClose={this.handleCloseSnack.bind(this)}
+                            autoHideDuration={3000}
+                        >
+                            <SnackbarContent
+                                className={classes.infoSnack}
+                                message={
+                                    <span className={classes.snackMessage}>
+                            <InfoSnackIcon className={classes.snackIcon}/>{this.state.infoSnack}
+                        </span>
+                                }
+                            />
+                        </Snackbar>
+                        <Snackbar
+                            anchorOrigin={{vertical: "top", horizontal: "right"}}
+                            open={this.state.successSnack.length !== 0}
+                            onClose={this.handleCloseSnack.bind(this)}
+                            autoHideDuration={3000}
+                        >
+                            <SnackbarContent
+                                className={classes.successSnack}
+                                message={
+                                    <span className={classes.snackMessage}>
+                            <SuccessSnackIcon className={classes.snackIcon}/>{this.state.successSnack}
+                        </span>
+                                }
+                            />
+                        </Snackbar>
+                        <Snackbar
+                            anchorOrigin={{vertical: "top", horizontal: "right"}}
+                            open={this.state.warnSnack.length !== 0}
+                            onClose={this.handleCloseSnack.bind(this)}
+                            autoHideDuration={3000}
+                        >
+                            <SnackbarContent
+                                className={classes.warnSnack}
+                                message={
+                                    <span className={classes.snackMessage}>
+                            <WarningSnackIcon className={classes.snackIcon}/>{this.state.warnSnack}
+                        </span>
+                                }
+                            />
+                        </Snackbar>
+                        <Snackbar
+                            anchorOrigin={{vertical: "top", horizontal: "right"}}
+                            open={this.state.errorSnack.length !== 0}
+                            onClose={this.handleCloseSnack.bind(this)}
+                            autoHideDuration={3000}
+                        >
+                            <SnackbarContent
+                                className={classes.errorSnack}
+                                message={
+                                    <span className={classes.snackMessage}>
+                            <ErrorSnackIcon className={classes.snackIcon}/>{this.state.errorSnack}
+                        </span>
+                                }
+                            />
+                        </Snackbar>
                         <Router>
                             <div className={classes.app}>
-                                <Hidden xsDown>
-                                    <Particles
-                                        className={classes.backgroundWrapper}
-                                        canvasClassName={classes.background}
-                                        params={particleConfDesktop}/>
-                                </Hidden>
-                                <Hidden smUp>
-                                    <Particles
-                                        className={classes.backgroundWrapper}
-                                        canvasClassName={classes.background}
-                                        params={particleConfMobile}/>
-                                </Hidden>
                                 <Switch>
+                                    {
+                                        urp ? <Route path="/" component={Signup}/> : null
+                                    }
                                     <Route exact path="/"
                                            component={Home}/>
                                     <Route path="/restore/:state"
@@ -193,80 +263,20 @@ class App extends Component {
                                     <Route path="/faq"
                                            component={FAQ}/>
 
-                                    {/* Todo: Check user.group == participant */}
                                     <Route path="/register/:code"
-                                           component={user ? TeamRegister : Login}/>
+                                           component={participant ? TeamRegister : Login}/>
                                     <Route path="/register"
-                                           component={user ? TeamRegister : Login}/>
+                                           component={participant ? TeamRegister : Login}/>
                                     <Route path="/j/:linkID"
-                                           component={user ? TeamJoin : Login}/>
+                                           component={participant ? TeamJoin : Login}/>
                                     <Route path="/teams"
-                                           component={user ? Teams : Login}/>
+                                           component={participant ? Teams : Login}/>
 
                                     <Route path="/"
                                            component={this.notFound.bind(this)}/>
                                 </Switch>
                             </div>
-                            <Snackbar
-                                anchorOrigin={{vertical: "top", horizontal: "right"}}
-                                open={this.state.infoSnack.length !== 0}
-                                onClose={this.handleCloseSnack.bind(this)}
-                                autoHideDuration={3000}
-                            >
-                                <SnackbarContent
-                                    className={classes.infoSnack}
-                                    message={
-                                        <span className={classes.snackMessage}>
-                            <InfoSnackIcon className={classes.snackIcon}/>{this.state.infoSnack}
-                        </span>
-                                    }
-                                />
-                            </Snackbar>
-                            <Snackbar
-                                anchorOrigin={{vertical: "top", horizontal: "right"}}
-                                open={this.state.successSnack.length !== 0}
-                                onClose={this.handleCloseSnack.bind(this)}
-                                autoHideDuration={3000}
-                            >
-                                <SnackbarContent
-                                    className={classes.successSnack}
-                                    message={
-                                        <span className={classes.snackMessage}>
-                            <SuccessSnackIcon className={classes.snackIcon}/>{this.state.successSnack}
-                        </span>
-                                    }
-                                />
-                            </Snackbar>
-                            <Snackbar
-                                anchorOrigin={{vertical: "top", horizontal: "right"}}
-                                open={this.state.warnSnack.length !== 0}
-                                onClose={this.handleCloseSnack.bind(this)}
-                                autoHideDuration={3000}
-                            >
-                                <SnackbarContent
-                                    className={classes.warnSnack}
-                                    message={
-                                        <span className={classes.snackMessage}>
-                            <WarningSnackIcon className={classes.snackIcon}/>{this.state.warnSnack}
-                        </span>
-                                    }
-                                />
-                            </Snackbar>
-                            <Snackbar
-                                anchorOrigin={{vertical: "top", horizontal: "right"}}
-                                open={this.state.errorSnack.length !== 0}
-                                onClose={this.handleCloseSnack.bind(this)}
-                                autoHideDuration={3000}
-                            >
-                                <SnackbarContent
-                                    className={classes.errorSnack}
-                                    message={
-                                        <span className={classes.snackMessage}>
-                            <ErrorSnackIcon className={classes.snackIcon}/>{this.state.errorSnack}
-                        </span>
-                                    }
-                                />
-                            </Snackbar>
+                            <Footer user={user}/>
                         </Router>
                     </AppContext.Provider>
                 </React.Fragment>

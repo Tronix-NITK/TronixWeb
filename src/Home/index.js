@@ -16,17 +16,10 @@ import UserGroup from "../helpers/userGroup";
 import ReactPlayer from 'react-player/lib/players/YouTube';
 import PlayIcon from "@material-ui/icons/PlayArrow";
 import PauseIcon from "@material-ui/icons/Pause";
-import LoginIcon from "@material-ui/icons/AccountCircle";
-import LogoutIcon from "@material-ui/icons/ExitToApp";
 import Button from "@material-ui/core/Button";
 import {Link} from "react-router-dom";
-import MailIcon from '@material-ui/icons/Mail';
-import FAQIcon from '@material-ui/icons/LiveHelp';
 import Hidden from "@material-ui/core/Hidden";
 import Paper from "@material-ui/core/Paper";
-import SvgIcon from "@material-ui/core/SvgIcon";
-import IconButton from "@material-ui/core/IconButton";
-import Tooltip from "@material-ui/core/Tooltip";
 import Container from "@material-ui/core/Container";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 
@@ -50,9 +43,6 @@ const styles = theme => ({
     },
     gridItem: {
         padding: theme.spacing(1),
-    },
-    footer: {
-        paddingTop: theme.spacing(1),
     },
     paper: {
         ...theme.styles.translucentPaper,
@@ -191,23 +181,6 @@ class HomeComponent extends Component {
                             )}
                         </AppContext.Consumer>
                     </Grid>
-                    <Grid item xs={12} className={classes.gridItem}>
-                        <Paper className={classes.paper}>
-                            <Grid container justify="center" spacing={1}>
-                                <AppContext.Consumer>
-                                    {(context) => (
-                                        HomeComponent.getFooterData(context).map((button, i) =>
-                                            <Grid item key={i}>
-                                                {button}
-                                            </Grid>
-                                        )
-                                    )}
-                                </AppContext.Consumer>
-                            </Grid>
-                        </Paper>
-                    </Grid>
-                    <Grid item xs={12} className={classes.footer}>
-                    </Grid>
                 </Grid>
             </div>
         );
@@ -258,38 +231,6 @@ class HomeComponent extends Component {
                 disabled: false,
             },
         ];
-    }
-
-    static getFooterData(context) {
-        return [
-            <Tooltip title="Facebook" placement="top">
-                <IconButton href="https://www.facebook.com/tronixcommittee/" target="_blank">
-                    <SvgIcon>
-                        <path
-                            d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2m13 2h-2.5A3.5 3.5 0 0 0 12 8.5V11h-2v3h2v7h3v-7h3v-3h-3V9a1 1 0 0 1 1-1h2V5z"/>
-                    </SvgIcon>
-                </IconButton>
-            </Tooltip>
-            ,
-            <Tooltip title="FAQ" placement="top">
-                <IconButton component={Link} to="/faq">
-                    <FAQIcon/>
-                </IconButton>
-            </Tooltip>
-            ,
-            <Tooltip title="Mail" placement="top">
-                <IconButton href="mailto:tronix@nitk.edu.in" target="_blank">
-                    <MailIcon/>
-                </IconButton>
-            </Tooltip>
-            ,
-            <Tooltip title={context.user ? "Logout" : "Login"} placement="top">
-                <IconButton component={Link} to={context.user ? "/logout" : "/login"}>
-                    {context.user ? <LogoutIcon/> : <LoginIcon/>}
-                </IconButton>
-            </Tooltip>
-            ,
-        ]
     }
 
     componentDidMount() {
