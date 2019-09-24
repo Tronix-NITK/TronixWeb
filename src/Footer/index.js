@@ -19,7 +19,6 @@ const styles = theme => ({
         position: "fixed",
         bottom: 0,
         width: "100%",
-        ...theme.styles.translucentPaper,
     },
 });
 
@@ -128,7 +127,7 @@ class Footer extends Component {
     setNav(location) {
         const path = location.pathname.toLowerCase();
         let nav;
-        if (path === "/login") nav = 3;
+        if (path === "/login" || path === "/logout") nav = 3;
         else if (path === "/") nav = 2;
         else if (path === "/faq") nav = 1;
         else nav = null;

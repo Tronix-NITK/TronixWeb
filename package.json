@@ -1,21 +1,22 @@
 {
   "name": "tronixweb",
+  "homepage": "https://tronixnitk.in/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.4.2",
+    "@material-ui/core": "^4.4.3",
     "@material-ui/icons": "^3.0.2",
-    "material-table": "^1.50.0",
+    "material-table": "^1.51.0",
     "prop-types": "latest",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
+    "react": "^16.10.1",
+    "react-dom": "^16.10.1",
     "react-particles-js": "^2.7.0",
     "react-player": "^1.13.0",
     "react-responsive-carousel": "^3.1.50",
-    "react-router-dom": "^5.0.1",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "3.0.0",
     "react-select": "^2.4.4",
-    "serve": "^11.1.0"
+    "serve": "^11.2.0"
   },
   "scripts": {
     "build": "react-scripts build",

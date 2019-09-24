@@ -1,10 +1,8 @@
-import "./App.css";
 import React, {Component} from "react";
 import * as PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core";
 import {MuiThemeProvider, createMuiTheme} from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import blue from '@material-ui/core/colors/blue';
 import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Login from "./Login";
 import Logout from "./Logout";
@@ -35,24 +33,24 @@ import Hidden from "@material-ui/core/Hidden";
 import SimpleError from "./SimpleError";
 import Footer from "./Footer";
 import Container from "@material-ui/core/Container";
-import UserGroup from "./helpers/userGroup";
+import {isURP, isParticipant} from "./helpers/auth";
+import BackgroundImage from "./background.png";
 
-const paperColor = "rgba(30,30,30,0.9)";
+const paperColor = "rgba(10,10,10,0.8)";
+const particleColor = "#b70101", lineColor = "#b70101";
 const MuiTheme = {
     "dark": createMuiTheme({
         palette: {
             type: "dark",
             background: {
-                default: "#121212"
+                default: "#121212",
+                paper: "rgba(10,10,10)",
             },
             primary: {
-                main: blue[500]
+                main: "#b70101"
             },
             secondary: {
                 main: grey[500]
-            },
-            error: {
-                main: red[500]
             },
         },
         typography: {
@@ -68,7 +66,7 @@ const MuiTheme = {
             },
             hover: {
                 '&:hover': {
-                    color: blue[500],
+                    color: "#b70101",
                 },
             },
             translucentPaperContainer: {
@@ -84,11 +82,6 @@ const MuiTheme = {
             },
         },
         overrides: {
-            MuiPaper: {
-                root: {
-                    backgroundColor: "rgba(30,30,30)",
-                }
-            },
             MuiContainer: {
                 root: {
                     paddingTop: "16px",
@@ -108,6 +101,8 @@ const styles = theme => ({
         zIndex: "-1",
         width: "100vw",
         height: "100vh",
+        backgroundImage: `url(${BackgroundImage})`,
+        backgroundSize: "cover",
     },
     background: {
         width: "100%",
@@ -150,8 +145,8 @@ class App extends Component {
     render() {
         const {classes} = this.props;
         const {user} = this.state;
-        const participant = user != null && user.group === UserGroup.PARTICIPANT;
-        const urp = user != null && user.group === UserGroup.URP;
+        const participant = isParticipant(user);
+        const urp = isURP(user);
         return (
             <MuiThemeProvider theme={MuiTheme["dark"]}>
                 <React.Fragment>
@@ -336,7 +331,6 @@ App.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-const particleColor = blue[500], lineColor = blue[700];
 const particleConfDesktop = {
     "particles": {
         "number": {

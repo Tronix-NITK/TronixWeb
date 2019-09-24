@@ -15,6 +15,9 @@ import Hidden from "@material-ui/core/Hidden";
 import Tooltip from "@material-ui/core/Tooltip";
 import LinearProgress from "../LinearProgress";
 import Container from "@material-ui/core/Container";
+import {FirstPlace, SecondPlace} from "./medals";
+
+const medals = [<FirstPlace/>, <SecondPlace/>];
 
 const styles = theme => ({
     paper: {
@@ -49,13 +52,14 @@ class EventDisplay extends Component {
                     <Paper className={classes.paper}>
                         <Grid container spacing={3}>
                             <Grid item xs={12} sm={8}>
-                                <Typography variant="h4" noWrap className={classes.spaceageFont}>
+                                <Typography color="primary" variant="h4" noWrap className={classes.spaceageFont}>
                                     {event.name}
                                 </Typography>
                             </Grid>
                             <Hidden xsDown>
                                 <Grid item xs={4}>
                                     <Button
+                                        color={"primary"}
                                         variant={"contained"}
                                         component={Link}
                                         to={`/register/${event.code}`}
@@ -91,13 +95,18 @@ class EventDisplay extends Component {
                                 </Grid>
                             </Grid>
                             <Grid item xs={12}>
-                                <Typography variant="body1">
+                                <Typography variant="body1" paragraph>
                                     {event.description}
                                 </Typography>
+                                <Typography variant="body1">
+                                    Fee: ₹{event.fees}
+                                </Typography>
                             </Grid>
+                                {this.getPrizes()}
                             <Hidden smUp>
                                 <Grid item xs={12}>
                                     <Button
+                                        color={"primary"}
                                         variant={"contained"}
                                         component={Link}
                                         to={`/register/${event.code}`}
@@ -163,6 +172,25 @@ class EventDisplay extends Component {
         this.getEvent(eventCode);
     }
 
+    getPrizes() {
+        const {event} = this.state;
+        if (event.prizes)
+            return (
+                <Grid item xs={12} container justify={"space-around"}
+                >
+                    {
+                        event.prizes.split(",").map((p, i) => (
+                            <Grid item key={i} align={"center"}>
+                                {medals[i]}
+                                <Typography>₹{p}</Typography>
+                            </Grid>
+                        ))
+                    }
+                </Grid>
+            );
+        else
+            return null
+    }
 
     getEvent(code) {
         this.setState({showLoading: true});

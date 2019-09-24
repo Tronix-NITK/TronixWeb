@@ -8,6 +8,8 @@ import DialogContent from "@material-ui/core/DialogContent/index";
 import DialogContentText from "@material-ui/core/DialogContentText/index";
 import DialogActions from "@material-ui/core/DialogActions/index";
 import AppContext from "../AppContext";
+import {withRouter} from 'react-router-dom';
+import {loginDirect} from "../helpers/auth";
 
 const styles = theme => ({
     button: {
@@ -59,13 +61,7 @@ class Login extends Component {
     }
 
     onClickLogin() {
-        let app = window.location.protocol + "//" + window.location.host;
-        let s, f;
-        s = window.location.pathname === "/login" ? "/" : window.location.pathname;
-        f = "/restore/PLF/";
-        s = encodeURIComponent(app + s);
-        f = encodeURIComponent(app + f);
-        window.location.href = `${this.server}/part/auth/login/google?s=${s}&f=${f}`;
+        loginDirect.bind(this)();
     }
 }
 
@@ -74,4 +70,4 @@ Login.propTypes = {
 };
 Login.contextType = AppContext;
 
-export default withStyles(styles, {withTheme: true})(Login);
+export default withStyles(styles, {withTheme: true})(withRouter(Login));

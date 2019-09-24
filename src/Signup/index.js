@@ -13,10 +13,11 @@ import Select from 'react-select';
 import Typography from "@material-ui/core/Typography";
 import MenuItem from "@material-ui/core/MenuItem";
 import Paper from "@material-ui/core/Paper";
-import UserGroup from "../helpers/userGroup";
+import {isParticipant, isURP} from "../helpers/auth";
 import AppContext from "../AppContext";
 import {Link} from "react-router-dom";
 import Container from "@material-ui/core/Container";
+import {loginDirect} from "../helpers/auth";
 
 const dialogWidth = "xs";
 const styles = theme => ({
@@ -210,26 +211,23 @@ class Signup extends Component {
             else
                 throw Error(res.statusText);
         }).then(user => {
-            switch (user.group) {
-                case UserGroup.URP:
-                    this.loadColleges((suggestions) => {
-                        this.setState({
-                            collegeSuggestions: suggestions,
-                            email: user.email,
-                            stage: "fillDetails(2)"
-                        });
-                    });
-                    break;
-                case UserGroup.PARTICIPANT:
+            if (isURP(user)) {
+                this.loadColleges((suggestions) => {
                     this.setState({
-                        stage: "completed(3)"
+                        collegeSuggestions: suggestions,
+                        email: user.email,
+                        stage: "fillDetails(2)"
                     });
-                    break;
-                default:
-                    this.snack("warn", "Please login as a participant");
-                    this.setState({
-                        stage: "error(4)",
-                    });
+                });
+            } else if (isParticipant((user))) {
+                this.setState({
+                    stage: "completed(3)"
+                });
+            } else {
+                this.snack("warn", "Please login as a participant");
+                this.setState({
+                    stage: "error(4)",
+                });
             }
         }).catch(err => {
             // Un-auth user
@@ -284,13 +282,7 @@ class Signup extends Component {
     }
 
     continueWithGoogle() {
-        let app = window.location.protocol + "//" + window.location.host;
-        let s, f;
-        s = window.location.pathname === "/login" ? "/" : window.location.pathname;
-        f = "/restore/PLF/";
-        s = encodeURIComponent(app + s);
-        f = encodeURIComponent(app + f);
-        window.location.href = `${this.server}/part/auth/login/google?s=${s}&f=${f}`;
+        loginDirect.bind(this)();
     }
 
     handleCollegeChange = value => {
