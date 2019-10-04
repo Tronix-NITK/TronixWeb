@@ -247,13 +247,13 @@ class App extends Component {
                                                                       onLogout={this.onLogout.bind(this)}/>}/>
                                     <Route path="/signup"
                                            component={Signup}/>
-                                    <Route path="/e/:code"
+                                    <Route path={["/e/:code", "/event/:code", "/events/:code"]}
                                            component={Event}/>
-                                    <Route path="/e"
+                                    <Route path={["/e", "/event", "/events"]}
                                            component={EventsComponent}/>
-                                    <Route path="/x/:code"
+                                    <Route path={["/x/:code", "/exhibit/:code", "/exhibits/:code"]}
                                            component={Exhibit}/>
-                                    <Route path="/x"
+                                    <Route path={["/x", "/exhibit", "/exhibits"]}
                                            component={ExhibitsComponent}/>
                                     <Route path="/faq"
                                            component={FAQ}/>
