@@ -233,6 +233,11 @@ class App extends Component {
                         <Router>
                             <div className={classes.app}>
                                 <Switch>
+                                    <Route path="/logout"
+                                           render={(props) => <Logout {...props}
+                                                                      onLogout={this.onLogout.bind(this)}/>}/>
+                                    <Route path="/faq"
+                                           component={FAQ}/>
                                     {
                                         urp ? <Route path="/" component={Signup}/> : null
                                     }
@@ -242,9 +247,6 @@ class App extends Component {
                                            component={Restore}/>
                                     <Route path="/login"
                                            component={Login}/>
-                                    <Route path="/logout"
-                                           render={(props) => <Logout {...props}
-                                                                      onLogout={this.onLogout.bind(this)}/>}/>
                                     <Route path="/signup"
                                            component={Signup}/>
                                     <Route path={["/e/:code", "/event/:code", "/events/:code"]}
@@ -255,8 +257,6 @@ class App extends Component {
                                            component={Exhibit}/>
                                     <Route path={["/x", "/exhibit", "/exhibits"]}
                                            component={ExhibitsComponent}/>
-                                    <Route path="/faq"
-                                           component={FAQ}/>
 
                                     <Route path="/register/:code"
                                            component={participant ? TeamRegister : Login}/>
@@ -310,7 +310,7 @@ class App extends Component {
             {
                 mode: 'cors',
                 credentials: 'include',
-                method: "GET",
+                method: "POST",
                 headers: {
                     'Accept': 'application/json',
                 },

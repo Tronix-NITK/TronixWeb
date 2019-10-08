@@ -66,7 +66,6 @@ class FAQ extends Component {
     fetchFAQs() {
         fetch(`${this.server}/pub/faq/all`, {
             mode: 'cors',
-            credentials: 'include',
             method: "GET",
             headers: {
                 'Accept': 'application/json',

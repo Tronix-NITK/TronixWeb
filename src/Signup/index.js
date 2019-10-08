@@ -18,6 +18,7 @@ import AppContext from "../AppContext";
 import {Link} from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import {loginDirect} from "../helpers/auth";
+import MUILink from "@material-ui/core/Link/Link";
 
 const dialogWidth = "xs";
 const styles = theme => ({
@@ -201,7 +202,7 @@ class Signup extends Component {
             {
                 mode: 'cors',
                 credentials: 'include',
-                method: "GET",
+                method: "POST",
                 headers: {
                     'Accept': 'application/json',
                 },
@@ -238,7 +239,6 @@ class Signup extends Component {
     loadColleges(cb) {
         fetch(`${this.server}/pub/college`, {
             mode: 'cors',
-            credentials: 'include',
             method: "GET",
             headers: {
                 'Accept': 'application/json',
@@ -339,6 +339,11 @@ class Signup extends Component {
                     <DialogContentText>
                         Signup for Tronix using your Google Account.
                     </DialogContentText>
+                    <DialogContentText>
+                        <Typography variant="subtitle2">
+                            Checkout <MUILink component={Link} to="/faq">FAQ</MUILink> if you face any problems
+                        </Typography>
+                    </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <Button
@@ -371,6 +376,9 @@ class Signup extends Component {
                 <Paper className={classes.rootPaper}>
                     <Typography variant="h4" gutterBottom>Signup</Typography>
                     <Typography variant="subtitle1" gutterBottom> Complete signup by filling your details </Typography>
+                    <Typography variant="subtitle2">
+                        Checkout <MUILink component={Link} to="/faq">FAQ</MUILink> if you face any problems
+                    </Typography>
                     <TextField
                         margin="dense"
                         placeholder="Email"

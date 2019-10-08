@@ -64,7 +64,10 @@ class Register extends Component {
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant="subtitle1">
-                            Create a team to participate.
+                            Create a team to participate
+                        </Typography>
+                        <Typography variant="subtitle2">
+                            Checkout <MUILink component={Link} to="/faq">FAQ</MUILink> if you face any problems
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
@@ -98,11 +101,6 @@ class Register extends Component {
                             </MenuItem>
                             {menu}
                         </Select>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="subtitle2">
-                            Checkout the <MUILink component={Link} to="/faq">FAQ</MUILink> if you face any problems.
-                        </Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <div dir="rtl">
@@ -197,7 +195,6 @@ class Register extends Component {
     getEvents(cb) {
         fetch(`${this.server}/pub/event/namesAndCodes`, {
             mode: 'cors',
-            credentials: 'include',
             method: "GET",
             headers: {
                 'Accept': 'application/json',
@@ -260,7 +257,7 @@ class Register extends Component {
         });
     }
 
-    copyToClipBoard(content){
+    copyToClipBoard(content) {
         navigator.clipboard.writeText(content);
         this.snack("success", "Copied!")
     }
