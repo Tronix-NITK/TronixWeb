@@ -193,8 +193,8 @@ class Register extends Component {
     };
 
     getEvents(cb) {
-        fetch(`${this.server}/pub/event/namesAndCodes`, {
-            mode: 'cors',
+        fetch(`${this.server.url}/pub/event/namesAndCodes`, {
+            mode: this.server.mode,
             method: "GET",
             headers: {
                 'Accept': 'application/json',
@@ -228,8 +228,8 @@ class Register extends Component {
     }
 
     register(data) {
-        fetch(`${this.server}/part/team/register`, {
-            mode: 'cors',
+        fetch(`${this.server.url}/part/team/register`, {
+            mode: this.server.mode,
             credentials: 'include',
             method: "POST",
             body: JSON.stringify(data),

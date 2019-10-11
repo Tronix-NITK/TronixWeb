@@ -10,7 +10,6 @@ import DialogActions from "@material-ui/core/DialogActions/index";
 import AppContext from "../AppContext";
 import {Link, withRouter} from 'react-router-dom';
 import {loginDirect} from "../helpers/auth";
-import Typography from "@material-ui/core/Typography";
 import MUILink from "@material-ui/core/Link/Link";
 
 const styles = theme => ({
@@ -35,10 +34,8 @@ class Login extends Component {
                     <DialogContentText>
                         Login to Tronix with your Google account.
                     </DialogContentText>
-                    <DialogContentText>
-                        <Typography variant="subtitle2">
-                            Checkout <MUILink component={Link} to="/faq">FAQ</MUILink> if you face any problems
-                        </Typography>
+                    <DialogContentText variant="subtitle2">
+                        Checkout <MUILink component={Link} to="/faq">FAQ</MUILink> if you face any problems
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

@@ -34,8 +34,8 @@ class Logout extends Component {
     componentDidMount() {
         this.server = this.context.server;
         this.snack = this.context.snack;
-        fetch(`${this.server}/part/auth/logout`, {
-            mode: 'cors',
+        fetch(`${this.server.url}/part/auth/logout`, {
+            mode: this.server.mode,
             credentials: 'include',
             method: "GET",
         }).then((res) => {

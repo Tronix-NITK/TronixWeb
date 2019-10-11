@@ -198,9 +198,9 @@ class Signup extends Component {
     componentDidMount() {
         this.server = this.context.server;
         this.snack = this.context.snack;
-        fetch(`${this.server}/part/auth/user`,
+        fetch(`${this.server.url}/part/auth/user`,
             {
-                mode: 'cors',
+                mode: this.server.mode,
                 credentials: 'include',
                 method: "POST",
                 headers: {
@@ -237,8 +237,8 @@ class Signup extends Component {
     }
 
     loadColleges(cb) {
-        fetch(`${this.server}/pub/college`, {
-            mode: 'cors',
+        fetch(`${this.server.url}/pub/college`, {
+            mode: this.server.mode,
             method: "GET",
             headers: {
                 'Accept': 'application/json',
@@ -261,8 +261,8 @@ class Signup extends Component {
     }
 
     signup() {
-        fetch(`${this.server}/part/signup`, {
-            mode: 'cors',
+        fetch(`${this.server.url}/part/signup`, {
+            mode: this.server.mode,
             credentials: 'include',
             method: "POST",
             body: JSON.stringify({
@@ -339,10 +339,8 @@ class Signup extends Component {
                     <DialogContentText>
                         Signup for Tronix using your Google Account.
                     </DialogContentText>
-                    <DialogContentText>
-                        <Typography variant="subtitle2">
-                            Checkout <MUILink component={Link} to="/faq">FAQ</MUILink> if you face any problems
-                        </Typography>
+                    <DialogContentText variant="subtitle2">
+                        Checkout <MUILink component={Link} to="/faq">FAQ</MUILink> if you face any problems
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

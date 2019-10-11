@@ -161,8 +161,8 @@ class Join extends Component {
     }
 
     getTeam(linkID) {
-        fetch(`${this.server}/part/team/get`, {
-            mode: 'cors',
+        fetch(`${this.server.url}/part/team/get`, {
+            mode: this.server.mode,
             credentials: 'include',
             method: "POST",
             body: JSON.stringify({linkID}),
@@ -189,8 +189,8 @@ class Join extends Component {
     }
 
     joinTeam(linkID) {
-        fetch(`${this.server}/part/team/join`, {
-            mode: 'cors',
+        fetch(`${this.server.url}/part/team/join`, {
+            mode: this.server.mode,
             credentials: 'include',
             method: "POST",
             body: JSON.stringify({linkID}),

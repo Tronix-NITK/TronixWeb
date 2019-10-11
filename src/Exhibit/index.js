@@ -98,8 +98,8 @@ class EventDisplay extends Component {
 
     getEvent(code) {
         this.setState({showLoading: true});
-        fetch(`${this.server}/pub/exhibit/ofCode/${code}`, {
-            mode: 'cors',
+        fetch(`${this.server.url}/pub/exhibit/ofCode/${code}`, {
+            mode: this.server.mode,
             method: "GET",
             headers: {
                 'Accept': 'application/json',

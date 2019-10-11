@@ -95,8 +95,8 @@ class EventsComponent extends Component {
 
     getEvents() {
         this.setState({showLoading: true});
-        fetch(`${this.server}/pub/exhibit/briefs`, {
-            mode: 'cors',
+        fetch(`${this.server.url}/pub/exhibit/briefs`, {
+            mode: this.server.mode,
             method: "GET",
             headers: {
                 'Accept': 'application/json',

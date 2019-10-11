@@ -7,7 +7,7 @@ function loginDirect() {
     f = "/restore/PLF/";
     s = encodeURIComponent(app + s);
     f = encodeURIComponent(app + f);
-    window.location.href = `${this.server}/part/auth/login/google?s=${s}&f=${f}`;
+    window.location.href = `${this.server.url}/part/auth/login/google?s=${s}&f=${f}`;
 }
 
 const UserGroup = Object.freeze({

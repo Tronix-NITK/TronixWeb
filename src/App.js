@@ -11,6 +11,7 @@ import Teams from "./Teams";
 import TeamRegister from "./Teams/Register";
 import TeamJoin from "./Teams/Join";
 import Restore from "./Restore";
+import Privacy from "./Privacy";
 import FAQ from "./FAQ";
 import Event from "./Event";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -131,7 +132,11 @@ const styles = theme => ({
     },
 });
 
-const API_SERVER = "https://tronixserver.herokuapp.com/api/v1";
+const prod_domain = ".tronixnitk.in";
+const API_SERVER = {
+    url: `https://api.tronixnitk.in/v1`,
+    mode: (window.location.hostname.slice(-prod_domain.length) === prod_domain) ? undefined : "cors",
+};
 
 class App extends Component {
     constructor(props) {
@@ -233,6 +238,7 @@ class App extends Component {
                         <Router>
                             <div className={classes.app}>
                                 <Switch>
+                                    <Route path="/privacy" component={Privacy}/>
                                     <Route path="/logout"
                                            render={(props) => <Logout {...props}
                                                                       onLogout={this.onLogout.bind(this)}/>}/>
@@ -306,9 +312,9 @@ class App extends Component {
     }
 
     loadPartUser() {
-        fetch(`${this.server}/part/auth/user`,
+        fetch(`${this.server.url}/part/auth/user`,
             {
-                mode: 'cors',
+                mode: this.server.mode,
                 credentials: 'include',
                 method: "POST",
                 headers: {

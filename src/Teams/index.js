@@ -76,8 +76,8 @@ class Teams extends Component {
     }
 
     loadTeams() {
-        fetch(`${this.server}/part/team`, {
-            mode: 'cors',
+        fetch(`${this.server.url}/part/team`, {
+            mode: this.server.mode,
             credentials: 'include',
             method: "GET",
             headers: {
