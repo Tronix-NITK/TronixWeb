@@ -3,31 +3,34 @@ import * as PropTypes from "prop-types";
 import {withStyles} from "@material-ui/core";
 import AppContext from "../AppContext";
 import Typography from "@material-ui/core/Typography";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from "@material-ui/core/Button";
-import ExpansionPanelActions from "@material-ui/core/ExpansionPanelActions";
 import {Link} from "react-router-dom";
-import Divider from "@material-ui/core/Divider";
 import LinearProgress from "../LinearProgress";
 import Container from "@material-ui/core/Container";
 import SimpleError from "../SimpleError";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardMedia from "@material-ui/core/CardMedia";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import Grid from "@material-ui/core/Grid";
 
 const styles = theme => ({
-    panel: {
+    card: {
         ...theme.styles.translucentPaper,
     },
-    panelSummary: {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        width: "100%",
+    media: {
+        height: "20vh",
     },
-    flexOne: {
-        flex: 1,
+    descriptionWrapper: {
+        overflow: "hidden",
+        display: "-webkit-box",
+        "-webkit-line-clamp": 3,
+        "-webkit-box-orient": "vertical",
     },
+    description: {
+        margin: 0,
+    }
 });
 
 class EventsComponent extends Component {
@@ -36,7 +39,6 @@ class EventsComponent extends Component {
         this.state = {
             showLoading: true,
             events: null,
-            expandedEvent: null,
         }
     }
 
@@ -45,7 +47,25 @@ class EventsComponent extends Component {
         let view;
         if (!showLoading) {
             if (events) {
-                view = events.map(e => this.getExpansionPanel(e));
+                view = (
+                    <Grid
+                        container
+                        justify="center"
+                        alignItems="center"
+                        spacing={3}
+                    >
+                        {events.map(e =>
+                            <Grid
+                                key={e.code}
+                                item
+                                xs={12}
+                                md={4}
+                            >
+                                {this.getEventCard(e)}
+                            </Grid>
+                        )}
+                    </Grid>
+                );
             } else {
                 view = (
                     <SimpleError message={"Could not load events"}/>
@@ -69,49 +89,43 @@ class EventsComponent extends Component {
         this.getEvents();
     }
 
-    handleExpansion = (expandedEvent) => (_, isExpanded) => {
-        this.setState({expandedEvent: isExpanded ? expandedEvent : null});
-    };
-
-    getExpansionPanel = (event) => {
+    getEventCard = (event) => {
         const {classes} = this.props;
-        const {expandedEvent} = this.state;
         return (
-            <ExpansionPanel
-                className={classes.panel}
-                key={event.code}
-                expanded={expandedEvent === event.code}
-                onChange={this.handleExpansion(event.code)}
-            >
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon/>}>
-                    <div className={classes.panelSummary}>
-                        <Typography variant="h6">{event.name}</Typography>
-                        <Typography variant="body1" color="secondary">
-                            {
-                                event.date.toLocaleDateString("en-US", {
-                                    month: 'short',
-                                    day: 'numeric'
-                                })
-                            }
+            <Card className={classes.card}>
+                <CardActionArea component={Link} to={`/e/${event.code}`}>
+                    <CardMedia
+                        className={classes.media}
+                        image="/images/eventCardTest.jpg"
+                        title="Contemplative Reptile"
+                    />
+                    <CardContent>
+                        <Typography gutterBottom variant="h5" component="h2">
+                            {event.name}
                         </Typography>
-                    </div>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                    {event.description}
-                </ExpansionPanelDetails>
-                <Divider/>
-                <ExpansionPanelActions>
-                    <Button component={Link} to={`/e/${event.code}`} variant={"contained"}>
-                        Learn More
-                    </Button>
+                        <div className={classes.descriptionWrapper}>
+                            <Typography
+                                variant="body2"
+                                color="textSecondary"
+                                className={classes.description}
+                            >
+                                {event.description}
+                            </Typography>
+                        </div>
+                    </CardContent>
+                </CardActionArea>
+                <CardActions>
                     <Button
                         component={Link} to={`/register/${event.code}`} variant={"contained"}
                         color={"primary"}
                     >
                         Register
                     </Button>
-                </ExpansionPanelActions>
-            </ExpansionPanel>
+                    <Button component={Link} to={`/e/${event.code}`} variant={"outlined"}>
+                        Learn More
+                    </Button>
+                </CardActions>
+            </Card>
         );
     };
 
