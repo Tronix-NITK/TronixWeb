@@ -96,7 +96,7 @@ class EventsComponent extends Component {
                 <CardActionArea component={Link} to={`/e/${event.code}`}>
                     <CardMedia
                         className={classes.media}
-                        image="/images/eventCardTest.jpg"
+                        image={event.thumbnail}
                         title="Contemplative Reptile"
                     />
                     <CardContent>
