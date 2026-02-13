@@ -14,7 +14,7 @@
     "react-player": "^1.15.2",
     "react-responsive-carousel": "^3.1.51",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "^3.4.0",
+    "react-scripts": "^5.0.1",
     "react-select": "^2.4.4",
     "serve": "^11.3.0"
   },
